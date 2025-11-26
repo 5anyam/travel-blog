@@ -1,268 +1,191 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin, MessageSquare, Facebook, Twitter, Linkedin, Instagram, ExternalLink } from "lucide-react";
+import { Mail, Facebook, Twitter, Linkedin, Instagram, Youtube, BookOpen, TrendingUp, Flame } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { serviceCategories } from "@/lib/data/services";
-
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
       <Container>
         <div className="py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-            {/* Company Info */}
-            <div className="lg:col-span-1">
+            {/* Magazine Info */}
+            <div className="lg:col-span-2">
               <Link href="/" className="flex items-center space-x-3 mb-6">
                 <div className="relative w-full h-16">
                   <Image
                     src="/LOGO.png"
-                    alt="CS Praveen Kumar Logo"
-                    width={100}
-                    height={100}
+                    alt="Magazine Logo"
+                    width={180}
+                    height={60}
                     className="rounded-lg object-contain"
                   />
                 </div>
               </Link>
-              <p className="text-gray-400 mb-6 leading-relaxed text-sm">
-                M/s Praveen K & Associates - Your trusted partner for Company Secretary & compliance services. 
-                We provide comprehensive professional solutions for businesses across India.
+              <p className="text-gray-400 mb-6 leading-relaxed text-sm max-w-md">
+                Your daily dose of trending stories, lifestyle tips, celebrity news, and expert insights. 
+                Stay updated with the latest in fashion, entertainment, food, health, and more.
               </p>
-              <div className="space-y-3">
-                <div className="flex items-start">
-                  <MapPin className="h-4 w-4 mr-3 text-[#3AA6FF] mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-gray-300">
-                    <div>D-7/296, 2nd Floor, Sector-6</div>
-                    <div>Rohini, New Delhi - 110086</div>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <Phone className="h-4 w-4 mr-3 text-[#3AA6FF]" />
-                  <div className="text-sm space-y-1">
-                    <div>
-                      <a href="tel:+918800343499" className="hover:text-white transition-colors">
-                        +91 8800343499
-                      </a>
-                    </div>
-                    <div>
-                      <a href="tel:+919868428811" className="hover:text-white transition-colors">
-                        +91 9868428811
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <MessageSquare className="h-4 w-4 mr-3 text-[#3AA6FF]" />
-                  <span className="text-sm">
-                    <a 
-                      href="https://wa.me/919811657065" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="hover:text-white transition-colors"
-                    >
-                      +91 9811657065 (WhatsApp)
-                    </a>
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <Mail className="h-4 w-4 mr-3 text-[#3AA6FF]" />
-                  <span className="text-sm">
-                    <a href="mailto:contact@cspkindia.com" className="hover:text-white transition-colors">
-                      contact@cspkindia.com
-                    </a>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
-              <div className="space-y-3">
-                <Link href="/about" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  About Us
-                </Link>
-                <Link href="/services" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  Our Services
-                </Link>
-                <Link href="/blogs" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  Blogs & Articles
-                </Link>
-                <Link href="/career" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  Career Opportunities
-                </Link>
-                <Link href="/contact" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  Contact Us
-                </Link>
-                <Link href="/contact" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  Rate Us
-                </Link>
-              </div>
-            </div>
-
-
-            {/* Useful Links */}
-            <div>
-              <h3 className="text-lg font-semibold mb-6">Useful Links</h3>
-              <div className="space-y-3">
-                <a 
-                  href="https://incometaxindia.gov.in/pages/pan.aspx" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center text-gray-400 hover:text-white transition-colors text-sm group"
-                >
-                  <span>PAN</span>
-                  <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
-                <a 
-                  href="https://incometaxindia.gov.in/Pages/tan-tds.aspx" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center text-gray-400 hover:text-white transition-colors text-sm group"
-                >
-                  <span>TAN</span>
-                  <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
-                <a 
-                  href="https://eportal.incometax.gov.in/iec/foservices/#/login" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center text-gray-400 hover:text-white transition-colors text-sm group"
-                >
-                  <span>Income Tax E-Filing</span>
-                  <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
-                <a 
-                  href="https://www.mca.gov.in/content/mca/global/en/home.html" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center text-gray-400 hover:text-white transition-colors text-sm group"
-                >
-                  <span>MCA</span>
-                  <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
-                <a 
-                  href="https://www.rbi.org.in/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center text-gray-400 hover:text-white transition-colors text-sm group"
-                >
-                  <span>RBI</span>
-                  <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
-                <Link 
-                  href="/disclaimer" 
-                  className="block text-gray-400 hover:text-white transition-colors text-sm"
-                >
-                  Disclaimer
-                </Link>
-              </div>
-            </div>
-
-
-            {/* Popular Services */}
-            <div>
-              <h3 className="text-lg font-semibold mb-6">Popular Services</h3>
-              <div className="space-y-3">
-                <Link href="/services/private-limited-company" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  Private Limited Company
-                </Link>
-                <Link href="/services/opc-registration" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  One Person Company
-                </Link>
-                <Link href="/services/llp-registration" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  LLP Registration
-                </Link>
-                <Link href="/services/annual-compliance" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  Annual Compliance
-                </Link>
-                <Link href="/services/trademark" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  Trademark Registration
-                </Link>
-                <Link href="/services/secretarial-audit" className="block text-gray-400 hover:text-white transition-colors text-sm">
-                  Secretarial Audit
-                </Link>
-              </div>
-            </div>
-
-
-            {/* Business Hours & Social Media */}
-            <div>
-              <h3 className="text-lg font-semibold mb-6">Professional Information</h3>
               
-              {/* Business Hours */}
+              {/* Newsletter Signup */}
               <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-300 mb-3">Business Hours</h4>
-                <div className="space-y-2 text-sm text-gray-400">
-                  <div>Monday - Saturday: 10:00 AM - 7:00 PM</div>
-                  <div>Sunday: Closed</div>
+                <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                  <Mail className="h-4 w-4 text-[#3AA6FF]" />
+                  Subscribe to Newsletter
+                </h4>
+                <div className="flex gap-2">
+                  <input
+                    type="email"
+                    placeholder="Your email address"
+                    className="flex-1 px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#3AA6FF] focus:border-transparent"
+                  />
+                  <button className="px-4 py-2 bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] hover:from-[#2690E6] hover:to-[#3AA6FF] rounded-lg text-white font-semibold text-sm transition-all">
+                    Subscribe
+                  </button>
                 </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Join 10,000+ readers. No spam, unsubscribe anytime.
+                </p>
               </div>
 
-
-              {/* Professional Credentials */}
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-300 mb-3">Credentials</h4>
-                <div className="space-y-2 text-sm text-gray-400">
-                  <div>• ICSI Qualified Company Secretary</div>
-                  <div>• 7+ Years Professional Experience</div>
-                  <div>• Pan India Service Coverage</div>
-                </div>
-              </div>
-              
               {/* Social Media Links */}
               <div>
-                <h4 className="text-sm font-medium text-gray-300 mb-3">Social Media</h4>
-                <div className="flex space-x-4">
+                <h4 className="text-sm font-bold text-white mb-3">Follow Us</h4>
+                <div className="flex space-x-3">
                   <a 
                     href="#" 
-                    className="text-gray-400 hover:text-white transition-colors"
-                    aria-label="Meta (Facebook)"
-                    title="Meta (Facebook)"
+                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#3AA6FF] flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                    aria-label="Facebook"
                   >
                     <Facebook className="h-5 w-5" />
                   </a>
                   <a 
                     href="#" 
-                    className="text-gray-400 hover:text-white transition-colors"
-                    aria-label="X (Twitter)"
-                    title="X (Twitter)"
+                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#3AA6FF] flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                    aria-label="Twitter"
                   >
                     <Twitter className="h-5 w-5" />
                   </a>
                   <a 
                     href="#" 
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#3AA6FF] flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                    aria-label="Instagram"
+                  >
+                    <Instagram className="h-5 w-5" />
+                  </a>
+                  <a 
+                    href="#" 
+                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#3AA6FF] flex items-center justify-center transition-all duration-300 transform hover:scale-110"
                     aria-label="LinkedIn"
-                    title="LinkedIn"
                   >
                     <Linkedin className="h-5 w-5" />
                   </a>
                   <a 
                     href="#" 
-                    className="text-gray-400 hover:text-white transition-colors"
-                    aria-label="Instagram"
-                    title="Instagram"
+                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#3AA6FF] flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                    aria-label="YouTube"
                   >
-                    <Instagram className="h-5 w-5" />
+                    <Youtube className="h-5 w-5" />
                   </a>
                 </div>
               </div>
             </div>
+
+            {/* Popular Categories */}
+            <div>
+              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+                <Flame className="h-5 w-5 text-[#3AA6FF]" />
+                Popular Topics
+              </h3>
+              <div className="space-y-3">
+                <Link href="/blogs?category=fashion" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Fashion & Style
+                </Link>
+                <Link href="/blogs?category=celebrity" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Celebrity News
+                </Link>
+                <Link href="/blogs?category=food" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Food & Recipes
+                </Link>
+                <Link href="/blogs?category=health" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Health & Fitness
+                </Link>
+                <Link href="/blogs?category=travel" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Travel & Adventure
+                </Link>
+                <Link href="/blogs?category=technology" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Technology
+                </Link>
+              </div>
+            </div>
+
+            {/* More Categories */}
+            <div>
+              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+                <BookOpen className="h-5 w-5 text-[#3AA6FF]" />
+                More Categories
+              </h3>
+              <div className="space-y-3">
+                <Link href="/blogs?category=beauty" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Beauty & Makeup
+                </Link>
+                <Link href="/blogs?category=business" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Business & Startups
+                </Link>
+                <Link href="/blogs?category=movies" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Movies & TV
+                </Link>
+                <Link href="/blogs?category=sports" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Sports & Gaming
+                </Link>
+                <Link href="/blogs?category=parenting" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Parenting & Kids
+                </Link>
+                <Link href="/blogs?category=relationships" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Relationships
+                </Link>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-[#3AA6FF]" />
+                Quick Links
+              </h3>
+              <div className="space-y-3">
+                <Link href="/about" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  About Us
+                </Link>
+                <Link href="/blogs" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  All Articles
+                </Link>
+                <Link href="/blogs?filter=latest" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Latest Posts
+                </Link>
+                <Link href="/blogs?filter=trending" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Trending Now
+                </Link>
+                <Link href="/contact" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Contact Us
+                </Link>
+                <Link href="/advertise" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
+                  Advertise With Us
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
-
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-center md:text-left">
               <p className="text-gray-400 text-sm">
-                © 2025 M/s Praveen K & Associates. All rights reserved. Developed By <a href="https://www.proshala.com" className="text-blue-500 hover:text-blue-400 transition-colors">Proshala Tech</a>
+                © 2025 Magazine. All rights reserved.
               </p>
             </div>
-            <div className="flex flex-wrap justify-center md:justify-end space-x-6">
+            <div className="flex flex-wrap justify-center md:justify-end gap-6">
               <Link href="/privacy-policy" className="text-gray-400 hover:text-white text-sm transition-colors">
                 Privacy Policy
               </Link>
@@ -271,6 +194,9 @@ export function Footer() {
               </Link>
               <Link href="/disclaimer" className="text-gray-400 hover:text-white text-sm transition-colors">
                 Disclaimer
+              </Link>
+              <Link href="/cookie-policy" className="text-gray-400 hover:text-white text-sm transition-colors">
+                Cookie Policy
               </Link>
             </div>
           </div>

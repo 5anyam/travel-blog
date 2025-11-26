@@ -8,7 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-const WP_API_URL = 'https://cms.cspkindia.com/wp-json/wp/v2';
+const WP_API_URL = 'https://thefashionableworld.com/wp-json/wp/v2';
 
 interface WordPressPost {
   id: number;

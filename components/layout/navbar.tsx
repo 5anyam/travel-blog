@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, X, Phone, Mail, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, TrendingUp, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/utils";
@@ -12,61 +12,59 @@ const navigation = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { 
-    name: 'Services', 
-    href: '/services',
+    name: 'Categories', 
+    href: '/blogs',
     hasDropdown: true,
     dropdownItems: [
       {
-        category: "Registration Services",
+        category: "Lifestyle",
         items: [
-          { name: "One Person Company (OPC)", href: "/services/opc-registration" },
-          { name: "Private Limited Company", href: "/services/private-limited-company" },
-          { name: "Public Limited Company", href: "/services/public-limited-company" },
-          { name: "Section 8 Company (NGO)", href: "/services/section-8-company" },
-          { name: "Subsidiary of Foreign Company", href: "/services/subsidiary-company" },
-          { name: "LLP Registration", href: "/services/llp-registration" }
+          { name: "Fashion & Style", href: "/blogs?category=fashion", icon: "👗" },
+          { name: "Beauty & Makeup", href: "/blogs?category=beauty", icon: "💄" },
+          { name: "Travel & Adventure", href: "/blogs?category=travel", icon: "✈️" },
+          { name: "Home & Decor", href: "/blogs?category=home-decor", icon: "🏡" }
         ]
       },
       {
-        category: "Strike Off Services",
+        category: "Entertainment",
         items: [
-          { name: "Strike Off of Company", href: "/services/company-strike-off" },
-          { name: "Strike Off of LLP", href: "/services/llp-strike-off" }
+          { name: "Celebrity News", href: "/blogs?category=celebrity", icon: "⭐" },
+          { name: "Movies & TV", href: "/blogs?category=movies", icon: "🎬" },
+          { name: "Music", href: "/blogs?category=music", icon: "🎵" },
+          { name: "Events & Parties", href: "/blogs?category=events", icon: "🎉" }
         ]
       },
       {
-        category: "NCLT Matters",
+        category: "Food & Wellness",
         items: [
-          { name: "Merger and Amalgamation", href: "/services/merger-amalgamation" },
-          { name: "De-merger", href: "/services/demerger" },
-          { name: "Revival of Strike Off Company", href: "/services/company-revival" },
-          { name: "Compounding of Offence", href: "/services/compounding-offence" }
+          { name: "Food & Recipes", href: "/blogs?category=food", icon: "🍽️" },
+          { name: "Health & Fitness", href: "/blogs?category=health", icon: "💪" },
+          { name: "Nutrition & Diet", href: "/blogs?category=nutrition", icon: "🥗" },
+          { name: "Wellness & Yoga", href: "/blogs?category=wellness", icon: "🧘" }
         ]
       },
       {
-        category: "Conversion Services",
+        category: "Business & Tech",
         items: [
-          { name: "LLP to Company Conversion", href: "/services/llp-to-company" },
-          { name: "Private to Public Company", href: "/services/private-to-public" },
-          { name: "Public to Private Company", href: "/services/public-to-private" },
-          { name: "Company to LLP Conversion", href: "/services/company-to-llp" },
-          { name: "Unregistered to Company", href: "/services/unregistered-to-company" }
+          { name: "Technology", href: "/blogs?category=technology", icon: "💻" },
+          { name: "Business & Startups", href: "/blogs?category=business", icon: "💼" },
+          { name: "Finance & Money", href: "/blogs?category=finance", icon: "💰" },
+          { name: "Career & Education", href: "/blogs?category=career", icon: "📚" }
         ]
       },
       {
-        category: "Compliance & Others",
+        category: "More Topics",
         items: [
-          { name: "Regional Director Approvals", href: "/services/rd-approvals" },
-          { name: "Secretarial Audit", href: "/services/secretarial-audit" },
-          { name: "Trademark Registration", href: "/services/trademark" },
-          { name: "Annual Compliance", href: "/services/annual-compliance" },
-          { name: "Dormant Company Services", href: "/services/dormant-company" }
+          { name: "Relationships", href: "/blogs?category=relationships", icon: "❤️" },
+          { name: "Parenting & Kids", href: "/blogs?category=parenting", icon: "👶" },
+          { name: "Sports & Gaming", href: "/blogs?category=sports", icon: "⚽" },
+          { name: "Auto & Vehicles", href: "/blogs?category=auto", icon: "🚗" }
         ]
       }
     ]
   },
-  { name: 'Blogs', href: '/blogs' },
-  { name: 'Career', href: '/career' },
+  { name: 'Latest', href: '/blogs?filter=latest' },
+  { name: 'Trending', href: '/blogs?filter=trending' },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -99,22 +97,25 @@ export function Navbar() {
 
   return (
     <>
-      {/* Top bar */}
-      <div className="bg-[#1E3A8A] text-white py-2 text-sm border-b border-blue-700">
+      {/* Top bar - Magazine Style */}
+      <div className="bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] text-white py-2.5 text-sm border-b border-blue-600">
         <Container>
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center hover:text-blue-200 transition-colors">
-                <Phone className="h-4 w-4 mr-2" />
-                <span>+91 8800343499</span>
-              </div>
-              <div className="flex items-center hover:text-blue-200 transition-colors">
-                <Mail className="h-4 w-4 mr-2" />
-                <span>contact@cspkindia.com</span>
-              </div>
+            <div className="flex items-center space-x-4">
+              <span className="flex items-center gap-2 font-semibold">
+                <Flame className="h-4 w-4 text-yellow-300" />
+                Breaking News & Latest Updates
+              </span>
             </div>
-            <div className="hidden md:block">
-              <span className="text-blue-200">Serving the Corporates Since 2018</span>
+            <div className="hidden md:flex items-center space-x-6">
+              <span className="text-blue-100">
+                {new Date().toLocaleDateString('en-IN', { 
+                  weekday: 'long', 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </span>
             </div>
           </div>
         </Container>
@@ -132,10 +133,10 @@ export function Navbar() {
               <div className="relative w-full h-12">
                 <Image
                   src="/LOGO.png"
-                  alt="CS Praveen Kumar Logo"
-                  width={100}
-                  height={100}
-                  className="rounded-lg h-16 w-full"
+                  alt="Magazine Logo"
+                  width={180}
+                  height={60}
+                  className="rounded-lg h-16 w-auto"
                   priority
                 />
               </div>
@@ -152,7 +153,7 @@ export function Navbar() {
                 >
                   <Link
                     href={item.href}
-                    className="flex items-center text-gray-700 hover:text-[#3AA6FF] transition-colors font-medium py-2"
+                    className="flex items-center text-gray-700 hover:text-[#3AA6FF] transition-colors font-semibold py-2 text-base"
                     onClick={() => !item.hasDropdown && handleLinkClick()}
                   >
                     {item.name}
@@ -164,14 +165,14 @@ export function Navbar() {
                     )}
                   </Link>
 
-                  {/* Responsive Dropdown Menu */}
+                  {/* Mega Dropdown Menu for Categories */}
                   {item.hasDropdown && activeDropdown === item.name && (
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 w-screen max-w-4xl bg-white rounded-lg shadow-xl border border-gray-200 z-50">
-                      <div className="p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-screen max-w-5xl bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
+                      <div className="p-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
                           {item.dropdownItems?.map((category, index) => (
-                            <div key={index} className="space-y-3">
-                              <h3 className="text-sm font-semibold text-[#3AA6FF] uppercase tracking-wide border-b border-gray-100 pb-2">
+                            <div key={index} className="space-y-4">
+                              <h3 className="text-sm font-bold text-[#3AA6FF] uppercase tracking-wider border-b-2 border-[#3AA6FF] pb-2">
                                 {category.category}
                               </h3>
                               <ul className="space-y-2">
@@ -179,10 +180,13 @@ export function Navbar() {
                                   <li key={subIndex}>
                                     <Link
                                       href={subItem.href}
-                                      className="block text-sm text-gray-600 hover:text-[#3AA6FF] hover:bg-blue-50 rounded px-3 py-2 transition-all cursor-pointer"
+                                      className="flex items-center gap-2 text-sm text-gray-700 hover:text-[#3AA6FF] hover:bg-blue-50 rounded-lg px-3 py-2.5 transition-all cursor-pointer group"
                                       onClick={handleLinkClick}
                                     >
-                                      {subItem.name}
+                                      <span className="text-lg group-hover:scale-125 transition-transform">
+                                        {subItem.icon}
+                                      </span>
+                                      <span className="font-medium">{subItem.name}</span>
                                     </Link>
                                   </li>
                                 ))}
@@ -192,12 +196,14 @@ export function Navbar() {
                         </div>
                         
                         {/* CTA in Dropdown */}
-                        <div className="mt-6 pt-4 border-t border-gray-100">
-                          <div className="bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] rounded-lg p-4 text-white text-center">
-                            <p className="text-sm mb-2">Need Professional Guidance?</p>
-                            <Button size="sm" variant="secondary" asChild className="bg-white text-[#3AA6FF] hover:bg-gray-100">
-                              <Link href="/contact" onClick={handleLinkClick}>
-                                Contact Us
+                        <div className="mt-8 pt-6 border-t border-gray-200">
+                          <div className="bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] rounded-xl p-6 text-white text-center">
+                            <TrendingUp className="w-8 h-8 mx-auto mb-3" />
+                            <p className="text-lg font-bold mb-2">Explore All Categories</p>
+                            <p className="text-sm text-blue-100 mb-4">Discover thousands of articles across all topics</p>
+                            <Button size="sm" variant="secondary" asChild className="bg-white text-[#3AA6FF] hover:bg-gray-100 font-bold">
+                              <Link href="/blogs" onClick={handleLinkClick}>
+                                Browse All Articles
                               </Link>
                             </Button>
                           </div>
@@ -213,9 +219,9 @@ export function Navbar() {
             <div className="flex items-center space-x-4">
               <Button 
                 asChild 
-                className="hidden lg:inline-flex bg-[#3AA6FF] hover:bg-[#2690E6] text-white shadow-md"
+                className="hidden lg:inline-flex bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] hover:from-[#2690E6] hover:to-[#3AA6FF] text-white shadow-md font-bold"
               >
-                <Link href="/contact">Contact Us</Link>
+                <Link href="/blogs">Explore Articles</Link>
               </Button>
               
               {/* Mobile menu button */}
@@ -233,12 +239,12 @@ export function Navbar() {
           {/* Mobile Navigation */}
           {isOpen && (
             <div className="lg:hidden pb-4 border-t bg-white">
-              <div className="pt-4 space-y-2 max-h-96 overflow-y-auto">
+              <div className="pt-4 space-y-2 max-h-[70vh] overflow-y-auto">
                 {navigation.map((item) => (
                   <div key={item.name}>
                     <Link
                       href={item.href}
-                      className="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-[#3AA6FF] hover:bg-gray-50 rounded-md transition-colors font-medium"
+                      className="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-[#3AA6FF] hover:bg-gray-50 rounded-md transition-colors font-semibold"
                       onClick={() => !item.hasDropdown && setIsOpen(false)}
                     >
                       {item.name}
@@ -247,20 +253,21 @@ export function Navbar() {
                     
                     {/* Mobile Dropdown */}
                     {item.hasDropdown && (
-                      <div className="pl-4 space-y-1 border-l-2 border-gray-100 ml-4">
+                      <div className="pl-4 space-y-1 border-l-2 border-gray-100 ml-4 mt-2">
                         {item.dropdownItems?.map((category, index) => (
                           <div key={index} className="py-2">
-                            <p className="text-xs font-semibold text-[#3AA6FF] uppercase tracking-wide mb-2">
+                            <p className="text-xs font-bold text-[#3AA6FF] uppercase tracking-wide mb-2 px-3">
                               {category.category}
                             </p>
                             {category.items.map((subItem, subIndex) => (
                               <Link
                                 key={subIndex}
                                 href={subItem.href}
-                                className="block px-3 py-2 text-sm text-gray-600 hover:text-[#3AA6FF] hover:bg-gray-50 rounded transition-colors cursor-pointer"
+                                className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 hover:text-[#3AA6FF] hover:bg-gray-50 rounded transition-colors cursor-pointer"
                                 onClick={() => setIsOpen(false)}
                               >
-                                {subItem.name}
+                                <span className="text-base">{subItem.icon}</span>
+                                <span className="font-medium">{subItem.name}</span>
                               </Link>
                             ))}
                           </div>
@@ -272,9 +279,9 @@ export function Navbar() {
                 <div className="px-4 pt-4 border-t border-gray-100">
                   <Button 
                     asChild 
-                    className="w-full bg-[#3AA6FF] hover:bg-[#2690E6] text-white"
+                    className="w-full bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] hover:from-[#2690E6] hover:to-[#3AA6FF] text-white font-bold"
                   >
-                    <Link href="/contact" onClick={() => setIsOpen(false)}>Contact Us</Link>
+                    <Link href="/blogs" onClick={() => setIsOpen(false)}>Explore All Articles</Link>
                   </Button>
                 </div>
               </div>
