@@ -9,68 +9,113 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'CSPKIndia - Trusted CS & Compliance Partner for Growing Businesses',
-    template: '%s | CSPKIndia'
+    default: 'ClubMyTrip - Your Trusted Travel Guide & Destination Expert',
+    template: '%s | ClubMyTrip'
   },
-  description: 'Leading Company Secretary (CS) firm in India providing comprehensive compliance, registration, NCLT, and legal services for businesses. Expert guidance for ROC filings, trademark registration, and corporate law matters.',
-  keywords: 'Company Secretary, CS services, compliance, company registration, NCLT, trademark, ROC filing, corporate law, India',
-  authors: [{ name: 'CSPKIndia' }],
-  creator: 'CSPKIndia',
-  publisher: 'CSPKIndia',
+  description: 'Discover amazing travel destinations, expert guides, and insider tips from around the world. ClubMyTrip helps you plan unforgettable journeys with honest reviews, budget tips, and authentic travel experiences.',
+  keywords: 'travel blog, travel guides, destination guides, travel tips, budget travel, solo travel, adventure travel, travel reviews, vacation planning, trip planning, travel destinations, backpacking, luxury travel, travel inspiration',
+  authors: [{ name: 'ClubMyTrip Team' }],
+  creator: 'ClubMyTrip',
+  publisher: 'Caishen United',
   robots: 'index, follow',
   openGraph: {
     type: 'website',
-    locale: 'en_IN',
-    url: 'https://cspkindia.in',
-    siteName: 'CSPKIndia',
-    title: 'CSPKIndia - Trusted CS & Compliance Partner',
-    description: 'Leading Company Secretary firm providing comprehensive compliance and legal services for Indian businesses.',
+    locale: 'en_US',
+    url: 'https://clubmytrip.com',
+    siteName: 'ClubMyTrip',
+    title: 'ClubMyTrip - Your Trusted Travel Guide & Destination Expert',
+    description: 'Discover amazing travel destinations with expert guides, insider tips, and honest reviews from real travelers. Plan your perfect journey with ClubMyTrip.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'CSPKIndia - Company Secretary Services',
+        alt: 'ClubMyTrip - Travel Guides and Destination Reviews',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CSPKIndia - CS & Compliance Services',
-    description: 'Leading Company Secretary firm providing comprehensive compliance and legal services.',
+    title: 'ClubMyTrip - Travel Guides & Tips',
+    description: 'Discover amazing destinations with expert travel guides, tips, and honest reviews.',
     images: ['/og-image.jpg'],
+    creator: '@clubmytrip',
   },
   alternates: {
-    canonical: 'https://cspkindia.in',
+    canonical: 'https://clubmytrip.com',
   },
   verification: {
-    google: 'your-google-verification-code',
+    google: 'your-google-verification-code', // Replace with actual code
+  },
+  category: 'travel',
+};
+
+// JSON-LD Structured Data for SEO
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TravelAgency',
+  name: 'ClubMyTrip',
+  url: 'https://clubmytrip.com',
+  logo: 'https://clubmytrip.com/LOGO.png',
+  description: 'Your trusted travel companion for discovering amazing destinations, authentic experiences, and insider tips from around the world.',
+  foundingDate: '2020',
+  slogan: 'Discover Your Next Adventure',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+91-98184-00981',
+    contactType: 'customer service',
+    email: 'support@caishenunited.com',
+    availableLanguage: ['en', 'hi'],
+  },
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'IN',
+  },
+  sameAs: [
+    'https://www.facebook.com/clubmytrip',
+    'https://www.instagram.com/clubmytrip',
+    'https://www.twitter.com/clubmytrip',
+    'https://www.youtube.com/clubmytrip',
+    'https://www.linkedin.com/company/clubmytrip',
+  ],
+};
+
+// Blog Website Schema
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'ClubMyTrip',
+  url: 'https://clubmytrip.com',
+  description: 'Travel guides, destination reviews, and expert tips for travelers worldwide.',
+  publisher: {
+    '@type': 'Organization',
+    name: 'Caishen United',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://clubmytrip.com/LOGO.png',
+    },
+  },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: 'https://clubmytrip.com/blogs?search={search_term_string}',
+    },
+    'query-input': 'required name=search_term_string',
   },
 };
 
-const jsonLd = {
+// Breadcrumb Schema
+const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'CSPKIndia',
-  url: 'https://cspkindia.in',
-  logo: 'https://cspkindia.in/logo.png',
-  description: 'Leading Company Secretary firm providing comprehensive compliance and legal services for Indian businesses.',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Mumbai',
-    addressRegion: 'Maharashtra',
-    addressCountry: 'IN',
-  },
-  contactPoint: {
-    '@type': 'ContactPoint',
-    telephone: '+91-9876543210',
-    contactType: 'customer service',
-    email: 'contact@cspkindia.in',
-  },
-  sameAs: [
-    'https://www.facebook.com/cspkindia',
-    'https://www.twitter.com/cspkindia',
-    'https://www.linkedin.com/company/cspkindia',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://clubmytrip.com',
+    },
   ],
 };
 
@@ -83,14 +128,26 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="theme-color" content="#000000" />
+        
+        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
       </head>
       <body className={inter.className}>
         <Navbar />
-        <main>{children}</main>
+        <main className="min-h-screen">{children}</main>
         <Footer />
         <Toaster />
       </body>

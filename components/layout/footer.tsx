@@ -1,201 +1,373 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Facebook, Twitter, Linkedin, Instagram, Youtube, BookOpen, TrendingUp, Flame } from "lucide-react";
+import { Mail, Facebook, Twitter, Linkedin, Instagram, Youtube, MapPin, Plane } from "lucide-react";
 import { Container } from "@/components/ui/container";
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+    <footer className="bg-white border-t-2 border-gray-200">
       <Container>
-        <div className="py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-            {/* Magazine Info */}
-            <div className="lg:col-span-2">
-              <Link href="/" className="flex items-center space-x-3 mb-6">
-                <div className="relative w-full h-16">
+        {/* Main Footer Content */}
+        <div className="py-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12">
+            {/* Brand Info - Takes more space */}
+            <div className="lg:col-span-4">
+              <Link href="/" className="inline-block mb-6">
+                <div className="relative h-12">
                   <Image
                     src="/LOGO.png"
-                    alt="Magazine Logo"
-                    width={180}
-                    height={60}
-                    className="rounded-lg object-contain"
+                    alt="ClubMyTrip"
+                    width={160}
+                    height={48}
+                    className="h-12 w-auto object-contain"
                   />
                 </div>
               </Link>
-              <p className="text-gray-400 mb-6 leading-relaxed text-sm max-w-md">
-                Your daily dose of trending stories, lifestyle tips, celebrity news, and expert insights. 
-                Stay updated with the latest in fashion, entertainment, food, health, and more.
+              
+              <p className="text-gray-600 mb-8 leading-relaxed max-w-sm">
+                Your trusted travel companion for discovering amazing destinations, 
+                authentic experiences, and insider travel tips from around the world.
               </p>
               
-              {/* Newsletter Signup */}
-              <div className="mb-6">
-                <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-[#3AA6FF]" />
-                  Subscribe to Newsletter
+              {/* Newsletter */}
+              <div className="mb-8">
+                <h4 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">
+                  Stay Updated
                 </h4>
                 <div className="flex gap-2">
                   <input
                     type="email"
                     placeholder="Your email address"
-                    className="flex-1 px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#3AA6FF] focus:border-transparent"
+                    className="flex-1 px-4 py-3 border-2 border-gray-200 text-gray-900 text-sm focus:outline-none focus:border-black transition-colors"
                   />
-                  <button className="px-4 py-2 bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] hover:from-[#2690E6] hover:to-[#3AA6FF] rounded-lg text-white font-semibold text-sm transition-all">
+                  <button className="px-6 py-3 bg-black hover:bg-gray-800 text-white font-semibold text-sm transition-colors">
                     Subscribe
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
-                  Join 10,000+ readers. No spam, unsubscribe anytime.
+                <p className="text-xs text-gray-500 mt-3">
+                  Join 50,000+ travelers. No spam.
                 </p>
               </div>
 
-              {/* Social Media Links */}
+              {/* Social Media */}
               <div>
-                <h4 className="text-sm font-bold text-white mb-3">Follow Us</h4>
+                <h4 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">
+                  Follow Us
+                </h4>
                 <div className="flex space-x-3">
                   <a 
-                    href="#" 
-                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#3AA6FF] flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                    href="https://facebook.com" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"
                     aria-label="Facebook"
                   >
-                    <Facebook className="h-5 w-5" />
+                    <Facebook className="h-4 w-4" />
                   </a>
                   <a 
-                    href="#" 
-                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#3AA6FF] flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                    href="https://twitter.com" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"
                     aria-label="Twitter"
                   >
-                    <Twitter className="h-5 w-5" />
+                    <Twitter className="h-4 w-4" />
                   </a>
                   <a 
-                    href="#" 
-                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#3AA6FF] flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                    href="https://instagram.com" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"
                     aria-label="Instagram"
                   >
-                    <Instagram className="h-5 w-5" />
+                    <Instagram className="h-4 w-4" />
                   </a>
                   <a 
-                    href="#" 
-                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#3AA6FF] flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                    href="https://linkedin.com" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"
                     aria-label="LinkedIn"
                   >
-                    <Linkedin className="h-5 w-5" />
+                    <Linkedin className="h-4 w-4" />
                   </a>
                   <a 
-                    href="#" 
-                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#3AA6FF] flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                    href="https://youtube.com" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"
                     aria-label="YouTube"
                   >
-                    <Youtube className="h-5 w-5" />
+                    <Youtube className="h-4 w-4" />
                   </a>
                 </div>
               </div>
             </div>
 
-            {/* Popular Categories */}
-            <div>
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                <Flame className="h-5 w-5 text-[#3AA6FF]" />
-                Popular Topics
+            {/* Destinations */}
+            <div className="lg:col-span-2">
+              <h3 className="text-sm font-bold text-gray-900 mb-6 uppercase tracking-wide border-b-2 border-black pb-2 inline-block">
+                Destinations
               </h3>
-              <div className="space-y-3">
-                <Link href="/blogs?category=fashion" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Fashion & Style
-                </Link>
-                <Link href="/blogs?category=celebrity" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Celebrity News
-                </Link>
-                <Link href="/blogs?category=food" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Food & Recipes
-                </Link>
-                <Link href="/blogs?category=health" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Health & Fitness
-                </Link>
-                <Link href="/blogs?category=travel" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Travel & Adventure
-                </Link>
-                <Link href="/blogs?category=technology" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Technology
-                </Link>
-              </div>
+              <ul className="space-y-3">
+                <li>
+                  <Link 
+                    href="/blogs?category=asia" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Asia
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=europe" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Europe
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=americas" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Americas
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=africa" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Africa
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=oceania" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Oceania
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=middle-east" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Middle East
+                  </Link>
+                </li>
+              </ul>
             </div>
 
-            {/* More Categories */}
-            <div>
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-[#3AA6FF]" />
-                More Categories
+            {/* Travel Styles */}
+            <div className="lg:col-span-2">
+              <h3 className="text-sm font-bold text-gray-900 mb-6 uppercase tracking-wide border-b-2 border-black pb-2 inline-block">
+                Travel Styles
               </h3>
-              <div className="space-y-3">
-                <Link href="/blogs?category=beauty" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Beauty & Makeup
-                </Link>
-                <Link href="/blogs?category=business" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Business & Startups
-                </Link>
-                <Link href="/blogs?category=movies" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Movies & TV
-                </Link>
-                <Link href="/blogs?category=sports" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Sports & Gaming
-                </Link>
-                <Link href="/blogs?category=parenting" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Parenting & Kids
-                </Link>
-                <Link href="/blogs?category=relationships" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Relationships
-                </Link>
-              </div>
+              <ul className="space-y-3">
+                <li>
+                  <Link 
+                    href="/blogs?category=adventure" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Adventure Travel
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=luxury" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Luxury Travel
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=budget" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Budget Travel
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=solo" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Solo Travel
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=family" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Family Travel
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=backpacking" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Backpacking
+                  </Link>
+                </li>
+              </ul>
             </div>
 
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-[#3AA6FF]" />
-                Quick Links
+            {/* Travel Resources */}
+            <div className="lg:col-span-2">
+              <h3 className="text-sm font-bold text-gray-900 mb-6 uppercase tracking-wide border-b-2 border-black pb-2 inline-block">
+                Resources
               </h3>
-              <div className="space-y-3">
-                <Link href="/about" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  About Us
-                </Link>
-                <Link href="/blogs" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  All Articles
-                </Link>
-                <Link href="/blogs?filter=latest" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Latest Posts
-                </Link>
-                <Link href="/blogs?filter=trending" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Trending Now
-                </Link>
-                <Link href="/contact" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Contact Us
-                </Link>
-                <Link href="/advertise" className="block text-gray-400 hover:text-white transition-colors text-sm hover:pl-2 duration-200">
-                  Advertise With Us
-                </Link>
-              </div>
+              <ul className="space-y-3">
+                <li>
+                  <Link 
+                    href="/blogs?category=guides" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Travel Guides
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=tips" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Travel Tips
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=packing" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Packing Lists
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=visa" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Visa Information
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=safety" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Safety Tips
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs?category=itineraries" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Itineraries
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div className="lg:col-span-2">
+              <h3 className="text-sm font-bold text-gray-900 mb-6 uppercase tracking-wide border-b-2 border-black pb-2 inline-block">
+                Company
+              </h3>
+              <ul className="space-y-3">
+                <li>
+                  <Link 
+                    href="/about" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/blogs" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    All Articles
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/contact" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/advertise" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Advertise
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/careers" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Careers
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/press" 
+                    className="text-gray-600 hover:text-black transition-colors text-sm font-medium"
+                  >
+                    Press
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div className="border-t-2 border-gray-200 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-center md:text-left">
-              <p className="text-gray-400 text-sm">
-                © 2025 Magazine. All rights reserved.
+              <p className="text-gray-600 text-sm font-medium">
+                © {currentYear} ClubMyTrip. All rights reserved.
               </p>
             </div>
+            
             <div className="flex flex-wrap justify-center md:justify-end gap-6">
-              <Link href="/privacy-policy" className="text-gray-400 hover:text-white text-sm transition-colors">
+              <Link 
+                href="/privacy-policy" 
+                className="text-gray-600 hover:text-black text-sm font-medium transition-colors"
+              >
                 Privacy Policy
               </Link>
-              <Link href="/terms-of-service" className="text-gray-400 hover:text-white text-sm transition-colors">
+              <Link 
+                href="/terms-of-service" 
+                className="text-gray-600 hover:text-black text-sm font-medium transition-colors"
+              >
                 Terms of Service
               </Link>
-              <Link href="/disclaimer" className="text-gray-400 hover:text-white text-sm transition-colors">
+              <Link 
+                href="/disclaimer" 
+                className="text-gray-600 hover:text-black text-sm font-medium transition-colors"
+              >
                 Disclaimer
               </Link>
-              <Link href="/cookie-policy" className="text-gray-400 hover:text-white text-sm transition-colors">
+              <Link 
+                href="/cookie-policy" 
+                className="text-gray-600 hover:text-black text-sm font-medium transition-colors"
+              >
                 Cookie Policy
               </Link>
             </div>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, TrendingUp, Flame } from "lucide-react";
+import { Menu, X, ChevronDown, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/utils";
@@ -12,59 +12,49 @@ const navigation = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { 
-    name: 'Categories', 
+    name: 'Destinations', 
     href: '/blogs',
     hasDropdown: true,
     dropdownItems: [
       {
-        category: "Lifestyle",
+        category: "Popular Destinations",
         items: [
-          { name: "Fashion & Style", href: "/blogs?category=fashion", icon: "👗" },
-          { name: "Beauty & Makeup", href: "/blogs?category=beauty", icon: "💄" },
-          { name: "Travel & Adventure", href: "/blogs?category=travel", icon: "✈️" },
-          { name: "Home & Decor", href: "/blogs?category=home-decor", icon: "🏡" }
+          { name: "Southeast Asia", href: "/blogs?category=southeast-asia" },
+          { name: "Europe", href: "/blogs?category=europe" },
+          { name: "Middle East", href: "/blogs?category=middle-east" },
+          { name: "Americas", href: "/blogs?category=americas" }
         ]
       },
       {
-        category: "Entertainment",
+        category: "Travel Style",
         items: [
-          { name: "Celebrity News", href: "/blogs?category=celebrity", icon: "⭐" },
-          { name: "Movies & TV", href: "/blogs?category=movies", icon: "🎬" },
-          { name: "Music", href: "/blogs?category=music", icon: "🎵" },
-          { name: "Events & Parties", href: "/blogs?category=events", icon: "🎉" }
+          { name: "Adventure Travel", href: "/blogs?category=adventure" },
+          { name: "Luxury Travel", href: "/blogs?category=luxury" },
+          { name: "Budget Travel", href: "/blogs?category=budget" },
+          { name: "Solo Travel", href: "/blogs?category=solo" }
         ]
       },
       {
-        category: "Food & Wellness",
+        category: "Travel Tips",
         items: [
-          { name: "Food & Recipes", href: "/blogs?category=food", icon: "🍽️" },
-          { name: "Health & Fitness", href: "/blogs?category=health", icon: "💪" },
-          { name: "Nutrition & Diet", href: "/blogs?category=nutrition", icon: "🥗" },
-          { name: "Wellness & Yoga", href: "/blogs?category=wellness", icon: "🧘" }
+          { name: "Travel Guides", href: "/blogs?category=guides" },
+          { name: "Packing Tips", href: "/blogs?category=packing" },
+          { name: "Travel Hacks", href: "/blogs?category=hacks" },
+          { name: "Safety & Health", href: "/blogs?category=safety" }
         ]
       },
       {
-        category: "Business & Tech",
+        category: "Experiences",
         items: [
-          { name: "Technology", href: "/blogs?category=technology", icon: "💻" },
-          { name: "Business & Startups", href: "/blogs?category=business", icon: "💼" },
-          { name: "Finance & Money", href: "/blogs?category=finance", icon: "💰" },
-          { name: "Career & Education", href: "/blogs?category=career", icon: "📚" }
-        ]
-      },
-      {
-        category: "More Topics",
-        items: [
-          { name: "Relationships", href: "/blogs?category=relationships", icon: "❤️" },
-          { name: "Parenting & Kids", href: "/blogs?category=parenting", icon: "👶" },
-          { name: "Sports & Gaming", href: "/blogs?category=sports", icon: "⚽" },
-          { name: "Auto & Vehicles", href: "/blogs?category=auto", icon: "🚗" }
+          { name: "Food & Cuisine", href: "/blogs?category=food" },
+          { name: "Culture & Heritage", href: "/blogs?category=culture" },
+          { name: "Nature & Wildlife", href: "/blogs?category=nature" },
+          { name: "Beach & Islands", href: "/blogs?category=beach" }
         ]
       }
     ]
   },
-  { name: 'Latest', href: '/blogs?filter=latest' },
-  { name: 'Trending', href: '/blogs?filter=trending' },
+  { name: 'Travel Guides', href: '/blogs?filter=guides' },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -97,23 +87,26 @@ export function Navbar() {
 
   return (
     <>
-      {/* Top bar - Magazine Style */}
-      <div className="bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] text-white py-2.5 text-sm border-b border-blue-600">
+      {/* Clean Top Bar */}
+      <div className="bg-black text-white py-2 text-xs border-b border-gray-800">
         <Container>
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <span className="flex items-center gap-2 font-semibold">
-                <Flame className="h-4 w-4 text-yellow-300" />
-                Breaking News & Latest Updates
+              <span className="font-semibold tracking-wide uppercase">
+                ClubMyTrip
+              </span>
+              <span className="hidden md:inline text-gray-400">|</span>
+              <span className="hidden md:inline text-gray-300">
+                Your Travel Companion
               </span>
             </div>
-            <div className="hidden md:flex items-center space-x-6">
-              <span className="text-blue-100">
-                {new Date().toLocaleDateString('en-IN', { 
-                  weekday: 'long', 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
+            <div className="hidden md:flex items-center space-x-4 text-gray-300">
+              <Clock className="h-3 w-3" />
+              <span>
+                {new Date().toLocaleDateString('en-US', { 
+                  month: 'short', 
+                  day: 'numeric',
+                  year: 'numeric'
                 })}
               </span>
             </div>
@@ -121,39 +114,43 @@ export function Navbar() {
         </Container>
       </div>
 
-      {/* Main navbar */}
+      {/* Main Navbar */}
       <nav className={cn(
-        "sticky top-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-white backdrop-blur-md shadow-lg border-b" : "bg-white border-b border-gray-100"
+        "sticky top-0 z-50 bg-white transition-all duration-300",
+        isScrolled ? "shadow-md border-b-2 border-gray-200" : "border-b border-gray-200"
       )}>
         <Container>
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-5">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="relative w-full h-12">
+            <Link href="/" className="flex items-center">
+              <div className="relative h-10">
                 <Image
                   src="/LOGO.png"
-                  alt="Magazine Logo"
-                  width={180}
-                  height={60}
-                  className="rounded-lg h-16 w-auto"
+                  alt="ClubMyTrip"
+                  width={160}
+                  height={40}
+                  className="h-10 w-auto object-contain"
                   priority
                 />
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center space-x-1">
               {navigation.map((item) => (
                 <div 
                   key={item.name} 
-                  className="relative group"
+                  className="relative"
                   onMouseEnter={() => item.hasDropdown && handleMouseEnter(item.name)}
                   onMouseLeave={() => item.hasDropdown && handleMouseLeave()}
                 >
                   <Link
                     href={item.href}
-                    className="flex items-center text-gray-700 hover:text-[#3AA6FF] transition-colors font-semibold py-2 text-base"
+                    className={cn(
+                      "flex items-center px-4 py-2 text-sm font-semibold transition-colors",
+                      "text-gray-700 hover:text-black",
+                      activeDropdown === item.name && "text-black"
+                    )}
                     onClick={() => !item.hasDropdown && handleLinkClick()}
                   >
                     {item.name}
@@ -165,28 +162,25 @@ export function Navbar() {
                     )}
                   </Link>
 
-                  {/* Mega Dropdown Menu for Categories */}
+                  {/* Minimal Dropdown Menu */}
                   {item.hasDropdown && activeDropdown === item.name && (
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-screen max-w-5xl bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-screen max-w-4xl bg-white shadow-2xl border-2 border-gray-200 z-50">
                       <div className="p-8">
-                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                           {item.dropdownItems?.map((category, index) => (
-                            <div key={index} className="space-y-4">
-                              <h3 className="text-sm font-bold text-[#3AA6FF] uppercase tracking-wider border-b-2 border-[#3AA6FF] pb-2">
+                            <div key={index} className="space-y-3">
+                              <h3 className="text-xs font-bold text-black uppercase tracking-wider pb-2 border-b-2 border-black">
                                 {category.category}
                               </h3>
-                              <ul className="space-y-2">
+                              <ul className="space-y-1">
                                 {category.items.map((subItem, subIndex) => (
                                   <li key={subIndex}>
                                     <Link
                                       href={subItem.href}
-                                      className="flex items-center gap-2 text-sm text-gray-700 hover:text-[#3AA6FF] hover:bg-blue-50 rounded-lg px-3 py-2.5 transition-all cursor-pointer group"
+                                      className="block text-sm text-gray-700 hover:text-black hover:bg-gray-50 px-3 py-2 transition-all font-medium"
                                       onClick={handleLinkClick}
                                     >
-                                      <span className="text-lg group-hover:scale-125 transition-transform">
-                                        {subItem.icon}
-                                      </span>
-                                      <span className="font-medium">{subItem.name}</span>
+                                      {subItem.name}
                                     </Link>
                                   </li>
                                 ))}
@@ -195,18 +189,20 @@ export function Navbar() {
                           ))}
                         </div>
                         
-                        {/* CTA in Dropdown */}
-                        <div className="mt-8 pt-6 border-t border-gray-200">
-                          <div className="bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] rounded-xl p-6 text-white text-center">
-                            <TrendingUp className="w-8 h-8 mx-auto mb-3" />
-                            <p className="text-lg font-bold mb-2">Explore All Categories</p>
-                            <p className="text-sm text-blue-100 mb-4">Discover thousands of articles across all topics</p>
-                            <Button size="sm" variant="secondary" asChild className="bg-white text-[#3AA6FF] hover:bg-gray-100 font-bold">
-                              <Link href="/blogs" onClick={handleLinkClick}>
-                                Browse All Articles
-                              </Link>
-                            </Button>
-                          </div>
+                        {/* Simple CTA */}
+                        <div className="mt-8 pt-6 border-t-2 border-gray-200 text-center">
+                          <p className="text-lg font-bold text-gray-900 mb-3">
+                            Explore All Destinations
+                          </p>
+                          <Button 
+                            size="sm" 
+                            asChild 
+                            className="bg-black text-white hover:bg-gray-800 font-semibold"
+                          >
+                            <Link href="/blogs" onClick={handleLinkClick}>
+                              View All Articles
+                            </Link>
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -215,73 +211,96 @@ export function Navbar() {
               ))}
             </div>
 
-            {/* CTA Button & Mobile menu button */}
-            <div className="flex items-center space-x-4">
+            {/* CTA & Mobile Menu Button */}
+            <div className="flex items-center space-x-3">
               <Button 
                 asChild 
-                className="hidden lg:inline-flex bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] hover:from-[#2690E6] hover:to-[#3AA6FF] text-white shadow-md font-bold"
+                className="hidden lg:inline-flex bg-black text-white hover:bg-gray-800 font-semibold"
+                size="sm"
               >
-                <Link href="/blogs">Explore Articles</Link>
+                <Link href="/blogs">Browse Stories</Link>
               </Button>
               
-              {/* Mobile menu button */}
+              {/* Mobile Menu Button */}
               <Button
                 variant="ghost"
                 size="sm"
-                className="lg:hidden"
+                className="lg:hidden p-2"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {isOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
               </Button>
             </div>
           </div>
 
           {/* Mobile Navigation */}
           {isOpen && (
-            <div className="lg:hidden pb-4 border-t bg-white">
-              <div className="pt-4 space-y-2 max-h-[70vh] overflow-y-auto">
+            <div className="lg:hidden pb-4 border-t-2 border-gray-200 bg-white">
+              <div className="pt-4 space-y-1 max-h-[70vh] overflow-y-auto">
                 {navigation.map((item) => (
                   <div key={item.name}>
-                    <Link
-                      href={item.href}
-                      className="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-[#3AA6FF] hover:bg-gray-50 rounded-md transition-colors font-semibold"
-                      onClick={() => !item.hasDropdown && setIsOpen(false)}
-                    >
-                      {item.name}
-                      {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
-                    </Link>
-                    
-                    {/* Mobile Dropdown */}
-                    {item.hasDropdown && (
-                      <div className="pl-4 space-y-1 border-l-2 border-gray-100 ml-4 mt-2">
-                        {item.dropdownItems?.map((category, index) => (
-                          <div key={index} className="py-2">
-                            <p className="text-xs font-bold text-[#3AA6FF] uppercase tracking-wide mb-2 px-3">
-                              {category.category}
-                            </p>
-                            {category.items.map((subItem, subIndex) => (
-                              <Link
-                                key={subIndex}
-                                href={subItem.href}
-                                className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 hover:text-[#3AA6FF] hover:bg-gray-50 rounded transition-colors cursor-pointer"
-                                onClick={() => setIsOpen(false)}
-                              >
-                                <span className="text-base">{subItem.icon}</span>
-                                <span className="font-medium">{subItem.name}</span>
-                              </Link>
+                    {!item.hasDropdown ? (
+                      <Link
+                        href={item.href}
+                        className="block px-4 py-3 text-gray-700 hover:text-black hover:bg-gray-50 transition-colors font-semibold"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ) : (
+                      <>
+                        <button
+                          className="flex items-center justify-between w-full px-4 py-3 text-gray-700 hover:text-black hover:bg-gray-50 transition-colors font-semibold"
+                          onClick={() => setActiveDropdown(
+                            activeDropdown === item.name ? null : item.name
+                          )}
+                        >
+                          {item.name}
+                          <ChevronDown className={cn(
+                            "h-4 w-4 transition-transform",
+                            activeDropdown === item.name ? "rotate-180" : ""
+                          )} />
+                        </button>
+                        
+                        {/* Mobile Dropdown */}
+                        {activeDropdown === item.name && (
+                          <div className="bg-gray-50 border-l-2 border-black ml-4 mt-1 mb-2">
+                            {item.dropdownItems?.map((category, index) => (
+                              <div key={index} className="py-2">
+                                <p className="text-xs font-bold text-black uppercase tracking-wide mb-2 px-4">
+                                  {category.category}
+                                </p>
+                                {category.items.map((subItem, subIndex) => (
+                                  <Link
+                                    key={subIndex}
+                                    href={subItem.href}
+                                    className="block px-4 py-2 text-sm text-gray-700 hover:text-black hover:bg-white transition-colors font-medium"
+                                    onClick={() => setIsOpen(false)}
+                                  >
+                                    {subItem.name}
+                                  </Link>
+                                ))}
+                              </div>
                             ))}
                           </div>
-                        ))}
-                      </div>
+                        )}
+                      </>
                     )}
                   </div>
                 ))}
-                <div className="px-4 pt-4 border-t border-gray-100">
+                
+                <div className="px-4 pt-4 border-t-2 border-gray-200">
                   <Button 
                     asChild 
-                    className="w-full bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] hover:from-[#2690E6] hover:to-[#3AA6FF] text-white font-bold"
+                    className="w-full bg-black text-white hover:bg-gray-800 font-semibold"
                   >
-                    <Link href="/blogs" onClick={() => setIsOpen(false)}>Explore All Articles</Link>
+                    <Link href="/blogs" onClick={() => setIsOpen(false)}>
+                      Browse All Stories
+                    </Link>
                   </Button>
                 </div>
               </div>
