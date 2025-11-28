@@ -1,382 +1,462 @@
 import { Metadata } from "next";
-import { Phone, Mail, MapPin, Clock, MessageSquare, Building2, Users, Shield } from "lucide-react";
-import { PageHeader } from "@/components/ui/page-header";
+import { Phone, Mail, MapPin, Send, MessageSquare, Globe, Clock, Users } from "lucide-react";
 import { Section } from "@/components/ui/section";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-
 export const metadata: Metadata = {
-  title: 'Contact Us - CS Praveen Kumar | Professional Company Secretary Services',
-  description: 'Get in touch with CS Praveen Kumar for professional Company Secretary services. Located in Delhi with expert CS consultation and compliance solutions.',
-  keywords: 'contact CS Praveen Kumar, company secretary Delhi, CS services contact, professional consultation',
+  title: 'Contact Us - Get in Touch | ClubMyTrip',
+  description: 'Contact ClubMyTrip for travel inquiries, destination recommendations, and travel planning assistance. We\'re here to help make your travel dreams come true.',
+  keywords: 'contact travel blog, travel inquiries, destination help, travel questions, ClubMyTrip contact',
 };
-
 
 const contactInfo = [
   {
-    icon: Building2,
-    title: "Office Address",
-    details: [
-      "M/s Praveen K & Associates",
-      "(Company Secretaries)",
-      "D-7/296, 2nd Floor, Sector-6",
-      "Rohini, New Delhi - 110086"
-    ],
-    description: "Visit us during business hours for consultation"
+    icon: Phone,
+    title: "Call Us",
+    details: ["+91 98184 00981"],
+    description: "Mon-Sat, 10 AM - 7 PM IST",
+    action: "tel:+919818400981"
   },
   {
-    icon: Phone,
-    title: "Phone Numbers",
-    details: ["+91 8800343499", "+91 9868428811"],
-    description: "Available Mon-Sat 10:00 AM to 7:00 PM"
+    icon: Mail,
+    title: "Email Us",
+    details: ["support@caishenunited.com"],
+    description: "We reply within 24 hours",
+    action: "mailto:support@caishenunited.com"
   },
   {
     icon: MessageSquare,
     title: "WhatsApp",
-    details: ["+91 9811657065"],
-    description: "Quick responses on WhatsApp"
+    details: ["+91 98184 00981"],
+    description: "Quick responses",
+    action: "https://wa.me/919818400981"
   },
   {
-    icon: Mail,
-    title: "Email",
-    details: ["contact@cspkindia.com"],
-    description: "We'll respond within 24 hours"
-  },
-  {
-    icon: Clock,
-    title: "Business Hours",
-    details: [
-      "Monday - Saturday: 10:00 AM - 7:00 PM"
-    ],
-    description: "Sunday: Closed"
+    icon: MapPin,
+    title: "Based In",
+    details: ["India"],
+    description: "Serving travelers worldwide",
+    action: null
   }
 ];
 
-
-const whyChooseUs = [
+const reasons = [
+  {
+    icon: Globe,
+    title: "Expert Travel Insights",
+    description: "Real experiences from actual travelers"
+  },
   {
     icon: Users,
-    title: "Expert Team",
-    description: "Qualified Company Secretaries with 7+ years experience"
-  },
-  {
-    icon: Shield,
-    title: "100% Compliance",
-    description: "Perfect track record in regulatory compliance"
+    title: "50K+ Community",
+    description: "Join thousands of happy travelers"
   },
   {
     icon: Clock,
-    title: "Timely Service",
-    description: "On-time delivery with proactive updates"
+    title: "Updated Content",
+    description: "Fresh guides and tips regularly"
   },
   {
-    icon: Phone,
-    title: "24/7 Support",
-    description: "Always available for urgent consultations"
+    icon: MessageSquare,
+    title: "Quick Support",
+    description: "Fast responses to your queries"
   }
 ];
 
-
-const serviceAreas = [
-  "Company Registration & Incorporation",
-  "NCLT Matters & Corporate Restructuring", 
-  "Annual Compliance & ROC Filings",
-  "Trademark Registration & IPR",
-  "Conversion Services",
-  "Strike Off Services",
-  "Secretarial Audit",
-  "Regional Director Approvals"
+const inquiryTypes = [
+  "Destination Recommendations",
+  "Travel Itinerary Planning",
+  "Budget Travel Tips",
+  "Solo Travel Guidance",
+  "Group Travel Planning",
+  "Adventure Activities",
+  "Visa & Documentation Help",
+  "Accommodation Suggestions",
+  "Local Travel Tips",
+  "Photography Spots",
+  "Safety & Security Advice",
+  "Collaboration Opportunities"
 ];
-
 
 export default function ContactPage() {
   return (
     <>
-      <PageHeader
-        title="Contact M/s Praveen K & Associates"
-        description="Get professional consultation and services from experienced professionals"
-        breadcrumb={[
-          { label: "Home", href: "/" },
-          { label: "Contact" }
-        ]}
-      />
-
-
-      <Section>
-        <div className="grid lg:grid-cols-3 gap-12">
-          {/* Contact Information - Takes 2 columns */}
-          <div className="lg:col-span-2">
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                M/s Praveen K & Associates
-              </h2>
-              <p className="text-lg text-gray-600 mb-2">(Company Secretaries)</p>
-              <p className="text-lg text-gray-600 mb-2">(Peer Reviewed)</p>
-              <p className="text-gray-600 leading-relaxed">
-                With over 7+ years of experience in Company Secretary services, we provide comprehensive 
-                professional solutions for all your compliance and regulatory needs. Our team of qualified 
-                professionals ensures 100% compliance and timely service delivery across India.
-              </p>
+      {/* Hero Header */}
+      <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white border-b border-gray-800">
+        <Container>
+          <div className="py-12 lg:py-16 text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+              <MessageSquare className="w-3 h-3" />
+              Get In Touch
             </div>
-
-
-            {/* Contact Details Grid */}
-            <div className="grid md:grid-cols-2 gap-6 mb-12">
-              {contactInfo.map((info, index) => (
-                <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
-                  <div className="flex items-start">
-                    <div className="w-12 h-12 bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                      <info.icon className="h-6 w-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 mb-3">{info.title}</h3>
-                      {info.details.map((detail, idx) => (
-                        <div key={idx} className="text-gray-600 mb-1 text-sm">
-                          {info.title === "Phone Numbers" || info.title === "WhatsApp" ? (
-                            <a 
-                              href={`tel:${detail}`} 
-                              className="hover:text-[#3AA6FF] transition-colors cursor-pointer"
-                            >
-                              {detail}
-                            </a>
-                          ) : info.title === "Email" ? (
-                            <a 
-                              href={`mailto:${detail}`} 
-                              className="hover:text-[#3AA6FF] transition-colors cursor-pointer"
-                            >
-                              {detail}
-                            </a>
-                          ) : (
-                            detail
-                          )}
-                        </div>
-                      ))}
-                      <p className="text-xs text-gray-500 mt-2 italic">{info.description}</p>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-
-
-            {/* Map Placeholder */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <MapPin className="h-5 w-5 mr-2 text-[#3AA6FF]" />
-                  Our Location - Delhi
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="h-64 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-b-lg flex items-center justify-center">
-                  <div className="text-center text-gray-600">
-                    <MapPin className="h-12 w-12 mx-auto mb-4 text-[#3AA6FF]" />
-                    <p className="font-medium text-lg mb-2">Rohini, New Delhi</p>
-                    <p className="text-sm">D-7/296, 2nd Floor, Sector-6</p>
-                    <p className="text-sm">Rohini, New Delhi - 110086</p>
-                    <p className="text-xs text-gray-500 mt-3">Google Maps integration available</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <h1 className="text-3xl lg:text-5xl font-bold mb-4">
+              Let us Plan Your Next Adventure
+            </h1>
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+              Have questions about destinations, travel tips, or planning your trip? 
+              We are here to help you explore the world!
+            </p>
           </div>
+        </Container>
+      </div>
 
+      {/* Main Content */}
+      <Section className="bg-white">
+        <Container>
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Contact Form - 2 columns */}
+            <div className="lg:col-span-2">
+              <div className="bg-white border border-gray-200 rounded-lg p-6 lg:p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  Send Us a Message
+                </h2>
+                <p className="text-sm text-gray-600 mb-6">
+                  Fill out the form below and we will get back to you within 24 hours
+                </p>
 
-          {/* Sidebar Information */}
-          <div className="space-y-6">
-            {/* Quick Contact CTA */}
-            <Card className="bg-gradient-to-r from-[#3AA6FF] to-[#2690E6] text-white">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-lg mb-4">Need Immediate Consultation?</h3>
-                <p className="text-blue-100 text-sm mb-6">
-                  Contact our CS experts directly for professional guidance and quick solutions.
+                <form className="space-y-4">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                        Your Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="John Doe"
+                        className="w-full px-3 py-2.5 border border-gray-300 focus:border-black focus:outline-none transition-colors text-sm rounded"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="john@example.com"
+                        className="w-full px-3 py-2.5 border border-gray-300 focus:border-black focus:outline-none transition-colors text-sm rounded"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="+91 98765 43210"
+                        className="w-full px-3 py-2.5 border border-gray-300 focus:border-black focus:outline-none transition-colors text-sm rounded"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                        Inquiry Type *
+                      </label>
+                      <select 
+                        required
+                        className="w-full px-3 py-2.5 border border-gray-300 focus:border-black focus:outline-none transition-colors text-sm rounded"
+                      >
+                        <option value="">Select type</option>
+                        <option>Destination Inquiry</option>
+                        <option>Travel Planning</option>
+                        <option>General Question</option>
+                        <option>Collaboration</option>
+                        <option>Feedback</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      Subject *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="How can we help you?"
+                      className="w-full px-3 py-2.5 border border-gray-300 focus:border-black focus:outline-none transition-colors text-sm rounded"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      Your Message *
+                    </label>
+                    <textarea
+                      required
+                      rows={5}
+                      placeholder="Tell us about your travel plans or questions..."
+                      className="w-full px-3 py-2.5 border border-gray-300 focus:border-black focus:outline-none transition-colors text-sm rounded resize-none"
+                    />
+                  </div>
+
+                  <Button 
+                    type="submit"
+                    className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3"
+                  >
+                    <Send className="w-4 h-4 mr-2" />
+                    Send Message
+                  </Button>
+
+                  <p className="text-xs text-gray-500 text-center">
+                    By submitting this form, you agree to our privacy policy
+                  </p>
+                </form>
+              </div>
+
+              {/* Quick Contact Cards */}
+              <div className="grid md:grid-cols-2 gap-4 mt-6">
+                {contactInfo.map((info, index) => (
+                  <div 
+                    key={index}
+                    className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:border-black transition-all"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center flex-shrink-0">
+                        <info.icon className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm font-bold text-gray-900 mb-1">
+                          {info.title}
+                        </h3>
+                        {info.details.map((detail, idx) => (
+                          <div key={idx} className="mb-1">
+                            {info.action ? (
+                              <a 
+                                href={info.action}
+                                target={info.action.startsWith('http') ? '_blank' : undefined}
+                                rel={info.action.startsWith('http') ? 'noopener noreferrer' : undefined}
+                                className="text-xs text-gray-900 font-semibold hover:text-gray-600 transition-colors"
+                              >
+                                {detail}
+                              </a>
+                            ) : (
+                              <p className="text-xs text-gray-900 font-semibold">{detail}</p>
+                            )}
+                          </div>
+                        ))}
+                        <p className="text-[10px] text-gray-500 mt-1">
+                          {info.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Sidebar - 1 column */}
+            <div className="space-y-6">
+              {/* Quick Actions */}
+              <div className="bg-black text-white rounded-lg p-6">
+                <h3 className="text-lg font-bold mb-3">Quick Contact</h3>
+                <p className="text-xs text-gray-300 mb-5">
+                  Need immediate assistance? Reach out directly
                 </p>
                 
-                <div className="space-y-3 mb-6">
+                <div className="space-y-2.5">
                   <Button 
                     asChild 
                     variant="secondary" 
-                    className="w-full bg-white text-[#3AA6FF] hover:bg-gray-100"
+                    size="sm"
+                    className="w-full bg-white text-black hover:bg-gray-100 text-xs font-semibold"
                   >
-                    <a href="tel:+918800343499" className="flex items-center justify-center">
-                      <Phone className="h-4 w-4 mr-2" />
-                      Call: +91 8800343499
+                    <a href="tel:+919818400981" className="flex items-center justify-center">
+                      <Phone className="w-3.5 h-3.5 mr-2" />
+                      Call Now
                     </a>
                   </Button>
                   
                   <Button 
                     asChild 
                     variant="secondary" 
-                    className="w-full bg-white text-[#3AA6FF] hover:bg-gray-100"
+                    size="sm"
+                    className="w-full bg-white text-black hover:bg-gray-100 text-xs font-semibold"
                   >
                     <a 
-                      href="https://wa.me/919811657065" 
+                      href="https://wa.me/919818400981" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center justify-center"
                     >
-                      <MessageSquare className="h-4 w-4 mr-2" />
-                      WhatsApp: +91 9811657065
+                      <MessageSquare className="w-3.5 h-3.5 mr-2" />
+                      WhatsApp
+                    </a>
+                  </Button>
+
+                  <Button 
+                    asChild 
+                    variant="secondary" 
+                    size="sm"
+                    className="w-full bg-white text-black hover:bg-gray-100 text-xs font-semibold"
+                  >
+                    <a 
+                      href="mailto:support@caishenunited.com"
+                      className="flex items-center justify-center"
+                    >
+                      <Mail className="w-3.5 h-3.5 mr-2" />
+                      Email
                     </a>
                   </Button>
                 </div>
-                
-                <p className="text-xs text-blue-100 text-center">
-                  Available Mon-Sat, 9:00 AM - 6:00 PM
-                </p>
-              </CardContent>
-            </Card>
+              </div>
 
-
-            {/* Why Choose Us */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Why Choose CS Praveen Kumar?</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {whyChooseUs.map((item, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <item.icon className="h-4 w-4 text-[#3AA6FF]" />
+              {/* Why ClubMyTrip */}
+              <div className="bg-white border border-gray-200 rounded-lg p-5">
+                <h3 className="text-base font-bold text-gray-900 mb-4">
+                  Why ClubMyTrip?
+                </h3>
+                <div className="space-y-3">
+                  {reasons.map((reason, index) => (
+                    <div key={index} className="flex items-start gap-2.5">
+                      <div className="w-7 h-7 bg-gray-100 rounded flex items-center justify-center flex-shrink-0">
+                        <reason.icon className="w-3.5 h-3.5 text-black" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-gray-900">
+                          {reason.title}
+                        </h4>
+                        <p className="text-[10px] text-gray-600 mt-0.5">
+                          {reason.description}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 text-sm">{item.title}</h4>
-                      <p className="text-xs text-gray-600 mt-1">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                  ))}
+                </div>
+              </div>
 
-
-            {/* Service Areas */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Our Service Areas</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {serviceAreas.map((service, index) => (
-                    <div key={index} className="flex items-center text-sm text-gray-600">
-                      <div className="w-2 h-2 bg-[#3AA6FF] rounded-full mr-3 flex-shrink-0"></div>
-                      <span>{service}</span>
+              {/* We Can Help With */}
+              <div className="bg-white border border-gray-200 rounded-lg p-5">
+                <h3 className="text-base font-bold text-gray-900 mb-4">
+                  We Can Help With
+                </h3>
+                <div className="space-y-1.5">
+                  {inquiryTypes.map((type, index) => (
+                    <div key={index} className="flex items-center text-xs text-gray-700">
+                      <div className="w-1.5 h-1.5 bg-black rounded-full mr-2 flex-shrink-0" />
+                      <span>{type}</span>
                     </div>
                   ))}
                 </div>
                 <div className="mt-4 pt-4 border-t border-gray-100">
-                  <Button asChild variant="outline" size="sm" className="w-full">
-                    <Link href="/services">View All Services</Link>
+                  <Button 
+                    asChild 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full text-xs border-gray-300 hover:border-black"
+                  >
+                    <Link href="/blogs">Browse Travel Guides</Link>
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
 
-
-            {/* Professional Credentials */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Professional Credentials</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center">
-                    <Shield className="h-4 w-4 text-[#3AA6FF] mr-2" />
-                    <span className="text-gray-600">ICSI Qualified Company Secretary</span>
+              {/* Stats */}
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-5">
+                <h3 className="text-base font-bold text-gray-900 mb-4 text-center">
+                  Our Community
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-black">50K+</div>
+                    <div className="text-[10px] text-gray-600">Readers</div>
                   </div>
-                  <div className="flex items-center">
-                    <Users className="h-4 w-4 text-[#3AA6FF] mr-2" />
-                    <span className="text-gray-600">7+ Years Professional Experience</span>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-black">500+</div>
+                    <div className="text-[10px] text-gray-600">Articles</div>
                   </div>
-                  <div className="flex items-center">
-                    <Building2 className="h-4 w-4 text-[#3AA6FF] mr-2" />
-                    <span className="text-gray-600">500+ Successful Cases</span>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-black">100+</div>
+                    <div className="text-[10px] text-gray-600">Countries</div>
                   </div>
-                  <div className="flex items-center">
-                    <Clock className="h-4 w-4 text-[#3AA6FF] mr-2" />
-                    <span className="text-gray-600">100% Compliance Track Record</span>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-black">24/7</div>
+                    <div className="text-[10px] text-gray-600">Support</div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
-        </div>
+        </Container>
       </Section>
-
 
       {/* FAQ Section */}
       <Section className="bg-gray-50">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Quick answers to common questions about our CS services and consultation process
-          </p>
-        </div>
-
-
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {[
-            {
-              question: "How can I schedule a consultation?", 
-              answer: "We're available Mon-Sat, 10:00 AM - 7:00 PM for immediate consultation."
-            },
-            {
-              question: "Do you provide services across India?",
-              answer: "Yes, we provide Company Secretary services across India. While our office is in Delhi, we handle matters whole India through our professional network."
-            },
-            {
-              question: "What are your consultation charges?",
-              answer: "Initial consultation is free for new clients. For detailed service charges, please contact us directly as fees vary based on service complexity and requirements."
-            },
-            {
-              question: "How quickly can you start working on my case?",
-              answer: "We can start immediately after initial consultation and documentation. Most services begin within 1-2 working days of receiving complete requirements."
-            },
-            {
-              question: "Do you handle urgent compliance matters?",
-              answer: "Yes, we handle urgent ROC filings and compliance matters. Contact us immediately for time-sensitive cases - we provide expedited services when needed."
-            },
-            {
-              question: "Can I visit your office for consultation?",
-              answer: "Absolutely! Our office is located in Rohini, Delhi. Please call ahead to schedule an appointment to ensure our CS team is available for your consultation."
-            }
-          ].map((faq, index) => (
-            <Card key={index} className="p-6 hover:shadow-md transition-shadow">
-              <h3 className="font-semibold text-gray-900 mb-3">{faq.question}</h3>
-              <p className="text-gray-600 leading-relaxed text-sm">{faq.answer}</p>
-            </Card>
-          ))}
-        </div>
-
-
-        {/* Contact CTA */}
-        <div className="text-center mt-12">
-          <Card className="inline-block p-8 bg-gradient-to-r from-blue-50 to-indigo-50">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">
-              Still Have Questions?
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Our CS experts are ready to provide personalized guidance for your specific requirements.
+        <Container>
+          <div className="text-center mb-10">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-sm text-gray-600">
+              Quick answers to common questions
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild className="bg-[#3AA6FF] hover:bg-[#2690E6]">
-                <a href="tel:+918800343499">
-                  <Phone className="h-4 w-4 mr-2" />
-                  Call Now
-                </a>
-              </Button>
-              <Button asChild variant="outline">
-                <a href="https://wa.me/919811657065" target="_blank" rel="noopener noreferrer">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  WhatsApp
-                </a>
-              </Button>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+            {[
+              {
+                q: "How can I get destination recommendations?",
+                a: "Contact us via email or WhatsApp with your travel preferences, budget, and dates. We'll provide personalized recommendations based on your interests."
+              },
+              {
+                q: "Do you provide travel booking services?",
+                a: "We're a travel content and guide platform. We provide recommendations and advice, but bookings should be made directly with service providers."
+              },
+              {
+                q: "How quickly do you respond to inquiries?",
+                a: "We typically respond within 24 hours during business days. For urgent queries, WhatsApp is the fastest way to reach us."
+              },
+              {
+                q: "Can you help plan my entire trip?",
+                a: "Yes! We offer travel planning guidance including itineraries, budget tips, accommodation suggestions, and local insights for your destination."
+              },
+              {
+                q: "Are your travel guides updated regularly?",
+                a: "Yes, we regularly update our content with fresh information, new destinations, and current travel advice to ensure accuracy."
+              },
+              {
+                q: "Do you collaborate with travel brands?",
+                a: "Yes! We're open to partnerships, collaborations, and sponsored content. Contact us at support@caishenunited.com for opportunities."
+              }
+            ].map((faq, index) => (
+              <div key={index} className="bg-white border border-gray-200 rounded-lg p-5 hover:border-black transition-all">
+                <h3 className="text-sm font-bold text-gray-900 mb-2">{faq.q}</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="text-center mt-10">
+            <div className="inline-block bg-white border border-gray-200 rounded-lg p-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">
+                Still Have Questions?
+              </h3>
+              <p className="text-xs text-gray-600 mb-5 max-w-md">
+                Our travel experts are here to help with any questions about destinations, planning, or travel tips
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                <Button asChild size="sm" className="bg-black hover:bg-gray-800 text-xs">
+                  <a href="tel:+919818400981">
+                    <Phone className="w-3.5 h-3.5 mr-1.5" />
+                    Call Us
+                  </a>
+                </Button>
+                <Button asChild variant="outline" size="sm" className="border-gray-300 hover:border-black text-xs">
+                  <a href="https://wa.me/919818400981" target="_blank" rel="noopener noreferrer">
+                    <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
+                    WhatsApp
+                  </a>
+                </Button>
+              </div>
             </div>
-          </Card>
-        </div>
+          </div>
+        </Container>
       </Section>
     </>
   );

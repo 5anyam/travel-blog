@@ -1,23 +1,12 @@
-import { Metadata } from "next";
-import { Calendar, Clock, ArrowRight, Search, Filter, Tag } from "lucide-react";
-import { Section } from "@/components/ui/section";
+"use client"
+import { Calendar, Search, X, ChevronDown } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
+import { BlogCard } from "@/components/BlogCard";
+import { BlogCardSkeleton } from "@/components/BlogCardSkeleton";
 import Link from "next/link";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 
-export const metadata: Metadata = {
-  title: 'Travel Guides & Articles - Expert Tips for Travelers',
-  description: 'Discover comprehensive travel guides, destination reviews, budget tips, and expert advice for your next adventure. Read authentic travel experiences from real travelers.',
-  keywords: 'travel guides, destination guides, travel blog, travel tips, budget travel, solo travel, adventure travel, travel advice, vacation planning, backpacking guides',
-  openGraph: {
-    title: 'Travel Guides & Articles | ClubMyTrip',
-    description: 'Expert travel guides and destination reviews from experienced travelers',
-    images: ['/og-blogs.jpg'],
-  },
-};
-
-// WordPress API URL
 const WP_API_URL = 'https://cms.clubmytrip.com/wp-json/wp/v2';
 
 interface WordPressPost {
@@ -34,9 +23,7 @@ interface WordPressPost {
       source_url: string;
       alt_text: string;
     }>;
-    author?: Array<{
-      name: string;
-    }>;
+    author?: Array<{ name: string }>;
     'wp:term'?: Array<Array<{
       id: number;
       name: string;
@@ -52,418 +39,390 @@ interface Category {
   count: number;
 }
 
-// Fetch posts from WordPress
-async function getPosts(): Promise<WordPressPost[]> {
-  try {
-    const res = await fetch(`${WP_API_URL}/posts?_embed&per_page=24`, {
-      next: { revalidate: 3600 }
-    });
-    
-    if (!res.ok) {
-      throw new Error('Failed to fetch posts');
-    }
-    
-    return res.json();
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    return [];
-  }
-}
+// Single Line Header + Search/Filter Combined
+const CompactHeader = ({ 
+  totalPosts,
+  categories,
+  selectedCategory,
+  onCategoryChange,
+  searchQuery,
+  onSearchChange 
+}: {
+  totalPosts: number;
+  categories: Category[];
+  selectedCategory: string;
+  onCategoryChange: (slug: string) => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+}) => {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-// Fetch categories
-async function getCategories(): Promise<Category[]> {
-  try {
-    const res = await fetch(`${WP_API_URL}/categories?per_page=20&orderby=count&order=desc`, {
-      next: { revalidate: 3600 }
-    });
-    
-    if (!res.ok) {
-      throw new Error('Failed to fetch categories');
-    }
-    
-    const cats = await res.json();
-    return cats.filter((cat: Category) => cat.count > 0 && cat.slug !== 'uncategorized');
-  } catch (error) {
-    console.error('Error fetching categories:', error);
-    return [];
-  }
-}
-
-// Format date
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
-}
-
-// Strip HTML tags
-function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim().substring(0, 160) + '...';
-}
-
-// Calculate reading time
-function calculateReadingTime(content: string): number {
-  const wordsPerMinute = 200;
-  const text = content.replace(/<[^>]*>/g, '');
-  const wordCount = text.split(/\s+/).length;
-  return Math.max(1, Math.ceil(wordCount / wordsPerMinute));
-}
-
-// Page Header Component
-const BlogsHeader = () => {
   return (
-    <Section className="bg-white border-b-2 border-gray-200">
+    <div className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
       <Container>
-        <div className="py-12 lg:py-16">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-            <Link href="/" className="hover:text-black transition-colors">
-              Home
-            </Link>
-            <span>/</span>
-            <span className="text-black font-semibold">All Articles</span>
-          </nav>
-
-          {/* Title */}
-          <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
-            Travel Stories & Guides
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl leading-relaxed">
-            Explore our collection of travel guides, destination reviews, and expert tips 
-            from experienced travelers around the world. Find inspiration for your next adventure.
-          </p>
-        </div>
-      </Container>
-    </Section>
-  );
-};
-
-// Search & Filter Bar
-const SearchFilterBar = () => {
-  return (
-    <Section className="bg-gray-50 border-b-2 border-gray-200 sticky top-0 z-30">
-      <Container>
-        <div className="py-6 flex flex-col lg:flex-row gap-4 items-center justify-between">
-          {/* Search */}
-          <div className="flex-1 w-full lg:max-w-md">
-            <div className="flex items-center border-2 border-gray-300 bg-white">
-              <Search className="w-5 h-5 text-gray-400 ml-4" />
-              <input
-                type="text"
-                placeholder="Search articles..."
-                className="flex-1 px-4 py-3 focus:outline-none text-gray-900"
-              />
+        <div className="py-2.5 flex flex-col lg:flex-row lg:items-center gap-3">
+          {/* Title + Breadcrumb on Same Line */}
+          <div className="flex items-center gap-4 lg:min-w-fit">
+            <div>
+              <div className="flex items-center gap-2 mb-0.5">
+                <Link href="/" className="text-[10px] text-gray-500 hover:text-black">
+                  Home
+                </Link>
+                <span className="text-[10px] text-gray-400">/</span>
+                <span className="text-[10px] text-gray-600 font-semibold">Articles</span>
+              </div>
+              <h1 className="text-base lg:text-lg font-bold text-gray-900">
+                Travel Articles <span className="text-xs font-normal text-gray-500">({totalPosts})</span>
+              </h1>
             </div>
           </div>
 
-          {/* Filter Buttons */}
-          <div className="flex gap-3 items-center">
-            <Button variant="outline" className="border-2 border-gray-300 hover:border-black">
-              <Filter className="w-4 h-4 mr-2" />
-              Filter
-            </Button>
-            <select className="px-4 py-3 border-2 border-gray-300 bg-white focus:outline-none focus:border-black font-semibold">
+          {/* Search & Filters */}
+          <div className="flex-1 flex gap-2">
+            {/* Search */}
+            <div className="flex-1 relative max-w-md">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
+                className="w-full pl-8 pr-8 py-1.5 border border-gray-300 focus:border-black focus:outline-none transition-colors text-xs rounded"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => onSearchChange('')}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+
+            {/* Category Dropdown */}
+            <div className="relative w-32 sm:w-36">
+              <button
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className="w-full px-2.5 py-1.5 border border-gray-300 hover:border-black bg-white text-left flex items-center justify-between text-xs font-medium transition-colors rounded"
+              >
+                <span className="truncate">
+                  {selectedCategory === 'all' 
+                    ? 'Category' 
+                    : categories.find(c => c.slug === selectedCategory)?.name || 'Category'}
+                </span>
+                <ChevronDown className={`w-3 h-3 transition-transform flex-shrink-0 ml-1 ${isFilterOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isFilterOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setIsFilterOpen(false)} />
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 shadow-lg max-h-56 overflow-y-auto z-50 rounded">
+                    <button
+                      onClick={() => {
+                        onCategoryChange('all');
+                        setIsFilterOpen(false);
+                      }}
+                      className={`w-full px-2.5 py-1.5 text-left text-xs hover:bg-gray-50 ${
+                        selectedCategory === 'all' ? 'bg-gray-100 font-semibold' : ''
+                      }`}
+                    >
+                      All Categories
+                    </button>
+                    {categories.map((category) => (
+                      <button
+                        key={category.id}
+                        onClick={() => {
+                          onCategoryChange(category.slug);
+                          setIsFilterOpen(false);
+                        }}
+                        className={`w-full px-2.5 py-1.5 text-left text-xs hover:bg-gray-50 flex items-center justify-between ${
+                          selectedCategory === category.slug ? 'bg-gray-100 font-semibold' : ''
+                        }`}
+                      >
+                        <span className="truncate">{category.name}</span>
+                        <span className="text-gray-400 text-[10px] ml-1">{category.count}</span>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Sort */}
+            <select className="px-2.5 py-1.5 border border-gray-300 focus:border-black focus:outline-none bg-white text-xs font-medium w-24 rounded">
               <option>Latest</option>
-              <option>Most Popular</option>
+              <option>Popular</option>
               <option>Oldest</option>
             </select>
           </div>
         </div>
+
+        {/* Active Filters - Only show if filters applied */}
+        {(selectedCategory !== 'all' || searchQuery) && (
+          <div className="flex flex-wrap gap-1 pb-2">
+            {selectedCategory !== 'all' && (
+              <button
+                onClick={() => onCategoryChange('all')}
+                className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-black text-white text-[10px] font-semibold hover:bg-gray-800 rounded"
+              >
+                {categories.find(c => c.slug === selectedCategory)?.name}
+                <X className="w-2.5 h-2.5" />
+              </button>
+            )}
+            {searchQuery && (
+              <button
+                onClick={() => onSearchChange('')}
+                className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-black text-white text-[10px] font-semibold hover:bg-gray-800 rounded"
+              >
+                {searchQuery.substring(0, 15)}{searchQuery.length > 15 ? '...' : ''}
+                <X className="w-2.5 h-2.5" />
+              </button>
+            )}
+          </div>
+        )}
       </Container>
-    </Section>
+    </div>
   );
 };
 
-// Featured Post Component
-const FeaturedPost = ({ post }: { post: WordPressPost }) => {
+// Quick Categories - More Compact
+const QuickCategories = ({ categories, selectedCategory, onCategoryChange }: {
+  categories: Category[];
+  selectedCategory: string;
+  onCategoryChange: (slug: string) => void;
+}) => {
   return (
-    <Section className="bg-white border-b-2 border-gray-200">
+    <div className="bg-gray-50 border-b border-gray-200">
       <Container>
-        <div className="py-8">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white text-xs font-bold tracking-wide uppercase mb-6">
-            Featured Article
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Image */}
-            <Link href={`/blogs/${post.slug}`}>
-              <div className="relative aspect-[4/3] overflow-hidden border-2 border-gray-200 hover:border-black transition-all">
-                {post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
-                  <Image
-                    src={post._embedded['wp:featuredmedia'][0].source_url}
-                    alt={post.title.rendered}
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                    <Calendar className="w-24 h-24 text-gray-300" />
-                  </div>
-                )}
-              </div>
-            </Link>
-
-            {/* Content */}
-            <div>
-              {post._embedded?.['wp:term']?.[0]?.[0] && (
-                <Link 
-                  href={`/blogs?category=${post._embedded['wp:term'][0][0].slug}`}
-                  className="text-xs font-bold tracking-wide uppercase text-gray-500 hover:text-black transition-colors mb-4 inline-block"
-                >
-                  {post._embedded['wp:term'][0][0].name}
-                </Link>
-              )}
-
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
-                <Link href={`/blogs/${post.slug}`} className="hover:text-gray-600 transition-colors">
-                  {post.title.rendered}
-                </Link>
-              </h2>
-
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                {stripHtml(post.excerpt.rendered)}
-              </p>
-
-              <div className="flex items-center gap-6 mb-6 text-sm text-gray-500">
-                {post._embedded?.author?.[0]?.name && (
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-gray-200 flex items-center justify-center font-bold text-gray-700">
-                      {post._embedded.author[0].name.charAt(0)}
-                    </div>
-                    <span className="font-semibold text-gray-900">
-                      {post._embedded.author[0].name}
-                    </span>
-                  </div>
-                )}
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" />
-                  {formatDate(post.date)}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-4 h-4" />
-                  {calculateReadingTime(post.content.rendered)} min
-                </span>
-              </div>
-
-              <Button size="lg" asChild className="bg-black hover:bg-gray-800 text-white px-8">
-                <Link href={`/blogs/${post.slug}`}>
-                  Read Full Article
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </div>
+        <div className="py-2">
+          <div className="flex gap-1.5 overflow-x-auto scrollbar-hide -mx-4 px-4">
+            <button
+              onClick={() => onCategoryChange('all')}
+              className={`px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap transition-all rounded flex-shrink-0 ${
+                selectedCategory === 'all'
+                  ? 'bg-black text-white'
+                  : 'border border-gray-300 hover:border-black bg-white'
+              }`}
+            >
+              All
+            </button>
+            {categories.slice(0, 10).map((category) => (
+              <button
+                key={category.id}
+                onClick={() => onCategoryChange(category.slug)}
+                className={`px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap transition-all rounded flex-shrink-0 ${
+                  selectedCategory === category.slug
+                    ? 'bg-black text-white'
+                    : 'border border-gray-300 hover:border-black bg-white'
+                }`}
+              >
+                {category.name}
+              </button>
+            ))}
           </div>
         </div>
       </Container>
-    </Section>
+    </div>
   );
 };
 
-// Articles Grid
-const ArticlesGrid = ({ posts }: { posts: WordPressPost[] }) => {
+// Compact Articles Grid
+const ArticlesGrid = ({ 
+  posts, 
+  isLoading,
+  searchQuery,
+  categoryName 
+}: { 
+  posts: WordPressPost[];
+  isLoading: boolean;
+  searchQuery: string;
+  categoryName: string;
+}) => {
+  if (isLoading) {
+    return (
+      <div className="bg-white py-4">
+        <Container>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <BlogCardSkeleton key={i} />
+            ))}
+          </div>
+        </Container>
+      </div>
+    );
+  }
+
   if (posts.length === 0) {
     return (
-      <Section className="bg-white">
+      <div className="bg-white">
         <Container>
-          <div className="text-center py-20">
-            <div className="w-16 h-16 border-4 border-gray-200 mx-auto mb-6 flex items-center justify-center">
-              <Calendar className="h-8 w-8 text-gray-400" />
+          <div className="text-center py-12">
+            <div className="w-10 h-10 border-4 border-gray-200 mx-auto mb-3 flex items-center justify-center rounded">
+              <Calendar className="h-5 w-5 text-gray-400" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">No Articles Found</h3>
-            <p className="text-gray-600 mb-8">Check back soon for new travel stories and guides.</p>
-            <Button asChild className="bg-black hover:bg-gray-800">
-              <Link href="/">Back to Home</Link>
+            <h3 className="text-base font-bold text-gray-900 mb-1">No Articles Found</h3>
+            <p className="text-xs text-gray-600 mb-4">
+              {searchQuery ? `No results for "${searchQuery}"` : 'Check back soon'}
+            </p>
+            <Button asChild size="sm" className="bg-black hover:bg-gray-800 text-xs">
+              <Link href="/blogs">View All</Link>
             </Button>
           </div>
         </Container>
-      </Section>
+      </div>
     );
   }
 
   return (
-    <Section className="bg-white">
+    <div className="bg-white py-4">
       <Container>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+        {/* Results Counter */}
+        <div className="mb-3 pb-2 border-b border-gray-200">
+          <p className="text-[11px] text-gray-600">
+            <span className="font-semibold text-gray-900">{posts.length}</span> result{posts.length !== 1 ? 's' : ''}
+            {categoryName && categoryName !== 'all' && (
+              <> in <span className="font-semibold text-gray-900">{categoryName}</span></>
+            )}
+          </p>
+        </div>
+
+        {/* Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {posts.map((post) => (
-            <article key={post.id} className="group">
-              <Link href={`/blogs/${post.slug}`}>
-                <div className="relative aspect-[4/3] overflow-hidden mb-4 bg-gray-100 border-2 border-gray-200 group-hover:border-black transition-all">
-                  {post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
-                    <Image
-                      src={post._embedded['wp:featuredmedia'][0].source_url}
-                      alt={post.title.rendered}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Calendar className="w-16 h-16 text-gray-300" />
-                    </div>
-                  )}
-                </div>
-              </Link>
-
-              <div>
-                {post._embedded?.['wp:term']?.[0]?.[0] && (
-                  <Link 
-                    href={`/blogs?category=${post._embedded['wp:term'][0][0].slug}`}
-                    className="text-xs font-bold tracking-wide uppercase text-gray-500 hover:text-black transition-colors mb-3 inline-block"
-                  >
-                    {post._embedded['wp:term'][0][0].name}
-                  </Link>
-                )}
-
-                <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-gray-600 transition-colors">
-                  <Link href={`/blogs/${post.slug}`}>
-                    {post.title.rendered}
-                  </Link>
-                </h3>
-
-                <p className="text-gray-600 text-base mb-4 leading-relaxed line-clamp-3">
-                  {stripHtml(post.excerpt.rendered)}
-                </p>
-
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-3 text-gray-500">
-                    <span>{formatDate(post.date)}</span>
-                    <span>·</span>
-                    <span>{calculateReadingTime(post.content.rendered)} min</span>
-                  </div>
-                  
-                  <Link 
-                    href={`/blogs/${post.slug}`}
-                    className="text-black font-semibold hover:underline flex items-center gap-1"
-                  >
-                    Read
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-            </article>
+            <BlogCard key={post.id} post={post} />
           ))}
         </div>
 
-        {/* Load More Button */}
-        <div className="text-center mt-12">
-          <Button 
-            size="lg" 
-            variant="outline"
-            className="border-2 border-black text-black hover:bg-black hover:text-white font-semibold px-10"
-          >
-            Load More Articles
-          </Button>
-        </div>
-      </Container>
-    </Section>
-  );
-};
-
-// Categories Section
-const CategoriesSection = ({ categories }: { categories: Category[] }) => {
-  return (
-    <Section className="bg-gray-50 border-y-2 border-gray-200">
-      <Container>
-        <div className="text-center mb-10">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-3">
-            <Tag className="w-8 h-8" />
-            Browse by Category
-          </h2>
-          <p className="text-lg text-gray-600">
-            Find articles organized by destination and travel style
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {categories.map((category) => (
-            <Link
-              key={category.id}
-              href={`/blogs?category=${category.slug}`}
-              className="group p-6 border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all text-center"
-            >
-              <div className="font-bold text-lg mb-1 group-hover:underline">
-                {category.name}
-              </div>
-              <div className="text-sm opacity-75">
-                {category.count} {category.count === 1 ? 'article' : 'articles'}
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <div className="text-center mt-10">
-          <Button 
-            size="lg" 
-            variant="outline"
-            asChild
-            className="border-2 border-black text-black hover:bg-black hover:text-white font-semibold"
-          >
-            <Link href="/categories">
-              View All Categories
-              <ArrowRight className="ml-2" />
-            </Link>
-          </Button>
-        </div>
-      </Container>
-    </Section>
-  );
-};
-
-// Newsletter CTA
-const NewsletterCTA = () => {
-  return (
-    <Section className="bg-black text-white">
-      <Container>
-        <div className="max-w-3xl mx-auto text-center py-16">
-          <h2 className="text-3xl lg:text-5xl font-bold mb-4">
-            Get Travel Tips in Your Inbox
-          </h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Subscribe to our weekly newsletter for exclusive guides, tips, and travel inspiration.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
-            <input
-              type="email"
-              placeholder="Your email address"
-              className="flex-1 px-6 py-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-white border-2 border-white"
-            />
+        {/* Load More */}
+        {posts.length >= 24 && (
+          <div className="text-center mt-6">
             <Button 
-              size="lg"
-              className="bg-white text-black hover:bg-gray-200 font-bold px-8"
+              size="sm"
+              variant="outline"
+              className="border border-gray-300 hover:border-black hover:bg-black hover:text-white font-semibold px-5 text-xs"
             >
-              Subscribe Free
+              Load More
             </Button>
           </div>
-          <p className="text-sm text-gray-400 mt-4">
-            Join 50,000+ travelers. No spam, unsubscribe anytime.
-          </p>
-        </div>
+        )}
       </Container>
-    </Section>
+    </div>
   );
 };
 
-// Main Page Component
-export default async function BlogsPage() {
-  const posts = await getPosts();
-  const categories = await getCategories();
-  
-  const featuredPost = posts[0];
-  const remainingPosts = posts.slice(1);
+// Compact Newsletter
+const NewsletterCTA = () => {
+  const [email, setEmail] = useState('');
+
+  return (
+    <div className="bg-black text-white py-8">
+      <Container>
+        <div className="max-w-xl mx-auto text-center">
+          <h2 className="text-lg font-bold mb-1">Get Travel Tips</h2>
+          <p className="text-xs text-gray-300 mb-4">Subscribe for guides and inspiration</p>
+          
+          <form className="flex gap-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email address"
+              required
+              className="flex-1 px-3 py-2 text-xs text-gray-900 focus:outline-none rounded"
+            />
+            <Button 
+              type="submit"
+              size="sm"
+              className="bg-white text-black hover:bg-gray-200 font-semibold px-5 text-xs"
+            >
+              Subscribe
+            </Button>
+          </form>
+          <p className="text-[9px] text-gray-400 mt-2">No spam · Unsubscribe anytime</p>
+        </div>
+      </Container>
+    </div>
+  );
+};
+
+// Main Component
+export default function BlogsPage() {
+  const [posts, setPosts] = useState<WordPressPost[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [postsRes, categoriesRes] = await Promise.all([
+          fetch(`${WP_API_URL}/posts?_embed&per_page=24`),
+          fetch(`${WP_API_URL}/categories?per_page=20&orderby=count&order=desc`)
+        ]);
+
+        if (postsRes.ok) {
+          const postsData = await postsRes.json();
+          setPosts(postsData);
+        }
+
+        if (categoriesRes.ok) {
+          const catsData = await categoriesRes.json();
+          setCategories(catsData.filter((cat: Category) => 
+            cat.count > 0 && cat.slug !== 'uncategorized'
+          ));
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  const filteredPosts = posts.filter(post => {
+    const categoryMatch = selectedCategory === 'all' || 
+      post.categories.some(catId => {
+        const category = categories.find(c => c.id === catId);
+        return category?.slug === selectedCategory;
+      });
+
+    const searchMatch = !searchQuery || 
+      post.title.rendered.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.rendered.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return categoryMatch && searchMatch;
+  });
+
+  const categoryName = selectedCategory === 'all' 
+    ? 'all' 
+    : categories.find(c => c.slug === selectedCategory)?.name || '';
 
   return (
     <>
-      <BlogsHeader />
-      <SearchFilterBar />
+      <CompactHeader 
+        totalPosts={posts.length}
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
       
-      {featuredPost && <FeaturedPost post={featuredPost} />}
+      <QuickCategories 
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+      />
       
-      <ArticlesGrid posts={remainingPosts} />
-      
-      <CategoriesSection categories={categories} />
+      <ArticlesGrid 
+        posts={filteredPosts}
+        isLoading={isLoading}
+        searchQuery={searchQuery}
+        categoryName={categoryName}
+      />
       
       <NewsletterCTA />
     </>

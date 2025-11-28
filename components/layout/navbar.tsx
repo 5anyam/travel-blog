@@ -87,37 +87,10 @@ export function Navbar() {
 
   return (
     <>
-      {/* Clean Top Bar */}
-      <div className="bg-black text-white py-2 text-xs border-b border-gray-800">
-        <Container>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4">
-              <span className="font-semibold tracking-wide uppercase">
-                ClubMyTrip
-              </span>
-              <span className="hidden md:inline text-gray-400">|</span>
-              <span className="hidden md:inline text-gray-300">
-                Your Travel Companion
-              </span>
-            </div>
-            <div className="hidden md:flex items-center space-x-4 text-gray-300">
-              <Clock className="h-3 w-3" />
-              <span>
-                {new Date().toLocaleDateString('en-US', { 
-                  month: 'short', 
-                  day: 'numeric',
-                  year: 'numeric'
-                })}
-              </span>
-            </div>
-          </div>
-        </Container>
-      </div>
-
-      {/* Main Navbar */}
+      {/* Main Navbar - Black Background */}
       <nav className={cn(
-        "sticky top-0 z-50 bg-white transition-all duration-300",
-        isScrolled ? "shadow-md border-b-2 border-gray-200" : "border-b border-gray-200"
+        "sticky top-0 z-50 bg-black transition-all duration-300",
+        isScrolled ? "shadow-2xl border-b-2 border-gray-800" : "border-b border-gray-800"
       )}>
         <Container>
           <div className="flex justify-between items-center py-5">
@@ -125,11 +98,11 @@ export function Navbar() {
             <Link href="/" className="flex items-center">
               <div className="relative h-10">
                 <Image
-                  src="/LOGO.png"
-                  alt="ClubMyTrip"
+                  src="/clubmytrip.jpg"
+                  alt="ClubMyTrip Logo"
                   width={160}
                   height={40}
-                  className="h-10 w-auto object-contain"
+                  className="h-12 w-auto object-cover"
                   priority
                 />
               </div>
@@ -148,8 +121,8 @@ export function Navbar() {
                     href={item.href}
                     className={cn(
                       "flex items-center px-4 py-2 text-sm font-semibold transition-colors",
-                      "text-gray-700 hover:text-black",
-                      activeDropdown === item.name && "text-black"
+                      "text-gray-300 hover:text-white",
+                      activeDropdown === item.name && "text-white"
                     )}
                     onClick={() => !item.hasDropdown && handleLinkClick()}
                   >
@@ -162,7 +135,7 @@ export function Navbar() {
                     )}
                   </Link>
 
-                  {/* Minimal Dropdown Menu */}
+                  {/* Minimal Dropdown Menu - White Background */}
                   {item.hasDropdown && activeDropdown === item.name && (
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-screen max-w-4xl bg-white shadow-2xl border-2 border-gray-200 z-50">
                       <div className="p-8">
@@ -215,7 +188,7 @@ export function Navbar() {
             <div className="flex items-center space-x-3">
               <Button 
                 asChild 
-                className="hidden lg:inline-flex bg-black text-white hover:bg-gray-800 font-semibold"
+                className="hidden lg:inline-flex bg-white text-black hover:bg-gray-200 font-semibold border-2 border-white"
                 size="sm"
               >
                 <Link href="/blogs">Browse Stories</Link>
@@ -225,7 +198,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="lg:hidden p-2"
+                className="lg:hidden p-2 text-white hover:bg-gray-800"
                 onClick={() => setIsOpen(!isOpen)}
               >
                 {isOpen ? (
@@ -237,16 +210,16 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
+          {/* Mobile Navigation - Black Background */}
           {isOpen && (
-            <div className="lg:hidden pb-4 border-t-2 border-gray-200 bg-white">
+            <div className="lg:hidden pb-4 border-t-2 border-gray-800 bg-black">
               <div className="pt-4 space-y-1 max-h-[70vh] overflow-y-auto">
                 {navigation.map((item) => (
                   <div key={item.name}>
                     {!item.hasDropdown ? (
                       <Link
                         href={item.href}
-                        className="block px-4 py-3 text-gray-700 hover:text-black hover:bg-gray-50 transition-colors font-semibold"
+                        className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-900 transition-colors font-semibold"
                         onClick={() => setIsOpen(false)}
                       >
                         {item.name}
@@ -254,7 +227,7 @@ export function Navbar() {
                     ) : (
                       <>
                         <button
-                          className="flex items-center justify-between w-full px-4 py-3 text-gray-700 hover:text-black hover:bg-gray-50 transition-colors font-semibold"
+                          className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-900 transition-colors font-semibold"
                           onClick={() => setActiveDropdown(
                             activeDropdown === item.name ? null : item.name
                           )}
@@ -268,17 +241,17 @@ export function Navbar() {
                         
                         {/* Mobile Dropdown */}
                         {activeDropdown === item.name && (
-                          <div className="bg-gray-50 border-l-2 border-black ml-4 mt-1 mb-2">
+                          <div className="bg-gray-900 border-l-2 border-white ml-4 mt-1 mb-2">
                             {item.dropdownItems?.map((category, index) => (
                               <div key={index} className="py-2">
-                                <p className="text-xs font-bold text-black uppercase tracking-wide mb-2 px-4">
+                                <p className="text-xs font-bold text-white uppercase tracking-wide mb-2 px-4">
                                   {category.category}
                                 </p>
                                 {category.items.map((subItem, subIndex) => (
                                   <Link
                                     key={subIndex}
                                     href={subItem.href}
-                                    className="block px-4 py-2 text-sm text-gray-700 hover:text-black hover:bg-white transition-colors font-medium"
+                                    className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-black transition-colors font-medium"
                                     onClick={() => setIsOpen(false)}
                                   >
                                     {subItem.name}
@@ -293,10 +266,10 @@ export function Navbar() {
                   </div>
                 ))}
                 
-                <div className="px-4 pt-4 border-t-2 border-gray-200">
+                <div className="px-4 pt-4 border-t-2 border-gray-800">
                   <Button 
                     asChild 
-                    className="w-full bg-black text-white hover:bg-gray-800 font-semibold"
+                    className="w-full bg-white text-black hover:bg-gray-200 font-semibold"
                   >
                     <Link href="/blogs" onClick={() => setIsOpen(false)}>
                       Browse All Stories

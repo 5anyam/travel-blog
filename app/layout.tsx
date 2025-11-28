@@ -1,9 +1,11 @@
+// app/layout.tsx
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/sonner";
+import { PageTransitionLoader } from "@/components/PageTransitionLoader";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -45,12 +47,12 @@ export const metadata: Metadata = {
     canonical: 'https://clubmytrip.com',
   },
   verification: {
-    google: 'your-google-verification-code', // Replace with actual code
+    google: 'your-google-verification-code',
   },
   category: 'travel',
 };
 
-// JSON-LD Structured Data for SEO
+// JSON-LD Structured Data
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'TravelAgency',
@@ -80,7 +82,6 @@ const jsonLd = {
   ],
 };
 
-// Blog Website Schema
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -105,20 +106,6 @@ const websiteJsonLd = {
   },
 };
 
-// Breadcrumb Schema
-const breadcrumbJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: 'Home',
-      item: 'https://clubmytrip.com',
-    },
-  ],
-};
-
 export default function RootLayout({
   children,
 }: {
@@ -131,7 +118,6 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#000000" />
         
-        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -140,12 +126,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-        />
       </head>
       <body className={inter.className}>
+        <PageTransitionLoader />
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />

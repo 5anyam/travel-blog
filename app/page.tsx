@@ -1,13 +1,16 @@
 "use client"
 import Link from "next/link";
 import { 
-  ArrowRight, Calendar, BookOpen, ChevronRight, ChevronLeft,
-  Mail, Clock, Tag, MapPin, Plane, Search, 
-  TrendingUp, Star, ExternalLink
+  ArrowRight, ChevronRight, ChevronLeft,
+  Clock, MapPin, Search, 
+  TrendingUp, Star
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { BlogCard } from "@/components/BlogCard";
+import { BlogCardSkeleton } from "@/components/BlogCardSkeleton";
+import { LatestPostsGrid } from "@/components/LatestPostsGrid";
 import { useState, useEffect } from "react";
 
 const WP_API_URL = 'https://cms.clubmytrip.com/wp-json/wp/v2';
@@ -42,7 +45,7 @@ interface BannerSlide {
   isExternal: boolean;
 }
 
-// Search Bar Component - Top of Page
+// Search Section
 const SearchSection = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
@@ -55,19 +58,16 @@ const SearchSection = () => {
   };
 
   return (
-    <Section className="relative bg-gray-900 border-b-2 border-gray-800 overflow-hidden">
-      {/* Background Image */}
+    <Section className="relative bg-gray-900 overflow-hidden">
       <div className="absolute inset-0">
         <img 
           src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&q=80"
           alt="Travel Background"
           className="w-full h-full object-cover"
         />
-        {/* Dark Overlay for text readability */}
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
 
-      {/* Content */}
       <Container className="relative z-10">
         <div className="max-w-3xl mx-auto py-16 lg:py-20">
           <h2 className="text-3xl lg:text-5xl font-bold text-white mb-4 text-center">
@@ -98,7 +98,6 @@ const SearchSection = () => {
             </div>
           </form>
 
-          {/* Popular Searches */}
           <div className="mt-6 flex flex-wrap gap-2 justify-center">
             <span className="text-sm text-gray-300">Popular:</span>
             {['Bali', 'Thailand', 'Europe', 'Budget Travel', 'Solo Travel'].map((term) => (
@@ -117,10 +116,10 @@ const SearchSection = () => {
   );
 };
 
-// Banner Slider Component
+// Banner Slider
 const BannerSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [banners, setBanners] = useState<BannerSlide[]>([
+  const [banners] = useState<BannerSlide[]>([
     {
       id: 1,
       image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200',
@@ -171,25 +170,21 @@ const BannerSlider = () => {
               <div key={banner.id} className="w-full flex-shrink-0 relative">
                 <a 
                   href={banner.link}
-                  target={banner.isExternal ? "_blank" : "_self"}
-                  rel={banner.isExternal ? "noopener noreferrer" : ""}
-                  className="block"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block cursor-pointer"
                 >
-                  <div className="relative aspect-[21/9] lg:aspect-[21/6]">
+                  <div className="relative aspect-[21/9] lg:aspect-[21/6] group">
                     <img 
                       src={banner.image}
                       alt={banner.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all flex items-center justify-center">
                       <div className="text-center text-white">
-                        <h3 className="text-3xl lg:text-5xl font-bold mb-4">
+                        <h3 className="text-3xl lg:text-5xl font-bold">
                           {banner.title}
                         </h3>
-                        <span className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-bold hover:bg-gray-100 transition-colors">
-                          Explore Now
-                          <ExternalLink className="w-5 h-5" />
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -198,32 +193,31 @@ const BannerSlider = () => {
             ))}
           </div>
 
-          {/* Navigation Arrows */}
           <button
             onClick={goToPrevious}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white border-2 border-gray-200 flex items-center justify-center transition-all"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white border-2 border-gray-200 flex items-center justify-center transition-all z-10"
+            aria-label="Previous slide"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
           
           <button
             onClick={goToNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white border-2 border-gray-200 flex items-center justify-center transition-all"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white border-2 border-gray-200 flex items-center justify-center transition-all z-10"
+            aria-label="Next slide"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
 
-          {/* Dots Indicator */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
             {banners.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
                 className={`w-2 h-2 transition-all ${
-                  index === currentSlide 
-                    ? 'bg-white w-8' 
-                    : 'bg-white/50'
+                  index === currentSlide ? 'bg-white w-8' : 'bg-white/50'
                 }`}
+                aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
@@ -233,7 +227,7 @@ const BannerSlider = () => {
   );
 };
 
-// Category Navigation Bar
+// Category Bar
 const CategoryBar = ({ 
   categories, 
   activeCategory, 
@@ -276,9 +270,28 @@ const CategoryBar = ({
   );
 };
 
-// Featured Posts - Large Hero Style
+// Featured Hero
 const FeaturedHero = ({ post }: { post: WordPressPost | null }) => {
   if (!post) return null;
+
+  const stripHtml = (html: string): string => {
+    return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+  };
+
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const getReadTime = (content: string): number => {
+    const text = content.replace(/<[^>]*>/g, '');
+    const words = text.split(/\s+/).length;
+    return Math.max(1, Math.ceil(words / 200));
+  };
 
   return (
     <Section className="bg-white">
@@ -332,7 +345,7 @@ const FeaturedHero = ({ post }: { post: WordPressPost | null }) => {
 
           <div className="order-1 lg:order-2">
             <Link href={`/blogs/${post.slug}`}>
-              <div className="relative aspect-[4/5] overflow-hidden border-2 border-gray-200">
+              <div className="relative aspect-[4/5] overflow-hidden border-2 border-gray-200 hover:border-black transition-all">
                 {post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
                   <img 
                     src={post._embedded['wp:featuredmedia'][0].source_url}
@@ -353,7 +366,7 @@ const FeaturedHero = ({ post }: { post: WordPressPost | null }) => {
   );
 };
 
-// Trending Stories Grid
+// Trending Grid
 const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
   if (posts.length < 3) return null;
 
@@ -376,43 +389,7 @@ const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
 
         <div className="grid md:grid-cols-3 gap-8">
           {posts.slice(0, 3).map((post) => (
-            <article key={post.id} className="group bg-white border-2 border-gray-200 hover:border-black transition-all">
-              <Link href={`/blogs/${post.slug}`}>
-                <div className="relative aspect-video overflow-hidden bg-gray-100">
-                  {post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
-                    <img 
-                      src={post._embedded['wp:featuredmedia'][0].source_url}
-                      alt={post.title.rendered}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <BookOpen className="w-12 h-12 text-gray-300" />
-                    </div>
-                  )}
-                </div>
-              </Link>
-
-              <div className="p-6">
-                {post._embedded?.['wp:term']?.[0]?.[0] && (
-                  <span className="text-xs font-bold tracking-wide uppercase text-gray-500 mb-2 inline-block">
-                    {post._embedded['wp:term'][0][0].name}
-                  </span>
-                )}
-
-                <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight line-clamp-2 group-hover:text-gray-600 transition-colors">
-                  <Link href={`/blogs/${post.slug}`}>
-                    {post.title.rendered}
-                  </Link>
-                </h3>
-
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <span>{formatDate(post.date)}</span>
-                  <span>·</span>
-                  <span>{getReadTime(post.content.rendered)} min</span>
-                </div>
-              </div>
-            </article>
+            <BlogCard key={post.id} post={post} />
           ))}
         </div>
       </Container>
@@ -420,7 +397,7 @@ const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
   );
 };
 
-// Ad Banner Component
+// Ad Banner
 const AdBanner = ({ size = 'horizontal' }: { size?: 'horizontal' | 'square' }) => {
   return (
     <Section className="bg-white">
@@ -441,80 +418,6 @@ const AdBanner = ({ size = 'horizontal' }: { size?: 'horizontal' | 'square' }) =
         </div>
       </Container>
     </Section>
-  );
-};
-
-// Latest Articles Grid
-const LatestArticles = ({ posts }: { posts: WordPressPost[] }) => {
-  if (posts.length === 0) {
-    return (
-      <div className="text-center py-20">
-        <div className="w-16 h-16 border-4 border-gray-200 border-t-black rounded-full animate-spin mx-auto mb-6"></div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">No Articles Found</h3>
-        <p className="text-gray-600">Check back soon for new stories</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-      {posts.map((post) => (
-        <article key={post.id} className="group">
-          <Link href={`/blogs/${post.slug}`}>
-            <div className="relative aspect-[4/3] overflow-hidden mb-4 bg-gray-100 border-2 border-gray-200 group-hover:border-black transition-all">
-              {post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
-                <img 
-                  src={post._embedded['wp:featuredmedia'][0].source_url}
-                  alt={post.title.rendered}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <MapPin className="w-16 h-16 text-gray-300" />
-                </div>
-              )}
-            </div>
-          </Link>
-          
-          <div>
-            {post._embedded?.['wp:term']?.[0]?.[0] && (
-              <Link 
-                href={`/blogs?category=${post._embedded['wp:term'][0][0].slug}`}
-                className="text-xs font-bold tracking-wide uppercase text-gray-500 hover:text-black transition-colors mb-3 inline-block"
-              >
-                {post._embedded['wp:term'][0][0].name}
-              </Link>
-            )}
-            
-            <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-gray-600 transition-colors">
-              <Link href={`/blogs/${post.slug}`}>
-                {post.title.rendered}
-              </Link>
-            </h3>
-            
-            <p className="text-gray-600 text-base mb-4 leading-relaxed line-clamp-3">
-              {stripHtml(post.excerpt.rendered)}
-            </p>
-            
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-3 text-gray-500">
-                <span>{formatDate(post.date)}</span>
-                <span>·</span>
-                <span>{getReadTime(post.content.rendered)} min</span>
-              </div>
-              
-              <Link 
-                href={`/blogs/${post.slug}`}
-                className="text-black font-semibold hover:underline flex items-center gap-1"
-              >
-                Read
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </article>
-      ))}
-    </div>
   );
 };
 
@@ -567,7 +470,7 @@ const PopularDestinations = ({ categories }: { categories: Category[] }) => {
   );
 };
 
-// Newsletter Section
+// Newsletter
 const NewsletterSection = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -709,26 +612,6 @@ const AboutClubMyTrip = () => {
   );
 };
 
-// Utility Functions
-function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
-}
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
-}
-
-function getReadTime(content: string): number {
-  const text = content.replace(/<[^>]*>/g, '');
-  const words = text.split(/\s+/).length;
-  return Math.max(1, Math.ceil(words / 200));
-}
-
 // Main Component
 export default function HomePage() {
   const [featuredPosts, setFeaturedPosts] = useState<WordPressPost[]>([]);
@@ -778,81 +661,34 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Search Section - TOP */}
       <SearchSection />
-
-      {/* Banner Slider */}
       <BannerSlider />
-
-      {/* Category Navigation */}
       <CategoryBar 
         categories={categories}
         activeCategory={activeCategory}
         onSelectCategory={setActiveCategory}
       />
-
-      {/* Featured Hero Post */}
       <FeaturedHero post={featuredPosts[0] || null} />
-
-      {/* Ad Banner 1 */}
       <AdBanner size="horizontal" />
-
-      {/* Trending Stories */}
       <TrendingGrid posts={featuredPosts.slice(1, 4)} />
 
-      {/* Latest Articles Section */}
+      {/* Using LatestPostsGrid Component */}
       <Section className="bg-white">
         <Container>
-          <div className="mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
-              Latest Travel Stories
-            </h2>
-            <p className="text-lg text-gray-600">
-              Fresh perspectives and expert insights from around the world
-            </p>
-          </div>
-
-          {isLoading ? (
-            <div className="text-center py-20">
-              <div className="w-16 h-16 border-4 border-gray-200 border-t-black rounded-full animate-spin mx-auto mb-6"></div>
-              <p className="text-gray-600 text-lg font-medium">Loading amazing stories...</p>
-            </div>
-          ) : (
-            <>
-              <LatestArticles posts={filteredPosts} />
-              
-              {filteredPosts.length > 0 && (
-                <div className="text-center mt-12">
-                  <Button 
-                    size="lg" 
-                    asChild
-                    className="bg-black hover:bg-gray-800 text-white font-semibold px-10"
-                  >
-                    <Link href="/blogs">
-                      View All Articles
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Link>
-                  </Button>
-                </div>
-              )}
-            </>
-          )}
+          <LatestPostsGrid 
+            posts={filteredPosts}
+            isLoading={isLoading}
+            title="Latest Travel Stories"
+            showViewAll={true}
+            viewAllLink="/blogs"
+          />
         </Container>
       </Section>
 
-      {/* Ad Banner 2 */}
       <AdBanner size="horizontal" />
-
-      {/* Popular Destinations */}
       <PopularDestinations categories={categories} />
-
-      {/* Newsletter */}
       <NewsletterSection />
-
-      {/* About Section */}
       <AboutClubMyTrip />
-
-      {/* Ad Banner 3 - Square */}
       <AdBanner size="square" />
     </>
   );
