@@ -343,7 +343,7 @@ const RelatedPosts = ({ posts }: { posts: WordPressPost[] }) => {
           <div className="grid md:grid-cols-3 gap-5">
             {posts.map((post) => (
               <article key={post.id} className="group bg-white border border-gray-200 hover:border-black transition-all rounded-lg overflow-hidden">
-                <Link href={`/blogs/${post.slug}`}>
+                <Link href={`/${post.slug}`}>
                   <div className="relative aspect-video overflow-hidden bg-gray-100">
                     {post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
                       <Image
@@ -367,7 +367,7 @@ const RelatedPosts = ({ posts }: { posts: WordPressPost[] }) => {
                     </span>
                   )}
                   <h3 className="text-sm font-bold text-gray-900 mb-2 leading-snug line-clamp-2 group-hover:text-gray-600">
-                    <Link href={`/blogs/${post.slug}`}>{post.title.rendered}</Link>
+                    <Link href={`/${post.slug}`}>{post.title.rendered}</Link>
                   </h3>
                   <div className="flex items-center gap-2 text-[10px] text-gray-500">
                     <span>{formatDate(post.date)}</span>

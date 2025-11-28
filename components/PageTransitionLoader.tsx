@@ -10,38 +10,40 @@ export function PageTransitionLoader() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Hide loader when route changes
     setIsLoading(false);
   }, [pathname, searchParams]);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
-    // Detect clicks on links
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const link = target.closest('a');
+      const link = target.closest('a, button[type="button"]');
       
-      if (link && link.href && !link.target) {
-        const url = new URL(link.href);
-        const currentUrl = new URL(window.location.href);
+      if (link) {
+        const href = link.getAttribute('href');
+        const isExternal = link.getAttribute('target') === '_blank';
         
-        // Only show loader for internal navigation
-        if (url.origin === currentUrl.origin && url.pathname !== currentUrl.pathname) {
-          setIsLoading(true);
+        if (href && !href.startsWith('#') && !isExternal && !href.startsWith('http')) {
+          const currentPath = window.location.pathname;
           
-          // Fallback: hide loader after 10 seconds
-          timeoutId = setTimeout(() => {
-            setIsLoading(false);
-          }, 10000);
+          // Only show loader if navigating to different page
+          if (href !== currentPath) {
+            setIsLoading(true);
+            
+            // Fallback timeout
+            timeoutId = setTimeout(() => {
+              setIsLoading(false);
+            }, 10000);
+          }
         }
       }
     };
 
-    document.addEventListener('click', handleClick);
+    document.addEventListener('click', handleClick, true);
 
     return () => {
-      document.removeEventListener('click', handleClick);
+      document.removeEventListener('click', handleClick, true);
       if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);
@@ -49,10 +51,18 @@ export function PageTransitionLoader() {
   if (!isLoading) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center">
-      <div className="text-center">
-        <Loader2 className="w-12 h-12 text-white animate-spin mx-auto mb-4" />
-        <p className="text-white text-lg font-semibold">Loading...</p>
+    <div 
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999]"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+      }}
+    >
+      <div className="text-center px-4">
+        <Loader2 className="w-10 h-10 sm:w-12 sm:h-12 text-white animate-spin mx-auto mb-3" />
+        <p className="text-white text-sm sm:text-lg font-semibold">Loading...</p>
       </div>
     </div>
   );
