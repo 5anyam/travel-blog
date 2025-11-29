@@ -114,11 +114,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Favicon & Icons */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        
+        {/* Theme Color */}
         <meta name="theme-color" content="#000000" />
+        
+        {/* Admitad Verification - Affiliate Network */}
         <meta name="verify-admitad" content="ff3fcff36d" />
         
+        {/* JSON-LD Structured Data for SEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
