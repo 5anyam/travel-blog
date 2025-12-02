@@ -6,10 +6,12 @@ import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/sonner";
 import { PageTransitionLoader } from "@/components/PageTransitionLoader";
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://clubmytrip.com'),
   title: {
     default: 'ClubMyTrip - Your Trusted Travel Guide & Destination Expert',
     template: '%s | ClubMyTrip'
@@ -48,8 +50,16 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'your-google-verification-code',
+    other: {
+      'verify-admitad': 'ff3fcff36d',
+    },
   },
   category: 'travel',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/site.webmanifest',
 };
 
 // JSON-LD Structured Data
@@ -113,28 +123,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        {/* Favicon & Icons */}
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        
-        {/* Theme Color */}
-        <meta name="theme-color" content="#000000" />
-        
-        {/* Admitad Verification - Affiliate Network */}
-        <meta name="verify-admitad" content="ff3fcff36d" />
-        
-        {/* JSON-LD Structured Data for SEO */}
-        <script
+      <body className={inter.className}>
+        {/* JSON-LD Structured Data */}
+        <Script
+          id="organization-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script
+        <Script
+          id="website-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
-      </head>
-      <body className={inter.className}>
+        
         <PageTransitionLoader />
         <Navbar />
         <main className="min-h-screen">{children}</main>
