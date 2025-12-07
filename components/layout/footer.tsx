@@ -285,6 +285,14 @@ export function Footer() {
               <ul className="space-y-3">
                 <li>
                   <Link 
+                    href="https://www.clubmytrip.com" 
+                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link 
                     href="/about" 
                     className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
                   >
@@ -305,30 +313,6 @@ export function Footer() {
                     className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
                   >
                     Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/advertise" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Advertise
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/careers" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Careers
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/press" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Press
                   </Link>
                 </li>
               </ul>
