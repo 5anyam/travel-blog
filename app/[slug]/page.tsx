@@ -200,8 +200,8 @@ const ArticleHeader = ({ post }: { post: WordPressPost }) => {
   return (
     <div className="bg-white border-b border-gray-200">
       <Container>
-        <div className="max-w-4xl mx-auto py-6">
-          <nav className="flex items-center gap-2 text-xs text-gray-500 mb-4">
+        <div className="max-w-3xl mx-auto py-8">
+          <nav className="flex items-center gap-2 text-xs text-gray-500 mb-6 overflow-x-auto whitespace-nowrap scrollbar-hide">
             <Link href="/" className="hover:text-black">Home</Link>
             <span>/</span>
             <Link href="/blogs" className="hover:text-black">Articles</Link>
@@ -221,39 +221,39 @@ const ArticleHeader = ({ post }: { post: WordPressPost }) => {
           {post._embedded?.['wp:term']?.[0]?.[0] && (
             <Link 
               href={`/blogs?category=${post._embedded['wp:term'][0][0].slug}`}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-black text-white text-[10px] font-bold uppercase tracking-wider mb-4 hover:bg-gray-800 rounded"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-100 text-gray-900 text-[11px] font-bold uppercase tracking-wider mb-5 hover:bg-gray-200 rounded-full transition-colors"
             >
               <Tag className="w-3 h-3" />
               {post._embedded['wp:term'][0][0].name}
             </Link>
           )}
 
-          <h1 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6 leading-[1.2] tracking-tight">
             {post.title.rendered}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 pb-4 border-b border-gray-200">
+          <div className="flex flex-wrap items-center gap-6 text-xs text-gray-500 pb-6">
             {post._embedded?.author?.[0]?.name && (
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gray-200 flex items-center justify-center font-bold text-gray-700 text-sm rounded-full">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gray-100 border border-gray-200 flex items-center justify-center font-bold text-gray-700 text-sm rounded-full">
                   {post._embedded.author[0].name.charAt(0)}
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-900 text-xs">
+                  <div className="font-bold text-gray-900 text-xs">
                     {post._embedded.author[0].name}
                   </div>
-                  <div className="text-[10px] text-gray-500">Travel Writer</div>
+                  <div className="text-[10px] text-gray-500">Author</div>
                 </div>
               </div>
             )}
             
-            <div className="flex items-center gap-1">
-              <Calendar className="w-3 h-3" />
+            <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100">
+              <Calendar className="w-3.5 h-3.5" />
               <span>{formatDate(post.date)}</span>
             </div>
             
-            <div className="flex items-center gap-1">
-              <Clock className="w-3 h-3" />
+            <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100">
+              <Clock className="w-3.5 h-3.5" />
               <span>{calculateReadingTime(post.content.rendered)} min read</span>
             </div>
           </div>
@@ -263,26 +263,26 @@ const ArticleHeader = ({ post }: { post: WordPressPost }) => {
   );
 };
 
-// Featured Image
+// Featured Image - Centered and full width within container
 const FeaturedImage = ({ post }: { post: WordPressPost }) => {
   if (!post._embedded?.['wp:featuredmedia']?.[0]?.source_url) return null;
 
   return (
     <div className="bg-white">
       <Container>
-        <div className="max-w-4xl mx-auto py-6">
-          <div className="relative aspect-[16/9] overflow-hidden border border-gray-200 rounded-lg">
+        <div className="max-w-4xl mx-auto py-8">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl shadow-sm border border-gray-100">
             <Image
               src={post._embedded['wp:featuredmedia'][0].source_url}
               alt={post._embedded['wp:featuredmedia'][0].alt_text || post.title.rendered}
               fill
               className="object-cover"
               priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
             />
           </div>
           {post._embedded['wp:featuredmedia'][0].alt_text && (
-            <p className="text-xs text-gray-500 mt-2 text-center italic">
+            <p className="text-xs text-gray-500 mt-3 text-center italic">
               {post._embedded['wp:featuredmedia'][0].alt_text}
             </p>
           )}
@@ -298,34 +298,34 @@ const ShareButtons = ({ post }: { post: WordPressPost }) => {
   const shareText = post.title.rendered;
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-xs font-semibold text-gray-700">Share:</span>
+    <div className="flex items-center justify-center sm:justify-start gap-3">
+      <span className="text-sm font-bold text-gray-900 mr-2">Share this story:</span>
       <a
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-8 h-8 border border-gray-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all rounded"
+        className="w-10 h-10 border border-gray-200 hover:border-blue-600 hover:bg-blue-600 hover:text-white text-gray-500 flex items-center justify-center transition-all rounded-full"
         aria-label="Share on Facebook"
       >
-        <Facebook className="w-3.5 h-3.5" />
+        <Facebook className="w-4 h-4" />
       </a>
       <a
         href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-8 h-8 border border-gray-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all rounded"
+        className="w-10 h-10 border border-gray-200 hover:border-sky-500 hover:bg-sky-500 hover:text-white text-gray-500 flex items-center justify-center transition-all rounded-full"
         aria-label="Share on Twitter"
       >
-        <Twitter className="w-3.5 h-3.5" />
+        <Twitter className="w-4 h-4" />
       </a>
       <a
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-8 h-8 border border-gray-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all rounded"
+        className="w-10 h-10 border border-gray-200 hover:border-blue-700 hover:bg-blue-700 hover:text-white text-gray-500 flex items-center justify-center transition-all rounded-full"
         aria-label="Share on LinkedIn"
       >
-        <Linkedin className="w-3.5 h-3.5" />
+        <Linkedin className="w-4 h-4" />
       </a>
     </div>
   );
@@ -336,43 +336,44 @@ const RelatedPosts = ({ posts }: { posts: WordPressPost[] }) => {
   if (posts.length === 0) return null;
 
   return (
-    <div className="bg-gray-50 border-t border-gray-200">
+    <div className="bg-gray-50 border-t border-gray-200 py-16">
       <Container>
-        <div className="max-w-4xl mx-auto py-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Related Articles</h2>
-          <div className="grid md:grid-cols-3 gap-5">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">Read Next</h2>
+            <Link href="/blogs" className="text-sm font-semibold text-gray-600 hover:text-black">View All Articles</Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
             {posts.map((post) => (
-              <article key={post.id} className="group bg-white border border-gray-200 hover:border-black transition-all rounded-lg overflow-hidden">
-                <Link href={`/${post.slug}`}>
-                  <div className="relative aspect-video overflow-hidden bg-gray-100">
-                    {post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
-                      <Image
-                        src={post._embedded['wp:featuredmedia'][0].source_url}
-                        alt={post.title.rendered}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <BookOpen className="w-10 h-10 text-gray-300" />
-                      </div>
-                    )}
-                  </div>
+              <article key={post.id} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all h-full flex flex-col">
+                <Link href={`/${post.slug}`} className="block relative aspect-[4/3] overflow-hidden bg-gray-100">
+                  {post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
+                    <Image
+                      src={post._embedded['wp:featuredmedia'][0].source_url}
+                      alt={post.title.rendered}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <BookOpen className="w-8 h-8 text-gray-300" />
+                    </div>
+                  )}
                 </Link>
-                <div className="p-4">
+                <div className="p-5 flex-1 flex flex-col">
                   {post._embedded?.['wp:term']?.[0]?.[0] && (
-                    <span className="text-[10px] font-bold uppercase text-gray-500 mb-2 inline-block">
+                    <span className="text-[10px] font-bold uppercase text-emerald-600 mb-2 block">
                       {post._embedded['wp:term'][0][0].name}
                     </span>
                   )}
-                  <h3 className="text-sm font-bold text-gray-900 mb-2 leading-snug line-clamp-2 group-hover:text-gray-600">
+                  <h3 className="text-base font-bold text-gray-900 mb-3 leading-snug line-clamp-2 group-hover:text-emerald-700 transition-colors">
                     <Link href={`/${post.slug}`}>{post.title.rendered}</Link>
                   </h3>
-                  <div className="flex items-center gap-2 text-[10px] text-gray-500">
+                  <div className="mt-auto flex items-center gap-3 text-[11px] text-gray-400 font-medium">
                     <span>{formatDate(post.date)}</span>
-                    <span>·</span>
-                    <span>{calculateReadingTime(post.content.rendered)}m</span>
+                    <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                    <span>{calculateReadingTime(post.content.rendered)} min</span>
                   </div>
                 </div>
               </article>
@@ -387,23 +388,26 @@ const RelatedPosts = ({ posts }: { posts: WordPressPost[] }) => {
 // Newsletter
 const NewsletterCTA = () => {
   return (
-    <div className="bg-black text-white py-10">
+    <div className="bg-black text-white py-16">
       <Container>
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-xl font-bold mb-2">Enjoyed This Article?</h2>
-          <p className="text-sm text-gray-300 mb-5">Get more travel tips weekly</p>
-          <form className="flex gap-2">
+        <div className="max-w-xl mx-auto text-center space-y-6">
+          <BookOpen className="w-8 h-8 mx-auto text-white/50" />
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Travel Smarter</h2>
+            <p className="text-gray-400">Join 50,000+ travelers getting weekly tips.</p>
+          </div>
+          <form className="flex flex-col sm:flex-row gap-3">
             <input
               type="email"
               placeholder="Your email address"
               required
-              className="flex-1 px-4 py-2.5 text-sm text-gray-900 focus:outline-none rounded"
+              className="flex-1 px-4 py-3 text-sm text-gray-900 bg-white focus:outline-none rounded-lg"
             />
-            <Button type="submit" size="sm" className="bg-white text-black hover:bg-gray-200 font-semibold px-6">
-              Subscribe
+            <Button type="submit" className="bg-white text-black hover:bg-gray-100 font-bold px-8 py-3 rounded-lg">
+              Subscribe Free
             </Button>
           </form>
-          <p className="text-[10px] text-gray-400 mt-2">No spam · Unsubscribe anytime</p>
+          <p className="text-xs text-gray-500">Unsubscribe at any time.</p>
         </div>
       </Container>
     </div>
@@ -434,7 +438,6 @@ export default async function BlogPost({
 
   return (
     <>
-      {/* Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -466,48 +469,47 @@ export default async function BlogPost({
       <FeaturedImage post={post} />
 
       {/* Main Content */}
-      <div className="bg-white">
+      <div className="bg-white relative">
         <Container>
-          <div className="max-w-4xl mx-auto py-6">
-            <Link href="/blogs" className="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-black mb-6 font-medium">
-              <ArrowLeft className="w-3.5 h-3.5" />
+          <div className="max-w-3xl mx-auto pb-16">
+            
+            <Link href="/blogs" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-black mb-8 font-medium transition-colors group">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               Back to Articles
             </Link>
 
             <article 
               className="
-                wp-content prose prose-sm md:prose-base max-w-none
+                wp-content prose prose-lg max-w-none text-gray-700
                 
-                [&>h1]:text-2xl [&>h1]:md:text-3xl [&>h1]:font-bold [&>h1]:text-gray-900 [&>h1]:mt-8 [&>h1]:mb-4
-                [&>h2]:text-xl [&>h2]:md:text-2xl [&>h2]:font-bold [&>h2]:text-gray-900 [&>h2]:mt-8 [&>h2]:mb-4 [&>h2]:pb-2 [&>h2]:border-b [&>h2]:border-gray-200
-                [&>h3]:text-lg [&>h3]:md:text-xl [&>h3]:font-bold [&>h3]:text-gray-900 [&>h3]:mt-6 [&>h3]:mb-3
-                [&>h4]:text-base [&>h4]:md:text-lg [&>h4]:font-bold [&>h4]:text-gray-900 [&>h4]:mt-6 [&>h4]:mb-3
+                /* Headings */
+                [&>h2]:text-2xl [&>h2]:md:text-3xl [&>h2]:font-bold [&>h2]:text-gray-900 [&>h2]:mt-12 [&>h2]:mb-6
+                [&>h3]:text-xl [&>h3]:md:text-2xl [&>h3]:font-bold [&>h3]:text-gray-900 [&>h3]:mt-10 [&>h3]:mb-4
                 
-                [&>p]:text-gray-700 [&>p]:leading-relaxed [&>p]:mb-4 [&>p]:text-sm [&>p]:md:text-base
-                [&>p>strong]:font-bold [&>p>strong]:text-gray-900
-                [&>p>a]:text-black [&>p>a]:font-semibold [&>p>a]:underline hover:[&>p>a]:no-underline
+                /* Paragraphs */
+                [&>p]:leading-8 [&>p]:mb-6
                 
-                [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-4 [&>ul]:text-gray-700
-                [&>ul>li]:mb-2 [&>ul>li]:leading-relaxed
-                [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-4 [&>ol]:text-gray-700
-                [&>ol>li]:mb-2 [&>ol>li]:leading-relaxed
+                /* Links */
+                [&>p>a]:text-blue-600 [&>p>a]:underline [&>p>a]:decoration-blue-200 hover:[&>p>a]:decoration-blue-600 [&>p>a]:underline-offset-2
                 
-                [&>blockquote]:border-l-4 [&>blockquote]:border-black [&>blockquote]:bg-gray-50 [&>blockquote]:py-4 [&>blockquote]:px-6 [&>blockquote]:my-6 [&>blockquote]:italic
+                /* Images - Centering Fix */
+                [&_figure]:mx-auto [&_figure]:block [&_figure]:max-w-full [&_figure]:my-10
+                [&_img]:mx-auto [&_img]:block [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_img]:shadow-sm
                 
-                [&>pre]:bg-gray-900 [&>pre]:text-white [&>pre]:p-4 [&>pre]:rounded [&>pre]:overflow-x-auto [&>pre]:my-6
-                [&>code]:bg-gray-100 [&>code]:px-1.5 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm
+                /* Captions */
+                [&_figcaption]:text-center [&_figcaption]:text-sm [&_figcaption]:text-gray-500 [&_figcaption]:mt-3 [&_figcaption]:italic
                 
-                [&_img]:w-full [&_img]:h-auto [&_img]:rounded-lg [&_img]:border [&_img]:border-gray-200 [&_img]:my-6
-                [&_figcaption]:text-xs [&_figcaption]:text-gray-500 [&_figcaption]:text-center [&_figcaption]:mt-2 [&_figcaption]:italic
+                /* Lists */
+                [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ul]:space-y-2
+                [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 [&>ol]:space-y-2
                 
-                [&>table]:w-full [&>table]:border-collapse [&>table]:my-6
-                [&_th]:bg-gray-100 [&_th]:border [&_th]:border-gray-300 [&_th]:px-4 [&_th]:py-2 [&_th]:font-bold [&_th]:text-sm
-                [&_td]:border [&_td]:border-gray-300 [&_td]:px-4 [&_td]:py-2 [&_td]:text-sm
+                /* Quotes */
+                [&>blockquote]:border-l-4 [&>blockquote]:border-black [&>blockquote]:bg-gray-50 [&>blockquote]:py-6 [&>blockquote]:px-8 [&>blockquote]:my-10 [&>blockquote]:rounded-r-lg [&>blockquote]:italic [&>blockquote]:text-gray-800 [&>blockquote]:font-medium
               "
               dangerouslySetInnerHTML={{ __html: post.content.rendered }}
             />
 
-            <div className="pt-6 mt-8 border-t border-gray-200">
+            <div className="mt-12 pt-8 border-t border-gray-100">
               <ShareButtons post={post} />
             </div>
           </div>
