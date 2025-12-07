@@ -1,5 +1,5 @@
-"use client"
-import { Calendar, Search, X, ChevronDown } from "lucide-react";
+"use client";
+import { Calendar, Search, X, ChevronDown, Loader2 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { BlogCard } from "@/components/BlogCard";
@@ -61,7 +61,7 @@ const CompactHeader = ({
     <div className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
       <Container>
         <div className="py-2.5 flex flex-col lg:flex-row lg:items-center gap-3">
-          {/* Title + Breadcrumb on Same Line */}
+          {/* Title + Breadcrumb */}
           <div className="flex items-center gap-4 lg:min-w-fit">
             <div>
               <div className="flex items-center gap-2 mb-0.5">
@@ -147,45 +147,14 @@ const CompactHeader = ({
                 </>
               )}
             </div>
-
-            {/* Sort */}
-            <select className="px-2.5 py-1.5 border border-gray-300 focus:border-black focus:outline-none bg-white text-xs font-medium w-24 rounded">
-              <option>Latest</option>
-              <option>Popular</option>
-              <option>Oldest</option>
-            </select>
           </div>
         </div>
-
-        {/* Active Filters - Only show if filters applied */}
-        {(selectedCategory !== 'all' || searchQuery) && (
-          <div className="flex flex-wrap gap-1 pb-2">
-            {selectedCategory !== 'all' && (
-              <button
-                onClick={() => onCategoryChange('all')}
-                className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-black text-white text-[10px] font-semibold hover:bg-gray-800 rounded"
-              >
-                {categories.find(c => c.slug === selectedCategory)?.name}
-                <X className="w-2.5 h-2.5" />
-              </button>
-            )}
-            {searchQuery && (
-              <button
-                onClick={() => onSearchChange('')}
-                className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-black text-white text-[10px] font-semibold hover:bg-gray-800 rounded"
-              >
-                {searchQuery.substring(0, 15)}{searchQuery.length > 15 ? '...' : ''}
-                <X className="w-2.5 h-2.5" />
-              </button>
-            )}
-          </div>
-        )}
       </Container>
     </div>
   );
 };
 
-// Quick Categories - More Compact
+// Quick Categories
 const QuickCategories = ({ categories, selectedCategory, onCategoryChange }: {
   categories: Category[];
   selectedCategory: string;
@@ -231,14 +200,20 @@ const ArticlesGrid = ({
   posts, 
   isLoading,
   searchQuery,
-  categoryName 
+  categoryName,
+  hasMore,
+  onLoadMore,
+  isLoadMoreLoading
 }: { 
   posts: WordPressPost[];
   isLoading: boolean;
   searchQuery: string;
   categoryName: string;
+  hasMore: boolean;
+  onLoadMore: () => void;
+  isLoadMoreLoading: boolean;
 }) => {
-  if (isLoading) {
+  if (isLoading && posts.length === 0) {
     return (
       <div className="bg-white py-4">
         <Container>
@@ -252,7 +227,7 @@ const ArticlesGrid = ({
     );
   }
 
-  if (posts.length === 0) {
+  if (posts.length === 0 && !isLoading) {
     return (
       <div className="bg-white">
         <Container>
@@ -283,6 +258,7 @@ const ArticlesGrid = ({
             {categoryName && categoryName !== 'all' && (
               <> in <span className="font-semibold text-gray-900">{categoryName}</span></>
             )}
+            {hasMore && <span className="ml-1 text-gray-400">(showing partial results)</span>}
           </p>
         </div>
 
@@ -294,14 +270,23 @@ const ArticlesGrid = ({
         </div>
 
         {/* Load More */}
-        {posts.length >= 24 && (
-          <div className="text-center mt-6">
+        {hasMore && (
+          <div className="text-center mt-8 mb-4">
             <Button 
+              onClick={onLoadMore}
+              disabled={isLoadMoreLoading}
               size="sm"
               variant="outline"
-              className="border border-gray-300 hover:border-black hover:bg-black hover:text-white font-semibold px-5 text-xs"
+              className="border border-gray-300 hover:border-black hover:bg-black hover:text-white font-semibold px-8 py-2 text-xs h-9 min-w-[120px]"
             >
-              Load More
+              {isLoadMoreLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                'Load More Articles'
+              )}
             </Button>
           </div>
         )}
@@ -350,20 +335,32 @@ export default function BlogsPage() {
   const [posts, setPosts] = useState<WordPressPost[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Pagination State
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
+  
+  // Filters
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Initial Data Fetch
   useEffect(() => {
-    async function fetchData() {
+    async function fetchInitialData() {
+      setIsLoading(true);
       try {
         const [postsRes, categoriesRes] = await Promise.all([
-          fetch(`${WP_API_URL}/posts?_embed&per_page=24`),
+          fetch(`${WP_API_URL}/posts?_embed&per_page=12&page=1`),
           fetch(`${WP_API_URL}/categories?per_page=20&orderby=count&order=desc`)
         ]);
 
         if (postsRes.ok) {
           const postsData = await postsRes.json();
+          const totalPages = parseInt(postsRes.headers.get('X-WP-TotalPages') || '1');
+          
           setPosts(postsData);
+          setHasMore(1 < totalPages);
         }
 
         if (categoriesRes.ok) {
@@ -379,31 +376,111 @@ export default function BlogsPage() {
       }
     }
 
-    fetchData();
+    fetchInitialData();
   }, []);
 
-  const filteredPosts = posts.filter(post => {
-    const categoryMatch = selectedCategory === 'all' || 
-      post.categories.some(catId => {
-        const category = categories.find(c => c.id === catId);
-        return category?.slug === selectedCategory;
-      });
+  // Filter Logic (Runs when category/search changes)
+  // Note: For true scalability, search/filter should be server-side. 
+  // This client-side filter works best if you fetch ALL posts, but with pagination we usually reset.
+  // Here, I am resetting pagination and re-fetching from server when filters change.
+  useEffect(() => {
+    if (isLoading) return; // Skip initial load
 
-    const searchMatch = !searchQuery || 
-      post.title.rendered.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.rendered.toLowerCase().includes(searchQuery.toLowerCase());
+    const fetchFilteredData = async () => {
+      setIsLoading(true);
+      setPage(1);
+      setPosts([]); // Clear current posts
+      
+      let url = `${WP_API_URL}/posts?_embed&per_page=12&page=1`;
+      
+      if (searchQuery) {
+        url += `&search=${encodeURIComponent(searchQuery)}`;
+      }
+      
+      if (selectedCategory !== 'all') {
+        const categoryId = categories.find(c => c.slug === selectedCategory)?.id;
+        if (categoryId) {
+          url += `&categories=${categoryId}`;
+        }
+      }
 
-    return categoryMatch && searchMatch;
-  });
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          const totalPages = parseInt(res.headers.get('X-WP-TotalPages') || '1');
+          
+          setPosts(data);
+          setHasMore(1 < totalPages);
+        } else {
+          setPosts([]);
+          setHasMore(false);
+        }
+      } catch (error) {
+        console.error("Filter error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // Debounce search slightly
+    const timeoutId = setTimeout(() => {
+      fetchFilteredData();
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [selectedCategory, searchQuery]);
+
+
+  // Load More Function
+  const handleLoadMore = async () => {
+    if (isLoadMoreLoading || !hasMore) return;
+
+    setIsLoadMoreLoading(true);
+    const nextPage = page + 1;
+    
+    let url = `${WP_API_URL}/posts?_embed&per_page=12&page=${nextPage}`;
+    
+    if (searchQuery) {
+      url += `&search=${encodeURIComponent(searchQuery)}`;
+    }
+    
+    if (selectedCategory !== 'all') {
+      const categoryId = categories.find(c => c.slug === selectedCategory)?.id;
+      if (categoryId) {
+        url += `&categories=${categoryId}`;
+      }
+    }
+
+    try {
+      const res = await fetch(url);
+      if (res.ok) {
+        const newPosts = await res.json();
+        const totalPages = parseInt(res.headers.get('X-WP-TotalPages') || '1');
+        
+        setPosts(prev => [...prev, ...newPosts]);
+        setPage(nextPage);
+        setHasMore(nextPage < totalPages);
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Error loading more:', error);
+    } finally {
+      setIsLoadMoreLoading(false);
+    }
+  };
+
 
   const categoryName = selectedCategory === 'all' 
-    ? 'all' 
+    ? 'All Categories' 
     : categories.find(c => c.slug === selectedCategory)?.name || '';
+
 
   return (
     <>
       <CompactHeader 
-        totalPosts={posts.length}
+        totalPosts={posts.length} // Note: This shows currently loaded count, not total DB count
         categories={categories}
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
@@ -418,10 +495,13 @@ export default function BlogsPage() {
       />
       
       <ArticlesGrid 
-        posts={filteredPosts}
+        posts={posts}
         isLoading={isLoading}
         searchQuery={searchQuery}
         categoryName={categoryName}
+        hasMore={hasMore}
+        onLoadMore={handleLoadMore}
+        isLoadMoreLoading={isLoadMoreLoading}
       />
       
       <NewsletterCTA />

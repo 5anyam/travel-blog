@@ -1,20 +1,20 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { 
   ArrowRight, ChevronRight, ChevronLeft,
   Clock, MapPin, Search, 
-  TrendingUp, Star
+  TrendingUp, Star, Globe, Plane, ShieldCheck, Wallet, Calendar, Menu
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { BlogCard } from "@/components/BlogCard";
-import { BlogCardSkeleton } from "@/components/BlogCardSkeleton";
 import { LatestPostsGrid } from "@/components/LatestPostsGrid";
 import { useState, useEffect } from "react";
 
 const WP_API_URL = 'https://cms.clubmytrip.com/wp-json/wp/v2';
 
+// ... (Interfaces remain the same)
 interface WordPressPost {
   id: number;
   date: string;
@@ -26,7 +26,6 @@ interface WordPressPost {
   _embedded?: {
     'wp:featuredmedia'?: Array<{ source_url: string; alt_text: string }>;
     author?: Array<{ name: string; avatar_urls?: { '96': string } }>;
-    'wp:term'?: Array<Array<{ id: number; name: string; slug: string }>>;
   };
 }
 
@@ -37,18 +36,9 @@ interface Category {
   count: number;
 }
 
-interface BannerSlide {
-  id: number;
-  image: string;
-  title: string;
-  link: string;
-  isExternal: boolean;
-}
-
-// Search Section
-const SearchSection = () => {
+// 1. IMMERSIVE HERO SECTION (Mobile Optimized)
+const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,566 +48,269 @@ const SearchSection = () => {
   };
 
   return (
-    <Section className="relative bg-gray-900 overflow-hidden">
+    <div className="relative h-[90vh] min-h-[600px] w-full overflow-hidden">
+      {/* Background with Mobile Optimization */}
       <div className="absolute inset-0">
         <img 
-          src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&q=80"
+          src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=2070&auto=format&fit=crop"
           alt="Travel Background"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover scale-105 animate-slow-zoom"
         />
-        <div className="absolute inset-0 bg-black/60"></div>
+        {/* Darker gradient on mobile for better text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/90 md:to-black/80" />
       </div>
 
-      <Container className="relative z-10">
-        <div className="max-w-3xl mx-auto py-16 lg:py-20">
-          <h2 className="text-3xl lg:text-5xl font-bold text-white mb-4 text-center">
-            Discover Your Next Adventure
-          </h2>
-          <p className="text-gray-200 text-lg text-center mb-8">
-            Search from thousands of travel guides, tips, and destination reviews
+      <Container className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4">
+        <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 animate-fade-in-up">
+          
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-xs md:text-sm font-medium tracking-wide">
+            <Globe className="w-3 h-3 md:w-4 md:h-4 text-emerald-400" />
+            <span>Explore the world with confidence</span>
+          </div>
+          
+          {/* Main Title - Responsive sizing */}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white tracking-tight leading-[1.1] drop-shadow-2xl">
+            FIND YOUR <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
+              NEXT ESCAPE
+            </span>
+          </h1>
+
+          <p className="text-base sm:text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto font-light leading-relaxed px-4">
+            Curated guides, expert tips, and hidden gems for the modern explorer.
           </p>
           
-          <form onSubmit={handleSearch} className="relative">
-            <div className={`flex items-center border-2 ${isFocused ? 'border-white' : 'border-white/30'} transition-colors bg-white`}>
-              <Search className="w-5 h-5 text-gray-400 ml-4" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                placeholder="Search destinations, travel tips, guides..."
-                className="flex-1 px-4 py-4 text-gray-900 focus:outline-none"
-              />
-              <Button 
-                type="submit"
-                className="bg-black hover:bg-gray-800 text-white px-8 m-1 font-semibold"
-              >
-                Search
-              </Button>
+          {/* Search Bar - Mobile Stacked */}
+          <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto w-full mt-8 px-2">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 hidden md:block"></div>
+              <div className="relative flex flex-col md:flex-row items-center bg-white/95 md:bg-white rounded-2xl md:rounded-full p-2 shadow-2xl gap-2">
+                <div className="flex items-center w-full px-2">
+                  <Search className="w-5 h-5 text-gray-400 ml-2" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Where to?"
+                    className="flex-1 px-3 py-3 md:py-4 text-gray-900 text-base md:text-lg placeholder:text-gray-500 focus:outline-none bg-transparent"
+                  />
+                </div>
+                <Button 
+                  type="submit"
+                  size="lg"
+                  className="w-full md:w-auto rounded-xl md:rounded-full bg-black hover:bg-gray-800 text-white px-8 h-12 md:h-14 text-base md:text-lg font-semibold transition-all active:scale-95"
+                >
+                  Search
+                </Button>
+              </div>
+            </div>
+            
+            {/* Quick Chips - Horizontally Scrollable on Mobile */}
+            <div className="flex overflow-x-auto pb-4 md:pb-0 justify-start md:justify-center gap-3 mt-6 px-2 no-scrollbar snap-x">
+              {['🏝️ Bali', '🏔️ Swiss Alps', '🕌 Dubai', '🎒 Solo', '💰 Budget'].map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => window.location.href=`/blogs?search=${encodeURIComponent(tag.replace(/[^a-zA-Z ]/g, ""))}`}
+                  className="snap-start flex-shrink-0 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/10 text-white text-sm transition-all active:scale-95 whitespace-nowrap"
+                >
+                  {tag}
+                </button>
+              ))}
             </div>
           </form>
-
-          <div className="mt-6 flex flex-wrap gap-2 justify-center">
-            <span className="text-sm text-gray-300">Popular:</span>
-            {['Bali', 'Thailand', 'Europe', 'Budget Travel', 'Solo Travel'].map((term) => (
-              <Link
-                key={term}
-                href={`/blogs?search=${encodeURIComponent(term)}`}
-                className="text-sm px-3 py-1 border border-white/30 hover:border-white hover:bg-white hover:text-black text-white transition-all"
-              >
-                {term}
-              </Link>
-            ))}
-          </div>
         </div>
-      </Container>
-    </Section>
-  );
-};
 
-// Banner Slider
-const BannerSlider = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [banners] = useState<BannerSlide[]>([
-    {
-      id: 1,
-      image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200',
-      title: 'Exclusive Travel Deals',
-      link: 'https://example.com/deals',
-      isExternal: true
-    },
-    {
-      id: 2,
-      image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200',
-      title: 'Best Hotels Worldwide',
-      link: 'https://example.com/hotels',
-      isExternal: true
-    },
-    {
-      id: 3,
-      image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200',
-      title: 'Flight Booking Offers',
-      link: 'https://example.com/flights',
-      isExternal: true
-    }
-  ]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [banners.length]);
-
-  const goToPrevious = () => {
-    setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
-  };
-
-  const goToNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % banners.length);
-  };
-
-  return (
-    <Section className="bg-white">
-      <Container>
-        <div className="relative overflow-hidden bg-gray-100 border-2 border-gray-200">
-          <div 
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {banners.map((banner) => (
-              <div key={banner.id} className="w-full flex-shrink-0 relative">
-                <a 
-                  href={banner.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block cursor-pointer"
-                >
-                  <div className="relative aspect-[21/9] lg:aspect-[21/6] group">
-                    <img 
-                      src={banner.image}
-                      alt={banner.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <h3 className="text-3xl lg:text-5xl font-bold">
-                          {banner.title}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            ))}
-          </div>
-
-          <button
-            onClick={goToPrevious}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white border-2 border-gray-200 flex items-center justify-center transition-all z-10"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          
-          <button
-            onClick={goToNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white border-2 border-gray-200 flex items-center justify-center transition-all z-10"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-            {banners.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-2 h-2 transition-all ${
-                  index === currentSlide ? 'bg-white w-8' : 'bg-white/50'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-      </Container>
-    </Section>
-  );
-};
-
-// Category Bar
-const CategoryBar = ({ 
-  categories, 
-  activeCategory, 
-  onSelectCategory 
-}: {
-  categories: Category[];
-  activeCategory: number | null;
-  onSelectCategory: (id: number | null) => void;
-}) => {
-  return (
-    <div className="bg-white border-t border-b-2 border-gray-200 sticky top-0 z-40">
-      <Container>
-        <div className="flex items-center gap-1 overflow-x-auto py-4 scrollbar-hide">
-          <button
-            onClick={() => onSelectCategory(null)}
-            className={`px-6 py-2 text-sm font-semibold whitespace-nowrap transition-colors ${
-              activeCategory === null
-                ? 'text-black border-b-2 border-black'
-                : 'text-gray-500 hover:text-gray-900'
-            }`}
-          >
-            All Articles
-          </button>
-          {categories.slice(0, 10).map((category) => (
-            <button
-              key={category.id}
-              onClick={() => onSelectCategory(category.id)}
-              className={`px-6 py-2 text-sm font-semibold whitespace-nowrap transition-colors ${
-                activeCategory === category.id
-                  ? 'text-black border-b-2 border-black'
-                  : 'text-gray-500 hover:text-gray-900'
-              }`}
-            >
-              {category.name}
-            </button>
-          ))}
+        {/* Stats - Grid on Mobile */}
+        <div className="absolute bottom-6 left-4 right-4 md:left-0 md:right-0 flex justify-between md:justify-center gap-4 md:gap-12 text-white/80 border-t border-white/10 pt-6 max-w-5xl mx-auto">
+           <div className="text-center flex-1 md:flex-none">
+             <div className="text-2xl md:text-3xl font-bold text-white">500+</div>
+             <div className="text-[10px] md:text-xs uppercase tracking-wider opacity-80">Destinations</div>
+           </div>
+           <div className="w-px h-10 bg-white/20"></div>
+           <div className="text-center flex-1 md:flex-none">
+             <div className="text-2xl md:text-3xl font-bold text-white">50k+</div>
+             <div className="text-[10px] md:text-xs uppercase tracking-wider opacity-80">Travelers</div>
+           </div>
+           <div className="w-px h-10 bg-white/20 hidden md:block"></div>
+           <div className="text-center flex-1 md:flex-none hidden md:block">
+             <div className="text-3xl font-bold text-white">100%</div>
+             <div className="text-xs uppercase tracking-wider opacity-80">Authentic</div>
+           </div>
         </div>
       </Container>
     </div>
   );
 };
 
-// Featured Hero
-const FeaturedHero = ({ post }: { post: WordPressPost | null }) => {
-  if (!post) return null;
-
-  const stripHtml = (html: string): string => {
-    return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
-  };
-
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
-  const getReadTime = (content: string): number => {
-    const text = content.replace(/<[^>]*>/g, '');
-    const words = text.split(/\s+/).length;
-    return Math.max(1, Math.ceil(words / 200));
-  };
+// 2. VISUAL FEATURES (Horizontal Scroll on Mobile)
+const VisualFeatures = () => {
+  const features = [
+    { icon: <ShieldCheck className="w-6 h-6 md:w-8 md:h-8" />, title: "Verified Guides", desc: "Expert vetted destinations." },
+    { icon: <Wallet className="w-6 h-6 md:w-8 md:h-8" />, title: "Budget Hacks", desc: "Save money traveling." },
+    { icon: <MapPin className="w-6 h-6 md:w-8 md:h-8" />, title: "Hidden Gems", desc: "Beyond tourist traps." },
+    { icon: <Calendar className="w-6 h-6 md:w-8 md:h-8" />, title: "Smart Plans", desc: "Day-by-day itineraries." },
+  ];
 
   return (
-    <Section className="bg-white">
+    <Section className="py-12 md:py-20 bg-white border-b border-gray-100">
       <Container>
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="order-2 lg:order-1">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white text-xs font-bold tracking-wide uppercase mb-6">
-              <Star className="w-3 h-3" />
-              Featured Story
-            </div>
-            
-            <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-              {post.title.rendered}
-            </h2>
-            
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              {stripHtml(post.excerpt.rendered).substring(0, 200)}...
-            </p>
-            
-            <div className="flex items-center gap-6 mb-8 text-sm text-gray-500">
-              {post._embedded?.author?.[0]?.name && (
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-gray-200 flex items-center justify-center font-bold text-gray-700">
-                    {post._embedded.author[0].name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900">
-                      {post._embedded.author[0].name}
-                    </div>
-                    <div className="text-xs">{formatDate(post.date)}</div>
-                  </div>
-                </div>
-              )}
-              <span className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                {getReadTime(post.content.rendered)} min read
-              </span>
-            </div>
-            
-            <Button 
-              size="lg" 
-              asChild 
-              className="bg-black hover:bg-gray-800 text-white px-8 py-6 text-base"
-            >
-              <Link href={`/blogs/${post.slug}`}>
-                Read Full Article
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          </div>
-
-          <div className="order-1 lg:order-2">
-            <Link href={`/blogs/${post.slug}`}>
-              <div className="relative aspect-[4/5] overflow-hidden border-2 border-gray-200 hover:border-black transition-all">
-                {post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
-                  <img 
-                    src={post._embedded['wp:featuredmedia'][0].source_url}
-                    alt={post.title.rendered}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                    <MapPin className="w-24 h-24 text-gray-300" />
-                  </div>
-                )}
+         {/* Grid on Desktop, Horizontal Scroll on Mobile */}
+         <div className="flex overflow-x-auto pb-6 md:pb-0 md:grid md:grid-cols-4 gap-4 md:gap-8 snap-x no-scrollbar">
+            {features.map((f, i) => (
+              <div key={i} className="snap-start min-w-[240px] md:min-w-0 flex flex-col items-center text-center p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:border-emerald-200 transition-all duration-300">
+                 <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4 md:mb-6">
+                    {f.icon}
+                 </div>
+                 <h3 className="text-base md:text-lg font-bold text-gray-900 mb-1 md:mb-2">{f.title}</h3>
+                 <p className="text-gray-500 text-xs md:text-sm leading-relaxed">{f.desc}</p>
               </div>
-            </Link>
-          </div>
-        </div>
+            ))}
+         </div>
       </Container>
     </Section>
   );
 };
 
-// Trending Grid
-const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
-  if (posts.length < 3) return null;
+// 3. BENTO GRID CATEGORIES (Responsive Layout)
+const BentoCategories = ({ categories }: { categories: Category[] }) => {
+  if (!categories.length) return null;
+
+  const featuredCats = categories.slice(0, 4);
 
   return (
-    <Section className="bg-gray-50 border-y-2 border-gray-200">
+    <Section className="bg-gray-50 py-12 md:py-24">
       <Container>
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 flex items-center gap-3">
-            <TrendingUp className="w-7 h-7" />
-            Trending Stories
-          </h2>
-          <Link 
-            href="/blogs?filter=trending"
-            className="text-sm font-semibold text-gray-900 hover:underline flex items-center gap-1"
-          >
-            View All
-            <ChevronRight className="w-4 h-4" />
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 gap-4">
+          <div>
+            <span className="text-emerald-600 font-bold tracking-wider uppercase text-xs md:text-sm">Browse by Interest</span>
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mt-2">Curated Collections</h2>
+          </div>
+          <Link href="/categories" className="flex items-center gap-2 text-sm text-gray-600 hover:text-black font-medium transition-colors">
+            View All <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {posts.slice(0, 3).map((post) => (
-            <BlogCard key={post.id} post={post} />
-          ))}
-        </div>
-      </Container>
-    </Section>
-  );
-};
-
-// Ad Banner
-const AdBanner = ({ size = 'horizontal' }: { size?: 'horizontal' | 'square' }) => {
-  return (
-    <Section className="bg-white">
-      <Container>
-        <div className="max-w-5xl mx-auto">
-          <div className={`bg-gray-50 border-2 border-dashed border-gray-300 flex items-center justify-center ${
-            size === 'horizontal' ? 'aspect-[728/90]' : 'aspect-square max-w-md mx-auto'
-          }`}>
-            <div className="text-center">
-              <p className="text-gray-400 text-sm font-semibold tracking-wide uppercase">
-                Advertisement
-              </p>
-              <p className="text-gray-300 text-xs mt-1">
-                {size === 'horizontal' ? '728 x 90' : '300 x 300'}
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:h-[400px]">
+          {/* Main Large Card - Full width on mobile */}
+          <Link href={`/blogs?category=${featuredCats[0]?.slug}`} className="group relative col-span-1 md:col-span-2 row-span-2 rounded-2xl overflow-hidden shadow-sm h-[300px] md:h-auto">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
+            <img 
+              src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80" 
+              alt={featuredCats[0]?.name}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+            />
+            <div className="absolute bottom-0 left-0 p-6 md:p-8 z-20">
+              <span className="px-3 py-1 bg-white text-black text-[10px] md:text-xs font-bold rounded-full mb-3 inline-block">Most Popular</span>
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{featuredCats[0]?.name}</h3>
+              <p className="text-white/90 text-xs md:text-sm max-w-xs line-clamp-2">Explore our most comprehensive guides and hidden gems.</p>
             </div>
-          </div>
-        </div>
-      </Container>
-    </Section>
-  );
-};
+          </Link>
 
-// Popular Destinations
-const PopularDestinations = ({ categories }: { categories: Category[] }) => {
-  return (
-    <Section className="bg-white border-y-2 border-gray-200">
-      <Container>
-        <div className="mb-10">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
-            Popular Destinations
-          </h2>
-          <p className="text-lg text-gray-600">
-            Explore our most-read travel guides by destination
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {categories.slice(0, 10).map((category) => (
-            <Link
-              key={category.id}
-              href={`/blogs?category=${category.slug}`}
-              className="group p-6 border-2 border-gray-200 hover:border-black hover:bg-black hover:text-white transition-all text-center"
-            >
-              <div className="font-bold text-lg mb-1 group-hover:underline">
-                {category.name}
-              </div>
-              <div className="text-sm opacity-75">
-                {category.count} {category.count === 1 ? 'guide' : 'guides'}
-              </div>
+          {/* Secondary Cards */}
+          {featuredCats.slice(1).map((cat, idx) => (
+            <Link key={cat.id} href={`/blogs?category=${cat.slug}`} className={`group relative rounded-2xl overflow-hidden shadow-sm h-[200px] md:h-auto ${idx === 2 ? 'md:col-span-2 lg:col-span-1' : ''}`}>
+               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
+               <img 
+                 src={`https://source.unsplash.com/random/400x400/?${cat.slug},travel`} 
+                 onError={(e) => e.currentTarget.src = "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400"}
+                 alt={cat.name}
+                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+               />
+               <div className="absolute bottom-0 left-0 p-4 md:p-6 z-20">
+                 <h3 className="text-lg md:text-xl font-bold text-white">{cat.name}</h3>
+                 <span className="text-white/80 text-xs">{cat.count} Articles</span>
+               </div>
             </Link>
           ))}
         </div>
-
-        <div className="text-center mt-10">
-          <Button 
-            size="lg" 
-            variant="outline" 
-            asChild
-            className="border-2 border-black text-black hover:bg-black hover:text-white font-semibold"
-          >
-            <Link href="/categories">
-              View All Destinations
-              <ArrowRight className="ml-2" />
-            </Link>
-          </Button>
-        </div>
       </Container>
     </Section>
   );
 };
 
-// Newsletter
-const NewsletterSection = () => {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Newsletter signup:', email);
-    setSubscribed(true);
-    setEmail('');
-    setTimeout(() => setSubscribed(false), 3000);
-  };
+// 4. MAGAZINE FEATURED (Mobile Stacked Layout)
+const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
+  if (!post) return null;
+  const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
 
   return (
-    <Section className="bg-black text-white">
-      <Container>
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl lg:text-5xl font-bold mb-4">
-            Never Miss a Story
-          </h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Get the latest travel insights, destination guides, and exclusive tips delivered weekly.
-          </p>
-          
-          {subscribed ? (
-            <div className="bg-white text-black px-8 py-4 inline-block text-lg font-semibold">
-              ✓ Successfully subscribed! Check your email.
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="flex-1 px-6 py-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-white border-2 border-white"
-                  placeholder="Your email address"
-                />
-                <Button 
-                  type="submit"
-                  size="lg"
-                  className="bg-white text-black hover:bg-gray-200 font-bold px-8"
-                >
-                  Subscribe Free
-                </Button>
-              </div>
-              <p className="text-sm text-gray-400 mt-4">
-                Join 50,000+ travelers. No spam, unsubscribe anytime.
-              </p>
-            </form>
-          )}
-        </div>
-      </Container>
+    <Section className="bg-[#111] text-white py-16 lg:py-32 relative overflow-hidden">
+        {/* Background blobs (reduced opacity for mobile) */}
+        <div className="absolute top-0 right-0 w-[300px] lg:w-[500px] h-[300px] lg:h-[500px] bg-emerald-900/20 rounded-full blur-[80px] lg:blur-[120px] pointer-events-none" />
+        
+        <Container className="relative z-10">
+          <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+             
+             {/* Text Content */}
+             <div className="lg:col-span-5 space-y-6 md:space-y-8">
+                <div className="flex items-center gap-3 text-emerald-400 font-bold tracking-widest uppercase text-xs">
+                  <span className="w-8 h-[2px] bg-emerald-400"></span>
+                  Editors Choice
+                </div>
+                
+                <h2 className="text-3xl md:text-5xl font-serif font-bold leading-tight">
+                  {post.title.rendered}
+                </h2>
+                
+                <p className="text-gray-400 text-base md:text-lg leading-relaxed line-clamp-4">
+                  {stripHtml(post.excerpt.rendered)}
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                   <Button asChild size="lg" className="w-full sm:w-auto bg-white text-black hover:bg-gray-200 rounded-full h-12">
+                      <Link href={`/${post.slug}`}>Read Article</Link>
+                   </Button>
+                   <Button variant="outline" asChild size="lg" className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10 rounded-full h-12">
+                      <Link href="/blogs">View All</Link>
+                   </Button>
+                </div>
+             </div>
+
+             {/* Image Content */}
+             <div className="lg:col-span-7 w-full relative group">
+                <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                   {post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
+                      <img 
+                        src={post._embedded['wp:featuredmedia'][0].source_url} 
+                        alt={post.title.rendered}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                   ) : (
+                      <div className="w-full h-full bg-gray-800 flex items-center justify-center">No Image</div>
+                   )}
+                   
+                   {/* Mobile Overlay only */}
+                   <div className="lg:hidden absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 to-transparent">
+                      <div className="text-white text-xs font-medium">Featured Story</div>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </Container>
     </Section>
   );
 };
 
-// About Section
-const AboutClubMyTrip = () => {
+// 5. BANNER (Responsive Placeholder)
+const ModernBannerSlider = () => {
   return (
-    <Section className="bg-gray-50">
+    <div className="py-8 md:py-12 bg-white">
       <Container>
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              About ClubMyTrip
-            </h2>
-            <div className="w-16 h-1 bg-black mx-auto mb-6"></div>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Our Mission</h3>
-              <p className="text-gray-700 leading-relaxed mb-6">
-                ClubMyTrip is your trusted travel companion, dedicated to helping travelers 
-                discover amazing destinations, authentic experiences, and insider tips from 
-                around the world. We believe travel changes lives and opens minds.
-              </p>
-              
-              <h3 className="text-xl font-bold text-gray-900 mb-4">What We Offer</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="font-bold">•</span>
-                  Comprehensive destination guides and itineraries
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="font-bold">•</span>
-                  Honest reviews and travel recommendations
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="font-bold">•</span>
-                  Budget tips and money-saving strategies
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="font-bold">•</span>
-                  Safety advice and travel hacks
-                </li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Why Trust Us</h3>
-              <p className="text-gray-700 leading-relaxed mb-6">
-                Our content is created by experienced travelers who have visited the destinations 
-                they write about. We provide honest, practical advice based on real experiences, 
-                not just internet research.
-              </p>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="border-2 border-gray-200 p-4 text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-1">50K+</div>
-                  <div className="text-sm text-gray-600">Monthly Readers</div>
-                </div>
-                <div className="border-2 border-gray-200 p-4 text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-1">500+</div>
-                  <div className="text-sm text-gray-600">Travel Guides</div>
-                </div>
-                <div className="border-2 border-gray-200 p-4 text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-1">100+</div>
-                  <div className="text-sm text-gray-600">Countries Covered</div>
-                </div>
-                <div className="border-2 border-gray-200 p-4 text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-1">5 Years</div>
-                  <div className="text-sm text-gray-600">Experience</div>
-                </div>
-              </div>
-              
-              <Button size="lg" asChild className="w-full bg-black hover:bg-gray-800">
-                <Link href="/about">
-                  Learn More About Us
-                  <ArrowRight className="ml-2" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
+         <div className="w-full h-32 md:h-48 bg-gray-100 rounded-xl md:rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-300 text-gray-400 text-sm md:text-base">
+            Dynamic Banner Slider Area
+         </div>
       </Container>
-    </Section>
+    </div>
   );
 };
 
-// Main Component
+// MAIN COMPONENT
 export default function HomePage() {
   const [featuredPosts, setFeaturedPosts] = useState<WordPressPost[]>([]);
   const [allPosts, setAllPosts] = useState<WordPressPost[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -625,71 +318,65 @@ export default function HomePage() {
       try {
         const [featuredRes, postsRes, categoriesRes] = await Promise.all([
           fetch(`${WP_API_URL}/posts?_embed&per_page=6&orderby=date`),
-          fetch(`${WP_API_URL}/posts?_embed&per_page=15&orderby=date`),
-          fetch(`${WP_API_URL}/categories?per_page=20&orderby=count&order=desc`)
+          fetch(`${WP_API_URL}/posts?_embed&per_page=12&orderby=date`),
+          fetch(`${WP_API_URL}/categories?per_page=8&orderby=count&order=desc`)
         ]);
 
-        if (featuredRes.ok) {
-          const featured = await featuredRes.json();
-          setFeaturedPosts(featured);
-        }
-
-        if (postsRes.ok) {
-          const posts = await postsRes.json();
-          setAllPosts(posts);
-        }
-
+        if (featuredRes.ok) setFeaturedPosts(await featuredRes.json());
+        if (postsRes.ok) setAllPosts(await postsRes.json());
         if (categoriesRes.ok) {
           const cats = await categoriesRes.json();
-          setCategories(cats.filter((cat: Category) => 
-            cat.count > 0 && cat.slug !== 'uncategorized'
-          ));
+          setCategories(cats.filter((c: Category) => c.count > 0 && c.slug !== 'uncategorized'));
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
     }
-
     fetchData();
   }, []);
 
-  const filteredPosts = activeCategory 
-    ? allPosts.filter(post => post.categories.includes(activeCategory))
-    : allPosts;
-
   return (
-    <>
-      <SearchSection />
-      <BannerSlider />
-      <CategoryBar 
-        categories={categories}
-        activeCategory={activeCategory}
-        onSelectCategory={setActiveCategory}
-      />
-      <FeaturedHero post={featuredPosts[0] || null} />
-      <AdBanner size="horizontal" />
-      <TrendingGrid posts={featuredPosts.slice(1, 4)} />
+    <div className="bg-white">
+      <HeroSection />
+      
+      <VisualFeatures />
 
-      {/* Using LatestPostsGrid Component */}
-      <Section className="bg-white">
+      <BentoCategories categories={categories} />
+
+      <MagazineFeatured post={featuredPosts[0]} />
+
+      <Section className="bg-white pt-16 md:pt-20">
         <Container>
-          <LatestPostsGrid 
-            posts={filteredPosts}
-            isLoading={isLoading}
-            title="Latest Travel Stories"
-            showViewAll={true}
-            viewAllLink="/blogs"
-          />
+          <div className="flex items-center justify-between mb-8 border-b border-gray-100 pb-4">
+             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Trending Now</h2>
+             <Link href="/blogs?filter=trending" className="text-emerald-600 text-sm font-semibold hover:underline">View All</Link>
+          </div>
+          {/* Scrollable on mobile, grid on desktop */}
+          <div className="flex overflow-x-auto pb-6 md:pb-0 md:grid md:grid-cols-3 gap-6 snap-x no-scrollbar">
+             {featuredPosts.slice(1, 4).map(post => (
+               <div key={post.id} className="snap-start min-w-[280px] md:min-w-0">
+                 <BlogCard post={post} />
+               </div>
+             ))}
+          </div>
         </Container>
       </Section>
 
-      <AdBanner size="horizontal" />
-      <PopularDestinations categories={categories} />
-      <NewsletterSection />
-      <AboutClubMyTrip />
-      <AdBanner size="square" />
-    </>
+      <ModernBannerSlider />
+
+      <Section className="bg-gray-50 py-16 md:py-20">
+        <Container>
+           <LatestPostsGrid 
+             posts={allPosts}
+             isLoading={isLoading}
+             title="Latest Stories"
+             showViewAll={true}
+             viewAllLink="/blogs"
+           />
+        </Container>
+      </Section>
+    </div>
   );
 }
