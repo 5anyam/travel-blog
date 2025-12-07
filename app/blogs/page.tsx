@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { BlogCard } from "@/components/BlogCard";
 import { BlogCardSkeleton } from "@/components/BlogCardSkeleton";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 const WP_API_URL = 'https://cms.clubmytrip.com/wp-json/wp/v2';
 
@@ -22,6 +23,7 @@ interface WordPressPost {
   _embedded?: {
     'wp:featuredmedia'?: Array<{ source_url: string; alt_text: string }>;
     author?: Array<{ name: string }>;
+    'wp:term'?: Array<Array<{ id: number; name: string; slug: string }>>;
   };
 }
 
@@ -34,7 +36,7 @@ interface Category {
 
 // 1. Header with TOTAL COUNT
 const CompactHeader = ({ 
-  totalPostsCount, // Changed prop name to be clear
+  totalPostsCount, 
   categories,
   selectedCategory,
   onCategoryChange,
@@ -61,7 +63,6 @@ const CompactHeader = ({
                 <span className="text-[10px] text-gray-400">/</span>
                 <span className="text-[10px] text-gray-600 font-semibold">Articles</span>
               </div>
-              {/* ✅ SHOWING TOTAL COUNT HERE */}
               <h1 className="text-base lg:text-lg font-bold text-gray-900">
                 Travel Articles <span className="text-xs font-normal text-gray-500">({totalPostsCount})</span>
               </h1>
@@ -130,7 +131,7 @@ const CompactHeader = ({
   );
 };
 
-// ... (QuickCategories Component remains the same)
+// ... (QuickCategories remains same)
 const QuickCategories = ({ categories, selectedCategory, onCategoryChange }: {
   categories: Category[];
   selectedCategory: string;
@@ -171,10 +172,10 @@ const QuickCategories = ({ categories, selectedCategory, onCategoryChange }: {
   );
 };
 
-// Articles Grid - Shows Loaded vs Total
+// ... (ArticlesGrid remains same)
 const ArticlesGrid = ({ 
   posts, 
-  totalCount, // Added prop
+  totalCount, 
   isLoading,
   searchQuery,
   categoryName,
@@ -209,7 +210,11 @@ const ArticlesGrid = ({
         <Container>
           <div className="text-center py-12">
             <h3 className="text-base font-bold text-gray-900 mb-1">No Articles Found</h3>
-            <p className="text-xs text-gray-600 mb-4">No results for {searchQuery}</p>
+            <p className="text-xs text-gray-600 mb-4">
+              {searchQuery 
+                ? `No results for "${searchQuery}"` 
+                : 'Try adjusting your filters'}
+            </p>
             <Button asChild size="sm" className="bg-black hover:bg-gray-800 text-xs">
               <Link href="/blogs">View All</Link>
             </Button>
@@ -222,24 +227,24 @@ const ArticlesGrid = ({
   return (
     <div className="bg-white py-4">
       <Container>
-        {/* Results Counter - Shows "Showing X of Y" */}
         <div className="mb-3 pb-2 border-b border-gray-200">
           <p className="text-[11px] text-gray-600">
             Showing <span className="font-semibold text-gray-900">{posts.length}</span> of <span className="font-semibold text-gray-900">{totalCount}</span> results
             {categoryName && categoryName !== 'all' && (
               <> in <span className="font-semibold text-gray-900">{categoryName}</span></>
             )}
+            {searchQuery && (
+              <> for <span className="font-semibold text-gray-900">{searchQuery}</span></>
+            )}
           </p>
         </div>
 
-        {/* Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {posts.map((post) => (
             <BlogCard key={post.id} post={post} />
           ))}
         </div>
 
-        {/* Load More */}
         {hasMore && (
           <div className="text-center mt-8 mb-4">
             <Button 
@@ -265,7 +270,7 @@ const ArticlesGrid = ({
   );
 };
 
-// ... (NewsletterCTA remains the same)
+// ... (NewsletterCTA remains same)
 const NewsletterCTA = () => {
   const [email, setEmail] = useState('');
   return (
@@ -285,90 +290,94 @@ const NewsletterCTA = () => {
   );
 };
 
-// MAIN COMPONENT
-export default function BlogsPage() {
+// 💡 NEW: BlogContent Component that uses useSearchParams
+function BlogContent() {
   const [posts, setPosts] = useState<WordPressPost[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
-  // ✅ New State for Total Count
   const [totalPostsCount, setTotalPostsCount] = useState(0);
-  
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  
+  // URL Params Hook
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  // Initial Data Fetch
+  // Initialize State from URL
+  const initialSearch = searchParams.get('search') || '';
+  const initialCategory = searchParams.get('category') || 'all';
+
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
+  // Sync state with URL if URL changes externally (optional but good practice)
   useEffect(() => {
-    async function fetchInitialData() {
-      setIsLoading(true);
-      try {
-        const [postsRes, categoriesRes] = await Promise.all([
-          fetch(`${WP_API_URL}/posts?_embed&per_page=12&page=1`),
-          fetch(`${WP_API_URL}/categories?per_page=20&orderby=count&order=desc`)
-        ]);
+    const s = searchParams.get('search') || '';
+    const c = searchParams.get('category') || 'all';
+    setSearchQuery(s);
+    setSelectedCategory(c);
+  }, [searchParams]);
 
-        if (postsRes.ok) {
-          const postsData = await postsRes.json();
-          // ✅ Fetch Total Count from Headers
-          const total = parseInt(postsRes.headers.get('X-WP-Total') || '0');
-          const totalPages = parseInt(postsRes.headers.get('X-WP-TotalPages') || '1');
-          
-          setPosts(postsData);
-          setTotalPostsCount(total);
-          setHasMore(1 < totalPages);
-        }
+  // Handle User Input Changes (Updates URL)
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    const params = new URLSearchParams(searchParams.toString());
+    if (query) params.set('search', query);
+    else params.delete('search');
+    router.replace(`/blogs?${params.toString()}`, { scroll: false });
+  };
 
-        if (categoriesRes.ok) {
-          const catsData = await categoriesRes.json();
-          setCategories(catsData.filter((cat: Category) => 
-            cat.count > 0 && cat.slug !== 'uncategorized'
-          ));
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  const handleCategoryChange = (slug: string) => {
+    setSelectedCategory(slug);
+    const params = new URLSearchParams(searchParams.toString());
+    if (slug !== 'all') params.set('category', slug);
+    else params.delete('category');
+    router.replace(`/blogs?${params.toString()}`, { scroll: false });
+  };
 
-    fetchInitialData();
-  }, []);
-
-  // Filter Logic
+  // Main Data Fetch Effect
   useEffect(() => {
-    if (isLoading) return; 
-
-    const fetchFilteredData = async () => {
+    async function fetchData() {
       setIsLoading(true);
       setPage(1);
       setPosts([]);
-      
-      let url = `${WP_API_URL}/posts?_embed&per_page=12&page=1`;
-      
-      if (searchQuery) {
-        url += `&search=${encodeURIComponent(searchQuery)}`;
-      }
-      
-      if (selectedCategory !== 'all') {
-        const categoryId = categories.find(c => c.slug === selectedCategory)?.id;
-        if (categoryId) {
-          url += `&categories=${categoryId}`;
-        }
-      }
 
       try {
+        // 1. Fetch Categories first to resolve slug to ID
+        let cats = categories;
+        if (categories.length === 0) {
+          const catRes = await fetch(`${WP_API_URL}/categories?per_page=20&orderby=count&order=desc`);
+          if (catRes.ok) {
+            const catsData = await catRes.json();
+            cats = catsData.filter((cat: Category) => cat.count > 0 && cat.slug !== 'uncategorized');
+            setCategories(cats);
+          }
+        }
+
+        // 2. Build Post URL
+        let url = `${WP_API_URL}/posts?_embed&per_page=12&page=1`;
+        
+        if (searchQuery) {
+          url += `&search=${encodeURIComponent(searchQuery)}`;
+        }
+        
+        if (selectedCategory !== 'all') {
+          const categoryId = cats.find(c => c.slug === selectedCategory)?.id;
+          if (categoryId) {
+            url += `&categories=${categoryId}`;
+          }
+        }
+
+        // 3. Fetch Posts
         const res = await fetch(url);
         if (res.ok) {
           const data = await res.json();
-          // ✅ Update Total Count based on Filter
           const total = parseInt(res.headers.get('X-WP-Total') || '0');
           const totalPages = parseInt(res.headers.get('X-WP-TotalPages') || '1');
           
           setPosts(data);
-          setTotalPostsCount(total); // Updates the "Total" at top
+          setTotalPostsCount(total);
           setHasMore(1 < totalPages);
         } else {
           setPosts([]);
@@ -376,37 +385,32 @@ export default function BlogsPage() {
           setHasMore(false);
         }
       } catch (error) {
-        console.error("Filter error:", error);
+        console.error("Fetch error:", error);
       } finally {
         setIsLoading(false);
       }
-    };
+    }
 
+    // Debounce a bit
     const timeoutId = setTimeout(() => {
-      fetchFilteredData();
-    }, 500);
+      fetchData();
+    }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [selectedCategory, searchQuery]);
+  }, [searchQuery, selectedCategory]); 
+
 
   // Load More Function
   const handleLoadMore = async () => {
     if (isLoadMoreLoading || !hasMore) return;
-
     setIsLoadMoreLoading(true);
     const nextPage = page + 1;
     
     let url = `${WP_API_URL}/posts?_embed&per_page=12&page=${nextPage}`;
-    
-    if (searchQuery) {
-      url += `&search=${encodeURIComponent(searchQuery)}`;
-    }
-    
+    if (searchQuery) url += `&search=${encodeURIComponent(searchQuery)}`;
     if (selectedCategory !== 'all') {
       const categoryId = categories.find(c => c.slug === selectedCategory)?.id;
-      if (categoryId) {
-        url += `&categories=${categoryId}`;
-      }
+      if (categoryId) url += `&categories=${categoryId}`;
     }
 
     try {
@@ -414,11 +418,9 @@ export default function BlogsPage() {
       if (res.ok) {
         const newPosts = await res.json();
         const totalPages = parseInt(res.headers.get('X-WP-TotalPages') || '1');
-        
         setPosts(prev => [...prev, ...newPosts]);
         setPage(nextPage);
         setHasMore(nextPage < totalPages);
-        // Note: We do NOT update totalPostsCount here, it stays constant for the pagination session
       } else {
         setHasMore(false);
       }
@@ -436,23 +438,23 @@ export default function BlogsPage() {
   return (
     <>
       <CompactHeader 
-        totalPostsCount={totalPostsCount} // ✅ Passes true total from DB
+        totalPostsCount={totalPostsCount}
         categories={categories}
         selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
+        onCategoryChange={handleCategoryChange} // Use new handler
         searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        onSearchChange={handleSearchChange} // Use new handler
       />
       
       <QuickCategories 
         categories={categories}
         selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
+        onCategoryChange={handleCategoryChange}
       />
       
       <ArticlesGrid 
         posts={posts}
-        totalCount={totalPostsCount} // ✅ Used for "Showing X of Y"
+        totalCount={totalPostsCount}
         isLoading={isLoading}
         searchQuery={searchQuery}
         categoryName={categoryName}
@@ -463,5 +465,18 @@ export default function BlogsPage() {
       
       <NewsletterCTA />
     </>
+  );
+}
+
+// MAIN PAGE COMPONENT (Wrapped in Suspense)
+export default function BlogsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex h-screen items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
+      </div>
+    }>
+      <BlogContent />
+    </Suspense>
   );
 }
