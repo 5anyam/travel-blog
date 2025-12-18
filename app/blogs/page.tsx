@@ -10,7 +10,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 const WP_API_URL = 'https://cms.clubmytrip.com/wp-json/wp/v2';
 
-// ... (Interfaces same as before)
 interface WordPressPost {
   id: number;
   date: string;
@@ -34,16 +33,14 @@ interface Category {
   count: number;
 }
 
-// 1. Header with TOTAL COUNT
+// 1. Header (Count Removed)
 const CompactHeader = ({ 
-  totalPostsCount, 
   categories,
   selectedCategory,
   onCategoryChange,
   searchQuery,
   onSearchChange 
 }: {
-  totalPostsCount: number;
   categories: Category[];
   selectedCategory: string;
   onCategoryChange: (slug: string) => void;
@@ -63,8 +60,9 @@ const CompactHeader = ({
                 <span className="text-[10px] text-gray-400">/</span>
                 <span className="text-[10px] text-gray-600 font-semibold">Articles</span>
               </div>
+              {/* ✅ Count Removed */}
               <h1 className="text-base lg:text-lg font-bold text-gray-900">
-                Travel Articles <span className="text-xs font-normal text-gray-500">({totalPostsCount})</span>
+                Travel Articles
               </h1>
             </div>
           </div>
@@ -117,7 +115,6 @@ const CompactHeader = ({
                         className={`w-full px-2.5 py-1.5 text-left text-xs hover:bg-gray-50 flex items-center justify-between ${selectedCategory === category.slug ? 'bg-gray-100 font-semibold' : ''}`}
                       >
                         <span className="truncate">{category.name}</span>
-                        <span className="text-gray-400 text-[10px] ml-1">{category.count}</span>
                       </button>
                     ))}
                   </div>
@@ -131,7 +128,6 @@ const CompactHeader = ({
   );
 };
 
-// ... (QuickCategories remains same)
 const QuickCategories = ({ categories, selectedCategory, onCategoryChange }: {
   categories: Category[];
   selectedCategory: string;
@@ -172,7 +168,7 @@ const QuickCategories = ({ categories, selectedCategory, onCategoryChange }: {
   );
 };
 
-// ... (ArticlesGrid remains same)
+// Articles Grid (Count Removed from "Showing X of Y")
 const ArticlesGrid = ({ 
   posts, 
   totalCount, 
@@ -227,24 +223,15 @@ const ArticlesGrid = ({
   return (
     <div className="bg-white py-4">
       <Container>
-        <div className="mb-3 pb-2 border-b border-gray-200">
-          <p className="text-[11px] text-gray-600">
-            Showing <span className="font-semibold text-gray-900">{posts.length}</span> of <span className="font-semibold text-gray-900">{totalCount}</span> results
-            {categoryName && categoryName !== 'all' && (
-              <> in <span className="font-semibold text-gray-900">{categoryName}</span></>
-            )}
-            {searchQuery && (
-              <> for <span className="font-semibold text-gray-900">{searchQuery}</span></>
-            )}
-          </p>
-        </div>
-
+        {/* ✅ Removed "Showing X of Y" Counter */}
+        
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {posts.map((post) => (
             <BlogCard key={post.id} post={post} />
           ))}
         </div>
 
+        {/* ✅ Load More Button - Count Removed */}
         {hasMore && (
           <div className="text-center mt-8 mb-4">
             <Button 
@@ -260,7 +247,7 @@ const ArticlesGrid = ({
                   Loading...
                 </>
               ) : (
-                `Load More (${totalCount - posts.length} remaining)`
+                'Load More'
               )}
             </Button>
           </div>
@@ -270,7 +257,6 @@ const ArticlesGrid = ({
   );
 };
 
-// ... (NewsletterCTA remains same)
 const NewsletterCTA = () => {
   const [email, setEmail] = useState('');
   return (
@@ -290,7 +276,6 @@ const NewsletterCTA = () => {
   );
 };
 
-// 💡 NEW: BlogContent Component that uses useSearchParams
 function BlogContent() {
   const [posts, setPosts] = useState<WordPressPost[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -300,18 +285,15 @@ function BlogContent() {
   const [hasMore, setHasMore] = useState(true);
   const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
   
-  // URL Params Hook
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // Initialize State from URL
   const initialSearch = searchParams.get('search') || '';
   const initialCategory = searchParams.get('category') || 'all';
 
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
-  // Sync state with URL if URL changes externally (optional but good practice)
   useEffect(() => {
     const s = searchParams.get('search') || '';
     const c = searchParams.get('category') || 'all';
@@ -319,7 +301,6 @@ function BlogContent() {
     setSelectedCategory(c);
   }, [searchParams]);
 
-  // Handle User Input Changes (Updates URL)
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
     const params = new URLSearchParams(searchParams.toString());
@@ -336,7 +317,6 @@ function BlogContent() {
     router.replace(`/blogs?${params.toString()}`, { scroll: false });
   };
 
-  // Main Data Fetch Effect
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
@@ -344,7 +324,6 @@ function BlogContent() {
       setPosts([]);
 
       try {
-        // 1. Fetch Categories first to resolve slug to ID
         let cats = categories;
         if (categories.length === 0) {
           const catRes = await fetch(`${WP_API_URL}/categories?per_page=20&orderby=count&order=desc`);
@@ -355,7 +334,6 @@ function BlogContent() {
           }
         }
 
-        // 2. Build Post URL
         let url = `${WP_API_URL}/posts?_embed&per_page=12&page=1`;
         
         if (searchQuery) {
@@ -369,7 +347,6 @@ function BlogContent() {
           }
         }
 
-        // 3. Fetch Posts
         const res = await fetch(url);
         if (res.ok) {
           const data = await res.json();
@@ -391,7 +368,6 @@ function BlogContent() {
       }
     }
 
-    // Debounce a bit
     const timeoutId = setTimeout(() => {
       fetchData();
     }, 300);
@@ -399,8 +375,6 @@ function BlogContent() {
     return () => clearTimeout(timeoutId);
   }, [searchQuery, selectedCategory]); 
 
-
-  // Load More Function
   const handleLoadMore = async () => {
     if (isLoadMoreLoading || !hasMore) return;
     setIsLoadMoreLoading(true);
@@ -438,12 +412,11 @@ function BlogContent() {
   return (
     <>
       <CompactHeader 
-        totalPostsCount={totalPostsCount}
         categories={categories}
         selectedCategory={selectedCategory}
-        onCategoryChange={handleCategoryChange} // Use new handler
+        onCategoryChange={handleCategoryChange}
         searchQuery={searchQuery}
-        onSearchChange={handleSearchChange} // Use new handler
+        onSearchChange={handleSearchChange}
       />
       
       <QuickCategories 
@@ -468,7 +441,6 @@ function BlogContent() {
   );
 }
 
-// MAIN PAGE COMPONENT (Wrapped in Suspense)
 export default function BlogsPage() {
   return (
     <Suspense fallback={
