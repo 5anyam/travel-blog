@@ -10,7 +10,7 @@ import { BlogCard } from "@/components/BlogCard"; // Ensure this matches your ne
 import { LatestPostsGrid } from "@/components/LatestPostsGrid";
 import { useState, useEffect } from "react";
 
-const WP_API_URL = 'https://cms.clubmytrip.com/wp-json/wp/v2';
+const WP_API_URL = 'https://iamaphilokalist.com/wp-json/wp/v2';
 
 // Helper to get random unique images for categories
 const getCategoryImage = (slug: string, index: number) => {
