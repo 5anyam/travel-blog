@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     other: {
       'verify-admitad': 'ff3fcff36d',
        },
-      other: {
+    convertiser : {
     'convertiser-verification': '4a2836a5da7012c891e09927e427664d7b22686d',
     },
   },
