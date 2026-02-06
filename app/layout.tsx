@@ -52,6 +52,9 @@ export const metadata: Metadata = {
     google: 'your-google-verification-code',
     other: {
       'verify-admitad': 'ff3fcff36d',
+       },
+      other: {
+    'convertiser-verification': '4a2836a5da7012c891e09927e427664d7b22686d',
     },
   },
   category: 'travel',
