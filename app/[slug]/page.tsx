@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-const WP_API_URL = 'https://cms.clubmytrip.com/wp-json/wp/v2';
+const WP_API_URL = 'https://offerscrave.com/wp-json/wp/v2';
 
 // ENABLE DYNAMIC RENDERING FOR PRODUCTION
 export const dynamic = 'force-dynamic';
