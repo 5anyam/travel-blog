@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-const WP_API_URL = 'https://cms.clubmytrip.com/wp-json/wp/v2';
+const WP_API_URL = 'https://iamaphilokalist.com/wp-json/wp/v2';
 
 interface WordPressPost {
   id: number;
