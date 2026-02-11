@@ -50,60 +50,6 @@ export function Footer() {
                   Join 50,000+ travelers. No spam.
                 </p>
               </div>
-
-              {/* Social Media */}
-              <div>
-                <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wide">
-                  Follow Us
-                </h4>
-                <div className="flex space-x-3">
-                  <a 
-                    href="https://facebook.com" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black flex items-center justify-center transition-all"
-                    aria-label="Facebook"
-                  >
-                    <Facebook className="h-4 w-4" />
-                  </a>
-                  <a 
-                    href="https://twitter.com" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black flex items-center justify-center transition-all"
-                    aria-label="Twitter"
-                  >
-                    <Twitter className="h-4 w-4" />
-                  </a>
-                  <a 
-                    href="https://instagram.com" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black flex items-center justify-center transition-all"
-                    aria-label="Instagram"
-                  >
-                    <Instagram className="h-4 w-4" />
-                  </a>
-                  <a 
-                    href="https://linkedin.com" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black flex items-center justify-center transition-all"
-                    aria-label="LinkedIn"
-                  >
-                    <Linkedin className="h-4 w-4" />
-                  </a>
-                  <a 
-                    href="https://youtube.com" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 border-2 border-gray-700 hover:border-white hover:bg-white hover:text-black flex items-center justify-center transition-all"
-                    aria-label="YouTube"
-                  >
-                    <Youtube className="h-4 w-4" />
-                  </a>
-                </div>
-              </div>
             </div>
 
             {/* Destinations */}
