@@ -9,7 +9,6 @@ import { Section } from "@/components/ui/section";
 import { BlogCard } from "@/components/BlogCard"; // Ensure this matches your new BlogCard component
 import { LatestPostsGrid } from "@/components/LatestPostsGrid";
 import { useState, useEffect } from "react";
-import BrandAdBanners from "@/components/BrandAdBanners";
 
 const WP_API_URL = 'https://cms.clubmytrip.com/wp-json/wp/v2';
 
@@ -20,8 +19,8 @@ const getCategoryImage = (slug: string, index: number) => {
     "https://images.unsplash.com/photo-1519681393798-2f43f463c1c5?w=800&q=80", // Mountain
     "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80", // City
     "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80", // Adventure
-    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80", // Food
-    "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80", // Travel
+    "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80", // Food
+    "https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?w=800&q=80", // Travel
     "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80", // Culture
     "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80"  // Nature
   ];
@@ -257,7 +256,24 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
              </div>
           </div>
         </Container>
-      <BrandAdBanners/>
+      <div className="w-full my-6 md:my-8">
+  <a 
+    href="https://fiverr.com/" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="block group"
+  >
+    <div className="relative w-full h-[90px] md:h-[120px] bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
+      <Image
+        src="https://play-lh.googleusercontent.com/R3soEg6oL3HYXFNGgUfZiz5RyS-X6bzG0HadXvyMm1V2GfG6rBxOy8p9XQ_QJDVI1Q" 
+        alt="Fiverr"
+        fill
+        className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
+        sizes="(max-width: 768px) 100vw, 728px"
+      />
+    </div>
+  </a>
+</div>
     </Section>
   );
 };
