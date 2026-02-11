@@ -265,7 +265,7 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
   >
     <div className="relative w-full h-[90px] md:h-[120px] bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
       <img
-        src="https://play-lh.googleusercontent.com/R3soEg6oL3HYXFNGgUfZiz5RyS-X6bzG0HadXvyMm1V2GfG6rBxOy8p9XQ_QJDVI1Q" 
+        src="https://media.licdn.com/dms/image/v2/D5612AQHbkZGFEYKE8Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680706756544?e=2147483647&v=beta&t=_lgS0dv9rhaIBXVE7kq1-lBKu5E0EtS_fmeCXA9zdWY" 
         alt="Fiverr"
         className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
         sizes="(max-width: 768px) 100vw, 728px"
