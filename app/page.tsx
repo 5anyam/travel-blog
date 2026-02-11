@@ -9,6 +9,7 @@ import { Section } from "@/components/ui/section";
 import { BlogCard } from "@/components/BlogCard"; // Ensure this matches your new BlogCard component
 import { LatestPostsGrid } from "@/components/LatestPostsGrid";
 import { useState, useEffect } from "react";
+import BrandAdBanners from "@/components/BrandAdBanners";
 
 const WP_API_URL = 'https://cms.clubmytrip.com/wp-json/wp/v2';
 
@@ -89,6 +90,7 @@ const HeroSection = () => {
           <p className="text-base sm:text-lg md:text-2xl text-gray-200 max-w-xl mx-auto font-light leading-relaxed px-2">
             Curated guides & expert tips for the modern traveler.
           </p>
+          
           
           {/* Mobile-Friendly Search */}
           <form onSubmit={handleSearch} className="relative max-w-xl mx-auto w-full mt-6 md:mt-8 px-2">
@@ -255,6 +257,7 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
              </div>
           </div>
         </Container>
+      <BrandAdBanners/>
     </Section>
   );
 };
