@@ -157,6 +157,23 @@ const VisualFeatures = () => {
             ))}
          </div>
       </Container>
+       <div className="w-full my-6 md:my-8">
+  <a 
+    href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="block group"
+  >
+    <div className="relative w-full h-[130px] md:h-[180px] bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698" 
+        alt="Sephora"
+        className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
+        sizes="(max-width: 768px) 100vw, 728px"
+      />
+    </div>
+  </a>
+</div>
     </Section>
   );
 };
@@ -263,7 +280,7 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
     rel="noopener noreferrer"
     className="block group"
   >
-    <div className="relative w-full h-[90px] md:h-[120px] bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
+    <div className="relative w-full h-[130px] md:h-[180px] bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
       <img
         src="https://media.licdn.com/dms/image/v2/D5612AQHbkZGFEYKE8Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680706756544?e=2147483647&v=beta&t=_lgS0dv9rhaIBXVE7kq1-lBKu5E0EtS_fmeCXA9zdWY" 
         alt="Fiverr"
@@ -366,7 +383,7 @@ export default function HomePage() {
     rel="noopener noreferrer"
     className="block group"
   >
-    <div className="relative w-full h-[90px] md:h-[120px] bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
+    <div className="relative w-full h-[130px] md:h-[180px] bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
       <img
         src="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698" 
         alt="Sephora"
