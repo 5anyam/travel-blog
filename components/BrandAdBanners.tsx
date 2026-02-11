@@ -1,4 +1,11 @@
-// Brand Ad Banners – Google style
+// src/components/BrandAdBanners.tsx
+"use client";
+
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { Section } from "@/components/ui/section";
+import { Container } from "@/components/ui/container";
+
 const BrandAdBanners = () => {
   const banners = [
     {
@@ -7,7 +14,7 @@ const BrandAdBanners = () => {
       brand: 'MakeMyTrip',
       line: 'Up to 40% OFF on Flights & Hotels',
       cta: 'Book on MakeMyTrip',
-      href: 'https://www.makemytrip.com/', // yahan apna affiliate link
+      href: 'https://www.makemytrip.com/',
       image: 'https://logos-world.net/wp-content/uploads/2022/01/MakeMyTrip-Logo.png',
       tag: 'FLIGHTS • HOTELS',
     },
@@ -36,7 +43,6 @@ const BrandAdBanners = () => {
   return (
     <Section className="bg-[#f8fafc] py-4 md:py-5 border-b border-slate-200/70">
       <Container>
-        {/* Mobile: horizontal scroll, Desktop: 3-column */}
         <div className="flex md:grid md:grid-cols-3 gap-3 md:gap-4 overflow-x-auto no-scrollbar -mx-2 px-2 md:mx-0 md:px-0">
           {banners.map((banner) => (
             <a
@@ -79,3 +85,5 @@ const BrandAdBanners = () => {
     </Section>
   );
 };
+
+export default BrandAdBanners;
