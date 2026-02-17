@@ -23,14 +23,17 @@ const WP_API_URL = "https://cms.clubmytrip.com/wp-json/wp/v2";
 // Helper to get random unique images for categories
 const getCategoryImage = (slug: string, index: number) => {
   const images = [
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
-    "https://images.unsplash.com/photo-1519681393798-2f43f463c1c5?w=800&q=80",
-    "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80",
-    "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80",
-    "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80",
-    "https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?w=800&q=80",
-    "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80",
-    "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80",
+    "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&q=80",
+    "https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=800&q=80",
+    "https://images.unsplash.com/photo-1535914254981-b5012eebbd15?w=800&q=80",
+    "https://images.unsplash.com/photo-1526566762798-8fac9c07aa98?w=800&q=80",
+    "https://images.unsplash.com/photo-1572048572872-2394404cf1f3?w=800&q=80",
+    "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80",
+    "https://images.unsplash.com/photo-1579208570378-8c970854bc23?w=800&q=80",
+    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
+    "https://images.unsplash.com/photo-1688561808434-886a6dd97b8c?w=800&q=80",
+    "https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?w=800&q=80",
+    "https://images.unsplash.com/photo-1567789884554-0b844b597180?w=800&q=80",
   ];
   return images[index % images.length];
 };
