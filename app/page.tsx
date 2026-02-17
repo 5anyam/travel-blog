@@ -6,10 +6,6 @@ import {
   Search,
   TrendingUp,
   Globe,
-  ShieldCheck,
-  Wallet,
-  Calendar,
-  MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -272,57 +268,14 @@ const HeroSection = () => {
 
 /* ----------------------------- 2. FEATURES ----------------------------- */
 const VisualFeatures = () => {
-  const features = [
-    {
-      icon: <ShieldCheck className="w-6 h-6 md:w-8 md:h-8" />,
-      title: "Verified",
-      desc: "Expert vetted.",
-    },
-    {
-      icon: <Wallet className="w-6 h-6 md:w-8 md:h-8" />,
-      title: "Budget",
-      desc: "Save money.",
-    },
-    {
-      icon: <MapPin className="w-6 h-6 md:w-8 md:h-8" />,
-      title: "Hidden",
-      desc: "No tourist traps.",
-    },
-    {
-      icon: <Calendar className="w-6 h-6 md:w-8 md:h-8" />,
-      title: "Planned",
-      desc: "Day-by-day.",
-    },
-  ];
-
   return (
-    <Section className="py-10 md:py-16 bg-white border-b border-gray-100">
       <Container>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-          {features.map((f, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center text-center p-4 bg-gray-50 rounded-xl md:bg-transparent"
-            >
-              <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-3 md:mb-4">
-                {f.icon}
-              </div>
-              <h3 className="text-sm md:text-base font-bold text-gray-900 mb-1">
-                {f.title}
-              </h3>
-              <p className="text-gray-500 text-xs">{f.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Banner inside features section */}
         <AdBanner
           href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm"
           imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
           alt="Sephora"
         />
       </Container>
-    </Section>
   );
 };
 
