@@ -3,9 +3,7 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Search,
   TrendingUp,
-  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -177,95 +175,6 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
   );
 }
 
-/* ----------------------------- 1. HERO ----------------------------- */
-const HeroSection = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      window.location.href = `/blogs?search=${encodeURIComponent(searchQuery)}`;
-    }
-  };
-
-  return (
-    <div className="relative h-[85vh] min-h-[500px] w-full overflow-hidden">
-      <div className="absolute inset-0">
-        <img
-          src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=2070&auto=format&fit=crop"
-          alt="Travel Background"
-          className="w-full h-full object-cover scale-105 animate-slow-zoom"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80 md:to-black/60" />
-      </div>
-
-      <Container className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4">
-        <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 animate-fade-in-up w-full">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-xs md:text-sm font-medium tracking-wide mx-auto">
-            <Globe className="w-3 h-3 md:w-4 md:h-4 text-emerald-400" />
-            <span>Explore with confidence</span>
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight leading-[1.1] drop-shadow-2xl">
-            FIND YOUR <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-              NEXT ESCAPE
-            </span>
-          </h1>
-
-          <p className="text-base sm:text-lg md:text-2xl text-gray-200 max-w-xl mx-auto font-light leading-relaxed px-2">
-            Curated guides & expert tips for the modern traveler.
-          </p>
-
-          <form
-            onSubmit={handleSearch}
-            className="relative max-w-xl mx-auto w-full mt-6 md:mt-8 px-2"
-          >
-            <div className="flex flex-col sm:flex-row items-center bg-white/95 backdrop-blur-sm rounded-2xl sm:rounded-full p-2 shadow-2xl gap-2">
-              <div className="flex items-center w-full px-2 h-12">
-                <Search className="w-5 h-5 text-gray-400 ml-1 flex-shrink-0" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Where to? (e.g. Bali)"
-                  className="flex-1 px-3 py-2 text-gray-900 text-base placeholder:text-gray-500 focus:outline-none bg-transparent w-full"
-                />
-              </div>
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full sm:w-auto rounded-xl sm:rounded-full bg-black hover:bg-gray-800 text-white px-8 h-12 sm:h-12 text-base font-semibold transition-all active:scale-95"
-              >
-                Search
-              </Button>
-            </div>
-
-            <div className="flex overflow-x-auto pb-2 pt-4 justify-start sm:justify-center gap-3 no-scrollbar snap-x px-1">
-              {["🏝️ Bali", "🏔️ Alps", "🕌 Dubai", "🎒 Solo", "💰 Budget"].map(
-                (tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() =>
-                      (window.location.href = `/blogs?search=${encodeURIComponent(
-                        tag.replace(/[^a-zA-Z ]/g, "")
-                      )}`)
-                    }
-                    className="snap-start flex-shrink-0 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/10 text-white text-xs md:text-sm whitespace-nowrap"
-                  >
-                    {tag}
-                  </button>
-                )
-              )}
-            </div>
-          </form>
-        </div>
-      </Container>
-    </div>
-  );
-};
-
 /* ----------------------------- 2. FEATURES ----------------------------- */
 const VisualFeatures = () => {
   return (
@@ -278,82 +187,6 @@ const VisualFeatures = () => {
       </Container>
   );
 };
-
-/* ----------------------------- 3. BENTO CATEGORIES (grid) ----------------------------- */
-const BentoCategories = ({ categories }: { categories: Category[] }) => {
-  if (!categories.length) return null;
-  const featuredCats = categories.slice(0, 4);
-
-  return (
-    <Section className="bg-gray-50 py-12 md:py-20">
-      <Container>
-        <div className="flex flex-row justify-between items-end mb-6 md:mb-10">
-          <div>
-            <span className="text-emerald-600 font-bold uppercase text-xs tracking-wider">
-              Interests
-            </span>
-            <h2 className="text-2xl md:text-4xl font-bold text-gray-900">
-              Collections
-            </h2>
-          </div>
-          <Link
-            href="/categories"
-            className="text-sm font-semibold text-gray-600 hover:text-black flex items-center gap-1"
-          >
-            View All <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-auto md:h-[450px]">
-          <Link
-            href={`/blogs?category=${featuredCats[0]?.slug}`}
-            className="md:col-span-2 md:row-span-2 relative group rounded-2xl overflow-hidden h-[250px] md:h-auto"
-          >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
-            <img
-              src={getCategoryImage(featuredCats[0].slug, 0)}
-              alt={featuredCats[0].name}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              loading="lazy"
-            />
-            <div className="absolute bottom-5 left-5 z-20 text-white">
-              <span className="text-[10px] font-bold bg-white/20 backdrop-blur-sm px-2 py-1 rounded mb-2 inline-block">
-                MOST POPULAR
-              </span>
-              <h3 className="text-2xl font-bold">{featuredCats[0].name}</h3>
-              <p className="text-sm opacity-90">
-                {featuredCats[0].count} Articles
-              </p>
-            </div>
-          </Link>
-
-          {featuredCats.slice(1).map((cat, idx) => (
-            <Link
-              key={cat.id}
-              href={`/blogs?category=${cat.slug}`}
-              className={`relative group rounded-2xl overflow-hidden h-[180px] md:h-auto ${
-                idx === 2 ? "md:col-span-2" : ""
-              }`}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
-              <img
-                src={getCategoryImage(cat.slug, idx + 1)}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                alt={cat.name}
-                loading="lazy"
-              />
-              <div className="absolute bottom-4 left-4 z-20 text-white">
-                <h3 className="text-lg font-bold">{cat.name}</h3>
-                <span className="text-xs opacity-80">{cat.count} Articles</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </Container>
-    </Section>
-  );
-};
-
 /* ----------------------------- 4. MAGAZINE FEATURED ----------------------------- */
 const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
   if (!post) return null;
@@ -441,6 +274,81 @@ const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
     </Section>
   );
 };
+/* ----------------------------- 3. BENTO CATEGORIES (grid) ----------------------------- */
+const BentoCategories = ({ categories }: { categories: Category[] }) => {
+  if (!categories.length) return null;
+  const featuredCats = categories.slice(0, 4);
+
+  return (
+    <Section className="bg-gray-50 py-12 md:py-20">
+      <Container>
+        <div className="flex flex-row justify-between items-end mb-6 md:mb-10">
+          <div>
+            <span className="text-emerald-600 font-bold uppercase text-xs tracking-wider">
+              Interests
+            </span>
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900">
+              Collections
+            </h2>
+          </div>
+          <Link
+            href="/categories"
+            className="text-sm font-semibold text-gray-600 hover:text-black flex items-center gap-1"
+          >
+            View All <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-auto md:h-[450px]">
+          <Link
+            href={`/blogs?category=${featuredCats[0]?.slug}`}
+            className="md:col-span-2 md:row-span-2 relative group rounded-2xl overflow-hidden h-[250px] md:h-auto"
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
+            <img
+              src={getCategoryImage(featuredCats[0].slug, 0)}
+              alt={featuredCats[0].name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              loading="lazy"
+            />
+            <div className="absolute bottom-5 left-5 z-20 text-white">
+              <span className="text-[10px] font-bold bg-white/20 backdrop-blur-sm px-2 py-1 rounded mb-2 inline-block">
+                MOST POPULAR
+              </span>
+              <h3 className="text-2xl font-bold">{featuredCats[0].name}</h3>
+              <p className="text-sm opacity-90">
+                {featuredCats[0].count} Articles
+              </p>
+            </div>
+          </Link>
+
+          {featuredCats.slice(1).map((cat, idx) => (
+            <Link
+              key={cat.id}
+              href={`/blogs?category=${cat.slug}`}
+              className={`relative group rounded-2xl overflow-hidden h-[180px] md:h-auto ${
+                idx === 2 ? "md:col-span-2" : ""
+              }`}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
+              <img
+                src={getCategoryImage(cat.slug, idx + 1)}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                alt={cat.name}
+                loading="lazy"
+              />
+              <div className="absolute bottom-4 left-4 z-20 text-white">
+                <h3 className="text-lg font-bold">{cat.name}</h3>
+                <span className="text-xs opacity-80">{cat.count} Articles</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </Container>
+    </Section>
+  );
+};
+
 
 /* ----------------------------- MAIN PAGE ----------------------------- */
 export default function HomePage() {
@@ -475,19 +383,13 @@ export default function HomePage() {
 
   return (
     <div className="bg-white">
-      <HeroSection />
-
-      <VisualFeatures />
-
       {/* New carousel for categories */}
       <CategoryCarousel categories={categories} />
-
-      <BentoCategories categories={categories} />
-
+      <VisualFeatures />
       <MagazineFeatured post={featuredPosts[0] || null} />
-
       <TrendingGrid posts={featuredPosts.slice(1, 4)} />
-
+      <BentoCategories categories={categories} />
+      
       {/* Latest Posts */}
       <Section className="bg-gray-50 py-16 md:py-20">
         <Container>
