@@ -68,15 +68,13 @@ function AdBanner({
   heightClass?: string;
 }) {
   return (
-    <div className="w-full my-4 md:my-8">
+    <div className="w-full my-4 md:my-6">
       {/* Sponsored / ad label for brand-safe look */}
       <div className="flex items-center justify-between mb-2">
         <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
           Sponsored
         </span>
-        <span className="text-[10px] text-gray-300">
-          Advertisement
-        </span>
+        <span className="text-[10px] text-gray-300">Advertisement</span>
       </div>
 
       <a
@@ -93,7 +91,6 @@ function AdBanner({
             "hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden",
           ].join(" ")}
         >
-          {/* background so letterboxing looks clean */}
           <div className="absolute inset-0 bg-gray-50" />
           <img
             src={imgSrc}
@@ -104,6 +101,149 @@ function AdBanner({
         </div>
       </a>
     </div>
+  );
+}
+
+/* ----------------------------- HERO SLIDER (recent posts) ----------------------------- */
+// Simple auto + manual slider for recent posts above the fold [web:28][web:34]
+function HeroPostSlider({ posts }: { posts: WordPressPost[] }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const slides = posts.slice(0, 5);
+  if (!slides.length) return null;
+
+  // auto rotate
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(id);
+  }, [slides.length]);
+
+  const active = slides[activeIndex];
+
+  return (
+    <Section className="bg-gradient-to-b from-gray-50 to-white pt-6 pb-10 md:pt-10 md:pb-12 border-b border-gray-100">
+      <Container>
+        <div className="flex flex-col gap-6">
+          {/* Top heading */}
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <span className="text-emerald-600 font-bold uppercase text-xs tracking-[0.18em]">
+                Latest Stories
+              </span>
+              <h1 className="mt-2 text-2xl md:text-4xl font-bold text-gray-900">
+                Discover fresh guides, deals & ideas
+              </h1>
+              <p className="mt-2 text-sm md:text-base text-gray-500 max-w-xl">
+                Handpicked blog posts to help you save more and plan smarter trips.
+              </p>
+            </div>
+            <div className="hidden md:flex items-center gap-2 text-xs text-gray-400">
+              <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              Live updates
+            </div>
+          </div>
+
+          {/* Main slider + side mini list on desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-stretch">
+            {/* Active slide */}
+            <div className="md:col-span-2">
+              <Link href={`/${active.slug}`} className="group block h-full">
+                <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all duration-500">
+                  <div className="relative aspect-[16/9] overflow-hidden">
+                    {active._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
+                      <img
+                        src={active._embedded["wp:featuredmedia"][0].source_url}
+                        alt={active.title.rendered}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200" />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                    <div className="absolute left-4 right-4 bottom-4 text-white">
+                      <span className="inline-flex items-center text-[11px] font-semibold uppercase tracking-[0.18em] bg-white/15 backdrop-blur-sm px-2 py-1 rounded-full mb-2">
+                        Featured
+                      </span>
+                      <h2 className="text-lg md:text-2xl font-semibold line-clamp-2">
+                        {active.title.rendered}
+                      </h2>
+                      <p className="mt-1 text-xs md:text-sm text-gray-200 line-clamp-2">
+                        {stripHtml(active.excerpt.rendered)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between px-4 py-3 md:px-5 md:py-4">
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <span>
+                        {new Date(active.date).toLocaleDateString("en-IN", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </span>
+                      <span className="h-1 w-1 rounded-full bg-gray-300" />
+                      <span>Read time: 4–7 mins</span>
+                    </div>
+                    <span className="text-xs md:text-sm font-semibold text-emerald-600 flex items-center gap-1">
+                      Read now
+                      <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Side mini list / slider dots */}
+            <div className="flex flex-col gap-3">
+              {/* slider dots */}
+              <div className="flex items-center gap-2 mb-1">
+                {slides.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveIndex(idx)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      idx === activeIndex
+                        ? "w-6 bg-emerald-500"
+                        : "w-2 bg-gray-300 hover:bg-emerald-300"
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              {/* vertical list of other posts */}
+              <div className="rounded-2xl border border-gray-100 bg-white/80 backdrop-blur-sm p-3 md:p-4 space-y-2 max-h-[320px] overflow-y-auto no-scrollbar">
+                {slides.map((post, idx) => (
+                  <button
+                    key={post.id}
+                    onClick={() => setActiveIndex(idx)}
+                    className={`w-full text-left rounded-xl px-2 py-2 transition-colors duration-200 ${
+                      idx === activeIndex
+                        ? "bg-emerald-50"
+                        : "hover:bg-gray-50"
+                    }`}
+                  >
+                    <p className="text-xs text-gray-400 mb-0.5">
+                      {new Date(post.date).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                      })}
+                    </p>
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-2">
+                      {post.title.rendered}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </Section>
   );
 }
 
@@ -120,7 +260,7 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
   if (!cats.length) return null;
 
   return (
-    <Section className="bg-white py-10 md:py-14 border-b border-gray-100">
+    <Section className="bg-white py-8 md:py-10 border-b border-gray-100">
       <Container>
         <div className="flex items-end justify-between mb-5 md:mb-7">
           <div>
@@ -181,7 +321,7 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
   );
 }
 
-/* ----------------------------- 2. FEATURED PARTNER (VisualFeatures) ----------------------------- */
+/* ----------------------------- FEATURED PARTNER (middle) ----------------------------- */
 const VisualFeatures = () => {
   return (
     <Section className="bg-white py-8 md:py-10 border-y border-gray-100">
@@ -204,7 +344,7 @@ const VisualFeatures = () => {
   );
 };
 
-/* ----------------------------- 4. MAGAZINE FEATURED ----------------------------- */
+/* ----------------------------- MAGAZINE FEATURED ----------------------------- */
 const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
   if (!post) return null;
 
@@ -259,7 +399,7 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
   );
 };
 
-/* ----------------------------- 5. TRENDING ----------------------------- */
+/* ----------------------------- TRENDING ----------------------------- */
 const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
   if (posts.length < 3) return null;
 
@@ -291,7 +431,7 @@ const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
   );
 };
 
-/* ----------------------------- 3. BENTO CATEGORIES (grid) ----------------------------- */
+/* ----------------------------- BENTO CATEGORIES ----------------------------- */
 const BentoCategories = ({ categories }: { categories: Category[] }) => {
   if (!categories.length) return null;
   const featuredCats = categories.slice(0, 4);
@@ -403,13 +543,48 @@ export default function HomePage() {
 
   return (
     <div className="bg-white">
-      {/* Above-the-fold: strong editorial look, no immediate ads */}
-      <CategoryCarousel categories={categories} />
-      <MagazineFeatured post={featuredPosts[0] || null} />
-      <TrendingGrid posts={featuredPosts.slice(1, 4)} />
-      <BentoCategories categories={categories} />
+      {/* Section 1: Hero slider (recent posts) */}
+      <HeroPostSlider posts={featuredPosts} />
 
-      {/* Mid-page featured partner placement */}
+      {/* Section 2: Categories strip */}
+      <CategoryCarousel categories={categories} />
+
+      {/* Section 3: Main content + sticky sidebar ads on desktop [web:35][web:38] */}
+      <Section className="bg-white py-10 md:py-14">
+        <Container>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* left content */}
+            <div className="lg:col-span-8 space-y-10">
+              <MagazineFeatured post={featuredPosts[0] || null} />
+              <TrendingGrid posts={featuredPosts.slice(1, 4)} />
+              <BentoCategories categories={categories} />
+            </div>
+
+            {/* right sidebar with sticky sponsored blocks (desktop only) */}
+            <aside className="hidden lg:block lg:col-span-4">
+              <div className="sticky top-24 space-y-4">
+                <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400 mb-1">
+                  Sponsored placements
+                </h3>
+                <AdBanner
+                  href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=right1"
+                  imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
+                  alt="Sephora India beauty offers banner"
+                  heightClass="h-[180px]"
+                />
+                <AdBanner
+                  href="https://fiverr.com/"
+                  imgSrc="https://media.licdn.com/dms/image/v2/D5612AQHbkZGFEYKE8Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680706756544?e=2147483647&v=beta&t=_lgS0dv9rhaIBXVE7kq1-lBKu5E0EtS_fmeCXA9zdWY"
+                  alt="Fiverr freelance services promotion"
+                  heightClass="h-[180px]"
+                />
+              </div>
+            </aside>
+          </div>
+        </Container>
+      </Section>
+
+      {/* Mid-page featured partner */}
       <VisualFeatures />
 
       {/* Latest Posts + bottom banner */}
