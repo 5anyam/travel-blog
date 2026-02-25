@@ -241,7 +241,7 @@ function HeroPostSlider({ posts }: { posts: WordPressPost[] }) {
   const active = slides[activeIndex];
 
   return (
-    <Section className="bg-gradient-to-b from-gray-50 to-white pt-4 pb-8 md:pt-8 md:pb-10 border-b border-gray-100">
+    <Section className="bg-gradient-to-b from-gray-50 to-white pt-2 border-b border-gray-100">
       <Container>
         <div className="flex items-center justify-between gap-4 mb-4">
           <div>
@@ -678,7 +678,7 @@ export default function HomePage() {
       <CategoryCarousel categories={categories} />
 
       {/* Main content + compact sticky sidebar */}
-      <Section className="bg-white py-10 md:py-14">
+      <Section className="bg-white py-4 md:py-6">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left */}
@@ -710,9 +710,6 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* Mid-page featured partner */}
-      <VisualFeatures />
-
       {/* Latest Posts + bottom banner */}
       <Section className="bg-gray-50 py-12 md:py-16">
         <Container>
@@ -722,11 +719,6 @@ export default function HomePage() {
             title="Latest Stories"
             showViewAll={true}
             viewAllLink="/blogs"
-          />
-          <AdBanner
-            href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=pld"
-            imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-            alt="Sephora India beauty offers banner"
           />
         </Container>
       </Section>
