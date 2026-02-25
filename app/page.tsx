@@ -11,17 +11,18 @@ import { useEffect, useState } from "react";
 
 const WP_API_URL = "https://cms.clubmytrip.com/wp-json/wp/v2";
 
-// ✅ FIXED INTERFACE - added content property
+// ✅ EXACT BlogCard interface match
 interface WordPressPost {
   id: number;
   date: string;
   title: { rendered: string };
   excerpt: { rendered: string };
-  content: { rendered: string }; // ✅ This was missing
+  content: { rendered: string };
   slug: string;
   categories: number[];
   _embedded?: {
-    "wp:featuredmedia"?: Array<{ source_url: string; alt_text?: string }>;
+    "wp:featuredmedia"?: Array<{ source_url: string; alt_text: string }>;
+    "wp:term"?: Array<Array<{ id: number; name: string; slug: string }>>;
   };
 }
 
@@ -175,6 +176,7 @@ export default function HomePage() {
         setLoading(true);
         setError(false);
         
+        // ✅ Fetch with _embed to get featuredmedia
         const [postsRes, categoriesRes] = await Promise.all([
           fetch(`${WP_API_URL}/posts?_embed&per_page=15`),
           fetch(`${WP_API_URL}/categories?per_page=20`),
@@ -187,7 +189,7 @@ export default function HomePage() {
 
         if (categoriesRes.ok) {
           const fetchedCats: Category[] = await categoriesRes.json();
-          setCategories(fetchedCats.filter(c => c.count > 0 && c.slug !== "uncategorized"));
+          setCategories(fetchedCats.filter((c: Category) => c.count > 0 && c.slug !== "uncategorized"));
         }
       } catch (err) {
         console.error(err);
