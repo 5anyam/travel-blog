@@ -11,14 +11,17 @@ import { useEffect, useState } from "react";
 
 const WP_API_URL = "https://cms.clubmytrip.com/wp-json/wp/v2";
 
+// ✅ FIXED INTERFACE - added content property
 interface WordPressPost {
   id: number;
   date: string;
   title: { rendered: string };
   excerpt: { rendered: string };
+  content: { rendered: string }; // ✅ This was missing
   slug: string;
+  categories: number[];
   _embedded?: {
-    "wp:featuredmedia"?: Array<{ source_url: string }>;
+    "wp:featuredmedia"?: Array<{ source_url: string; alt_text?: string }>;
   };
 }
 
@@ -63,7 +66,6 @@ function AdBanner({
   );
 }
 
-/* ----------------------------- HERO SECTION ----------------------------- */
 function HeroSection({ posts }: { posts: WordPressPost[] }) {
   if (!posts?.[0]) return null;
 
@@ -89,7 +91,6 @@ function HeroSection({ posts }: { posts: WordPressPost[] }) {
   );
 }
 
-/* ----------------------------- CATEGORIES ----------------------------- */
 function CategoriesSection({ categories }: { categories: Category[] }) {
   const featuredCats = categories.slice(0, 8);
 
@@ -106,7 +107,7 @@ function CategoriesSection({ categories }: { categories: Category[] }) {
             Explore Travel Guides
           </h2>
           <p className="text-xl text-gray-600 mt-4 max-w-2xl mx-auto">
-            Discover expert recommendations, deals and insider tips across 50+ destinations
+            Discover expert recommendations, deals and insider tips
           </p>
         </div>
 
@@ -124,6 +125,7 @@ function CategoriesSection({ categories }: { categories: Category[] }) {
                 src={`https://images.unsplash.com/photo-${(1000 + idx) % 1000}?w=400&q=80&ixlib=rb-4.0.3`}
                 alt={cat.name}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                loading="lazy"
               />
               <div className="absolute bottom-4 left-4 right-4 text-white">
                 <h3 className="text-lg md:text-xl font-bold mb-1">{cat.name}</h3>
@@ -137,13 +139,13 @@ function CategoriesSection({ categories }: { categories: Category[] }) {
   );
 }
 
-/* ----------------------------- MAIN CONTENT ----------------------------- */
 function MainContent({ posts }: { posts: WordPressPost[] }) {
   return (
     <Section className="py-24 bg-white">
       <Container>
         <div className="text-center mb-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3 mx-auto">
+            <TrendingUp className="w-8 h-8 text-emerald-600" />
             Trending Now
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -171,19 +173,21 @@ export default function HomePage() {
     async function fetchData() {
       try {
         setLoading(true);
+        setError(false);
+        
         const [postsRes, categoriesRes] = await Promise.all([
           fetch(`${WP_API_URL}/posts?_embed&per_page=15`),
           fetch(`${WP_API_URL}/categories?per_page=20`),
         ]);
 
         if (postsRes.ok) {
-          const fetchedPosts = await postsRes.json();
+          const fetchedPosts: WordPressPost[] = await postsRes.json();
           setPosts(fetchedPosts);
         }
 
         if (categoriesRes.ok) {
           const fetchedCats: Category[] = await categoriesRes.json();
-          setCategories(fetchedCats.filter(c => c.count > 0));
+          setCategories(fetchedCats.filter(c => c.count > 0 && c.slug !== "uncategorized"));
         }
       } catch (err) {
         console.error(err);
@@ -198,35 +202,43 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white flex items-center justify-center">
-        <div className="animate-pulse space-y-4 text-center">
-          <div className="w-16 h-16 bg-emerald-200 rounded-full mx-auto mb-4" />
-          <div className="h-6 bg-gray-200 rounded w-48 mx-auto mb-2" />
-          <div className="h-4 bg-gray-100 rounded w-32 mx-auto" />
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white flex items-center justify-center p-8">
+        <div className="text-center animate-pulse space-y-6">
+          <div className="w-20 h-20 bg-emerald-200/50 rounded-2xl mx-auto shadow-lg" />
+          <div className="space-y-3">
+            <div className="h-8 bg-gray-200 rounded-xl w-64 mx-auto" />
+            <div className="h-6 bg-gray-100 rounded-lg w-48 mx-auto" />
+          </div>
+          <div className="h-10 bg-emerald-100 rounded-full w-32 mx-auto" />
         </div>
       </div>
     );
   }
 
-  if (error || !posts.length) {
+  if (error) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Loading content...</h2>
-          <p className="text-gray-600 mb-6">Please refresh the page</p>
-          <Button onClick={() => window.location.reload()}>Retry</Button>
+      <div className="min-h-screen bg-white flex items-center justify-center p-8">
+        <div className="text-center max-w-md">
+          <div className="w-24 h-24 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <span className="text-3xl">⚠️</span>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Something went wrong</h2>
+          <p className="text-gray-600 mb-8">Unable to load content. Please refresh.</p>
+          <Button onClick={() => window.location.reload()} className="bg-emerald-600 hover:bg-emerald-700">
+            Try Again
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div>
+    <>
       {/* Hero */}
       <HeroSection posts={posts} />
       
-      {/* Sponsored banner */}
-      <Container className="py-8">
+      {/* Top sponsored */}
+      <Container className="py-12">
         <AdBanner
           href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=top"
           imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
@@ -240,27 +252,31 @@ export default function HomePage() {
       {/* Main content */}
       <MainContent posts={posts} />
 
-      {/* Final sponsored + CTA */}
-      <Container className="py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to explore?</h2>
-          <p className="text-xl text-gray-600">Browse all our latest guides and deals</p>
-        </div>
-        
-        <AdBanner
-          href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=bottom"
-          imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-          alt="Exclusive offers"
-        />
-        
-        <LatestPostsGrid
-          posts={posts}
-          isLoading={false}
-          title="More Stories"
-          showViewAll={true}
-          viewAllLink="/blogs"
-        />
-      </Container>
-    </div>
+      {/* Bottom sponsored + CTA */}
+      <Section className="bg-gradient-to-t from-emerald-600 to-emerald-700 text-white py-20">
+        <Container>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Discover More</h2>
+            <p className="text-xl opacity-95 max-w-2xl mx-auto">
+              Latest guides, deals and expert recommendations
+            </p>
+          </div>
+          
+          <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
+            <AdBanner
+              href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=bottom"
+              imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
+              alt="Exclusive offers"
+            />
+            <div className="text-center md:text-left max-w-md">
+              <Button asChild size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 rounded-full px-10 py-6 text-lg font-semibold shadow-2xl mb-4">
+                <Link href="/blogs">Browse All Guides</Link>
+              </Button>
+              <p className="text-lg opacity-90">10K+ readers monthly</p>
+            </div>
+          </div>
+        </Container>
+      </Section>
+    </>
   );
 }
