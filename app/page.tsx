@@ -1,10 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ArrowRight,
-  TrendingUp,
-} from "lucide-react";
+import { ArrowRight, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -71,7 +68,17 @@ function AdBanner({
   heightClass?: string;
 }) {
   return (
-    <div className="w-full my-6 md:my-8">
+    <div className="w-full my-4 md:my-8">
+      {/* Sponsored / ad label for brand-safe look */}
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+          Sponsored
+        </span>
+        <span className="text-[10px] text-gray-300">
+          Advertisement
+        </span>
+      </div>
+
       <a
         href={href}
         target="_blank"
@@ -135,7 +142,6 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
           </Link>
         </div>
 
-        {/* scroll-snap carousel: snap-x + snap-mandatory, children snap-start [web:162] */}
         <div className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x snap-mandatory scroll-smooth no-scrollbar">
           {cats.map((cat, idx) => (
             <Link
@@ -175,18 +181,29 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
   );
 }
 
-/* ----------------------------- 2. FEATURES ----------------------------- */
+/* ----------------------------- 2. FEATURED PARTNER (VisualFeatures) ----------------------------- */
 const VisualFeatures = () => {
   return (
+    <Section className="bg-white py-8 md:py-10 border-y border-gray-100">
       <Container>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-sm font-semibold text-gray-700">
+            Featured Partner
+          </h2>
+          <span className="text-xs text-gray-400">
+            Handpicked brand we recommend
+          </span>
+        </div>
         <AdBanner
           href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm"
           imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-          alt="Sephora"
+          alt="Sephora India beauty offers banner"
         />
       </Container>
+    </Section>
   );
 };
+
 /* ----------------------------- 4. MAGAZINE FEATURED ----------------------------- */
 const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
   if (!post) return null;
@@ -197,10 +214,16 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
       <Container className="relative z-10">
         <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 md:gap-16 items-center">
           <div className="space-y-6">
-            <div className="flex items-center gap-3 text-emerald-400 font-bold uppercase text-xs tracking-widest">
-              <span className="w-8 h-[2px] bg-emerald-400"></span>
-              Editors Choice
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-3 text-emerald-400 font-bold uppercase text-xs tracking-widest">
+                <span className="w-8 h-[2px] bg-emerald-400"></span>
+                Editors Choice
+              </div>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-gray-500">
+                Expert‑curated guides, offers & product recommendations
+              </p>
             </div>
+
             <h2 className="text-2xl md:text-4xl font-serif font-bold leading-tight">
               {post.title.rendered}
             </h2>
@@ -213,7 +236,7 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
                 size="lg"
                 className="w-full md:w-auto bg-white text-black hover:bg-gray-200 rounded-full px-8 h-12"
               >
-                <Link href={`/${post.slug}`}>Read Article</Link>
+                <Link href={`/${post.slug}`}>Read Guide & Offers</Link>
               </Button>
             </div>
           </div>
@@ -231,13 +254,6 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
             )}
           </div>
         </div>
-
-        {/* Banner inside magazine section (contain) */}
-        <AdBanner
-          href="https://fiverr.com/"
-          imgSrc="https://media.licdn.com/dms/image/v2/D5612AQHbkZGFEYKE8Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680706756544?e=2147483647&v=beta&t=_lgS0dv9rhaIBXVE7kq1-lBKu5E0EtS_fmeCXA9zdWY"
-          alt="Fiverr"
-        />
       </Container>
     </Section>
   );
@@ -274,6 +290,7 @@ const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
     </Section>
   );
 };
+
 /* ----------------------------- 3. BENTO CATEGORIES (grid) ----------------------------- */
 const BentoCategories = ({ categories }: { categories: Category[] }) => {
   if (!categories.length) return null;
@@ -339,7 +356,9 @@ const BentoCategories = ({ categories }: { categories: Category[] }) => {
               />
               <div className="absolute bottom-4 left-4 z-20 text-white">
                 <h3 className="text-lg font-bold">{cat.name}</h3>
-                <span className="text-xs opacity-80">{cat.count} Articles</span>
+                <span className="text-xs opacity-80">
+                  {cat.count} Articles
+                </span>
               </div>
             </Link>
           ))}
@@ -348,7 +367,6 @@ const BentoCategories = ({ categories }: { categories: Category[] }) => {
     </Section>
   );
 };
-
 
 /* ----------------------------- MAIN PAGE ----------------------------- */
 export default function HomePage() {
@@ -363,7 +381,9 @@ export default function HomePage() {
         const [featuredRes, postsRes, categoriesRes] = await Promise.all([
           fetch(`${WP_API_URL}/posts?_embed&per_page=6&orderby=date`),
           fetch(`${WP_API_URL}/posts?_embed&per_page=12&orderby=date`),
-          fetch(`${WP_API_URL}/categories?per_page=12&orderby=count&order=desc`),
+          fetch(
+            `${WP_API_URL}/categories?per_page=12&orderby=count&order=desc`
+          ),
         ]);
 
         if (featuredRes.ok) setFeaturedPosts(await featuredRes.json());
@@ -383,14 +403,16 @@ export default function HomePage() {
 
   return (
     <div className="bg-white">
-      {/* New carousel for categories */}
+      {/* Above-the-fold: strong editorial look, no immediate ads */}
       <CategoryCarousel categories={categories} />
-      <VisualFeatures />
       <MagazineFeatured post={featuredPosts[0] || null} />
       <TrendingGrid posts={featuredPosts.slice(1, 4)} />
       <BentoCategories categories={categories} />
-      
-      {/* Latest Posts */}
+
+      {/* Mid-page featured partner placement */}
+      <VisualFeatures />
+
+      {/* Latest Posts + bottom banner */}
       <Section className="bg-gray-50 py-16 md:py-20">
         <Container>
           <LatestPostsGrid
@@ -401,11 +423,10 @@ export default function HomePage() {
             viewAllLink="/blogs"
           />
 
-          {/* Bottom banner */}
           <AdBanner
             href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=pld"
             imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-            alt="Sephora"
+            alt="Sephora India beauty offers banner"
           />
         </Container>
       </Section>
