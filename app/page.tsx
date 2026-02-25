@@ -62,7 +62,7 @@ function SkeletonBox({ className = "" }: { className?: string }) {
 
 function HeroSliderSkeleton() {
   return (
-    <Section className="bg-gradient-to-b from-gray-50 to-white pt-4 pb-8 md:pt-8 md:pb-10 border-b border-gray-100">
+    <Section className="bg-gradient-to-b from-gray-50 to-white pt-2 border-b border-gray-100">
       <Container>
         <div className="mb-4">
           <SkeletonBox className="h-3 w-24 mb-2" />
@@ -98,7 +98,7 @@ function HeroSliderSkeleton() {
 
 function CategoryCarouselSkeleton() {
   return (
-    <Section className="bg-white py-8 md:py-10 border-b border-gray-100">
+    <Section className="bg-white py-4 border-b border-gray-100">
       <Container>
         <div className="mb-5">
           <SkeletonBox className="h-3 w-16 mb-2" />
@@ -123,7 +123,7 @@ function CategoryCarouselSkeleton() {
 
 function MainContentSkeleton() {
   return (
-    <Section className="bg-white py-10 md:py-14">
+    <Section className="bg-white py-4">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left */}
@@ -363,7 +363,7 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
   if (!cats.length) return null;
 
   return (
-    <Section className="bg-white py-8 md:py-10 border-b border-gray-100">
+    <Section className="bg-white py-4 border-b border-gray-100">
       <Container>
         <div className="flex items-end justify-between mb-5 md:mb-7">
           <div>
@@ -423,7 +423,7 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
 
 /* ============================= FEATURED PARTNER ============================= */
 const VisualFeatures = () => (
-  <Section className="bg-white py-6 md:py-8 border-y border-gray-100">
+  <Section className="bg-white py-2 border-y border-gray-100">
     <Container>
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-sm font-semibold text-gray-700">Featured Partner</h2>
@@ -443,7 +443,7 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
   if (!post) return null;
 
   return (
-    <Section className="bg-[#111] text-white py-12 md:py-20 relative overflow-hidden">
+    <Section className="bg-[#111] text-white py-8 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-emerald-900/20 rounded-full blur-[80px] pointer-events-none" />
       <Container className="relative z-10">
         <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 md:gap-16 items-center">
@@ -496,7 +496,7 @@ const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
   if (posts.length < 3) return null;
 
   return (
-    <Section className="bg-white py-10 md:py-16">
+    <Section className="bg-white py-6">
       <Container>
         <div className="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-2">
@@ -528,7 +528,7 @@ const BentoCategories = ({ categories }: { categories: Category[] }) => {
   const featuredCats = categories.slice(0, 4);
 
   return (
-    <Section className="bg-gray-50 py-10 md:py-16">
+    <Section className="bg-gray-50 py-6">
       <Container>
         <div className="flex flex-row justify-between items-end mb-6 md:mb-10">
           <div>
@@ -711,7 +711,7 @@ export default function HomePage() {
       </Section>
 
       {/* Latest Posts + bottom banner */}
-      <Section className="bg-gray-50 py-12 md:py-16">
+      <Section className="bg-gray-50 py-6">
         <Container>
           <LatestPostsGrid
             posts={allPosts}
