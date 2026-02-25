@@ -139,7 +139,7 @@ export default function RootLayout({
         
         <PageTransitionLoader />
         <Navbar />
-        <main className="min-h-screen">{children}</main>
+        <main>{children}</main>
         <Footer />
         <Toaster />
       </body>
