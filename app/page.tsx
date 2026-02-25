@@ -11,7 +11,6 @@ import { useEffect, useMemo, useState } from "react";
 
 const WP_API_URL = "https://cms.clubmytrip.com/wp-json/wp/v2";
 
-// Helper to get random unique images for categories
 const getCategoryImage = (slug: string, index: number) => {
   const images = [
     "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&q=80",
@@ -24,7 +23,6 @@ const getCategoryImage = (slug: string, index: number) => {
     "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
     "https://images.unsplash.com/photo-1688561808434-886a6dd97b8c?w=800&q=80",
     "https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?w=800&q=80",
-    "https://images.unsplash.com/photo-1567789884554-0b844b597180?w=800&q=80",
   ];
   return images[index % images.length];
 };
@@ -34,13 +32,10 @@ interface WordPressPost {
   date: string;
   title: { rendered: string };
   excerpt: { rendered: string };
-  content: { rendered: string };
   slug: string;
   categories: number[];
   _embedded?: {
     "wp:featuredmedia"?: Array<{ source_url: string; alt_text: string }>;
-    author?: Array<{ name: string; avatar_urls?: { "96": string } }>;
-    "wp:term"?: Array<Array<{ id: number; name: string; slug: string }>>;
   };
 }
 
@@ -51,52 +46,39 @@ interface Category {
   count: number;
 }
 
-/* ----------------------------- Small helpers ----------------------------- */
 const stripHtml = (html: string) =>
   html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
 
-/* ----------------------------- Banner (contain) ----------------------------- */
 function AdBanner({
   href,
   imgSrc,
   alt,
-  heightClass = "h-[130px] md:h-[180px]",
 }: {
   href: string;
   imgSrc: string;
   alt: string;
-  heightClass?: string;
 }) {
   return (
-    <div className="w-full my-4 md:my-6">
-      {/* Sponsored / ad label for brand-safe look */}
-      <div className="flex items-center justify-between mb-2">
+    <div className="w-full mb-6">
+      <div className="flex items-center justify-between mb-1">
         <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
           Sponsored
         </span>
         <span className="text-[10px] text-gray-300">Advertisement</span>
       </div>
-
       <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
         className="block group"
       >
-        <div
-          className={[
-            "relative w-full",
-            heightClass,
-            "bg-white border border-gray-200 rounded-xl shadow-sm",
-            "hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden",
-          ].join(" ")}
-        >
+        <div className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden h-[120px] md:h-[160px]">
           <div className="absolute inset-0 bg-gray-50" />
           <img
             src={imgSrc}
             alt={alt}
             loading="lazy"
-            className="relative w-full h-full p-3 md:p-4 object-contain group-hover:scale-[1.01] transition-transform duration-500"
+            className="w-full h-full p-2 md:p-3 object-contain group-hover:scale-[1.02] transition-transform duration-300"
           />
         </div>
       </a>
@@ -104,409 +86,149 @@ function AdBanner({
   );
 }
 
-/* ----------------------------- HERO SLIDER (recent posts) ----------------------------- */
-// Simple auto + manual slider for recent posts above the fold [web:28][web:34]
-function HeroPostSlider({ posts }: { posts: WordPressPost[] }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+/* ----------------------------- HERO SECTION ----------------------------- */
+function HeroSection({ posts }: { posts: WordPressPost[] }) {
+  if (!posts.length) return null;
 
-  const slides = posts.slice(0, 5);
-  if (!slides.length) return null;
-
-  // auto rotate
-  useEffect(() => {
-    const id = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % slides.length);
-    }, 6000);
-    return () => clearInterval(id);
-  }, [slides.length]);
-
-  const active = slides[activeIndex];
+  const activePost = posts[0];
 
   return (
-    <Section className="bg-gradient-to-b from-gray-50 to-white pt-6 pb-10 md:pt-10 md:pb-12 border-b border-gray-100">
-      <Container>
-        <div className="flex flex-col gap-6">
-          {/* Top heading */}
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <span className="text-emerald-600 font-bold uppercase text-xs tracking-[0.18em]">
-                Latest Stories
-              </span>
-              <h1 className="mt-2 text-2xl md:text-4xl font-bold text-gray-900">
-                Discover fresh guides, deals & ideas
-              </h1>
-              <p className="mt-2 text-sm md:text-base text-gray-500 max-w-xl">
-                Handpicked blog posts to help you save more and plan smarter trips.
-              </p>
-            </div>
-            <div className="hidden md:flex items-center gap-2 text-xs text-gray-400">
-              <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              Live updates
-            </div>
-          </div>
-
-          {/* Main slider + side mini list on desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-stretch">
-            {/* Active slide */}
-            <div className="md:col-span-2">
-              <Link href={`/${active.slug}`} className="group block h-full">
-                <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all duration-500">
-                  <div className="relative aspect-[16/9] overflow-hidden">
-                    {active._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
-                      <img
-                        src={active._embedded["wp:featuredmedia"][0].source_url}
-                        alt={active.title.rendered}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-200" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                    <div className="absolute left-4 right-4 bottom-4 text-white">
-                      <span className="inline-flex items-center text-[11px] font-semibold uppercase tracking-[0.18em] bg-white/15 backdrop-blur-sm px-2 py-1 rounded-full mb-2">
-                        Featured
-                      </span>
-                      <h2 className="text-lg md:text-2xl font-semibold line-clamp-2">
-                        {active.title.rendered}
-                      </h2>
-                      <p className="mt-1 text-xs md:text-sm text-gray-200 line-clamp-2">
-                        {stripHtml(active.excerpt.rendered)}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between px-4 py-3 md:px-5 md:py-4">
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
-                      <span>
-                        {new Date(active.date).toLocaleDateString("en-IN", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </span>
-                      <span className="h-1 w-1 rounded-full bg-gray-300" />
-                      <span>Read time: 4–7 mins</span>
-                    </div>
-                    <span className="text-xs md:text-sm font-semibold text-emerald-600 flex items-center gap-1">
-                      Read now
-                      <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            {/* Side mini list / slider dots */}
-            <div className="flex flex-col gap-3">
-              {/* slider dots */}
-              <div className="flex items-center gap-2 mb-1">
-                {slides.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveIndex(idx)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      idx === activeIndex
-                        ? "w-6 bg-emerald-500"
-                        : "w-2 bg-gray-300 hover:bg-emerald-300"
-                    }`}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-
-              {/* vertical list of other posts */}
-              <div className="rounded-2xl border border-gray-100 bg-white/80 backdrop-blur-sm p-3 md:p-4 space-y-2 max-h-[320px] overflow-y-auto no-scrollbar">
-                {slides.map((post, idx) => (
-                  <button
-                    key={post.id}
-                    onClick={() => setActiveIndex(idx)}
-                    className={`w-full text-left rounded-xl px-2 py-2 transition-colors duration-200 ${
-                      idx === activeIndex
-                        ? "bg-emerald-50"
-                        : "hover:bg-gray-50"
-                    }`}
-                  >
-                    <p className="text-xs text-gray-400 mb-0.5">
-                      {new Date(post.date).toLocaleDateString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                      })}
-                    </p>
-                    <p className="text-sm font-semibold text-gray-900 line-clamp-2">
-                      {post.title.rendered}
-                    </p>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </Section>
-  );
-}
-
-/* ----------------------------- Category Carousel ----------------------------- */
-function CategoryCarousel({ categories }: { categories: Category[] }) {
-  const cats = useMemo(
-    () =>
-      categories
-        .filter((c) => c.count > 0 && c.slug !== "uncategorized")
-        .slice(0, 12),
-    [categories]
-  );
-
-  if (!cats.length) return null;
-
-  return (
-    <Section className="bg-white py-8 md:py-10 border-b border-gray-100">
-      <Container>
-        <div className="flex items-end justify-between mb-5 md:mb-7">
-          <div>
-            <span className="text-emerald-600 font-bold uppercase text-xs tracking-wider">
-              Browse
-            </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-              Explore by Category
-            </h2>
-            <p className="text-gray-500 text-sm mt-1">
-              Swipe and pick what you want to read.
-            </p>
-          </div>
-          <Link
-            href="/categories"
-            className="text-sm font-semibold text-gray-600 hover:text-black flex items-center gap-1"
-          >
-            View All <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        <div className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x snap-mandatory scroll-smooth no-scrollbar">
-          {cats.map((cat, idx) => (
-            <Link
-              key={cat.id}
-              href={`/blogs?category=${cat.slug}`}
-              className="snap-start shrink-0 w-[82%] sm:w-[52%] md:w-[34%] lg:w-[26%] rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 hover:bg-white hover:shadow-md transition"
-            >
-              <div className="relative h-40 md:h-44">
-                <img
-                  src={getCategoryImage(cat.slug, idx)}
-                  alt={cat.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-                <div className="absolute bottom-3 left-3 right-3 text-white">
-                  <div className="text-lg font-bold leading-tight line-clamp-1">
-                    {cat.name}
-                  </div>
-                  <div className="text-xs opacity-90">{cat.count} Articles</div>
-                </div>
-              </div>
-
-              <div className="p-4">
-                <div className="text-sm font-semibold text-gray-900">
-                  Read {cat.name} guides
-                </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  Tap to explore →
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </Container>
-    </Section>
-  );
-}
-
-/* ----------------------------- FEATURED PARTNER (middle) ----------------------------- */
-const VisualFeatures = () => {
-  return (
-    <Section className="bg-white py-8 md:py-10 border-y border-gray-100">
-      <Container>
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-sm font-semibold text-gray-700">
-            Featured Partner
-          </h2>
-          <span className="text-xs text-gray-400">
-            Handpicked brand we recommend
-          </span>
-        </div>
-        <AdBanner
-          href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm"
-          imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-          alt="Sephora India beauty offers banner"
-        />
-      </Container>
-    </Section>
-  );
-};
-
-/* ----------------------------- MAGAZINE FEATURED ----------------------------- */
-const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
-  if (!post) return null;
-
-  return (
-    <Section className="bg-[#111] text-white py-16 md:py-24 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-emerald-900/20 rounded-full blur-[80px] pointer-events-none" />
-      <Container className="relative z-10">
-        <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+    <Section className="bg-gradient-to-br from-emerald-50 via-white to-gray-50 pt-12 pb-16 md:pt-20 md:pb-24 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-200/20 to-transparent" />
+      <Container className="relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          {/* Hero content */}
           <div className="space-y-6">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-3 text-emerald-400 font-bold uppercase text-xs tracking-widest">
-                <span className="w-8 h-[2px] bg-emerald-400"></span>
-                Editors Choice
-              </div>
-              <p className="text-[11px] uppercase tracking-[0.18em] text-gray-500">
-                Expert‑curated guides, offers & product recommendations
-              </p>
+            <div className="inline-flex items-center gap-3 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full border border-white/50">
+              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+              <span className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                Live: Latest Stories
+              </span>
             </div>
-
-            <h2 className="text-2xl md:text-4xl font-serif font-bold leading-tight">
-              {post.title.rendered}
-            </h2>
-            <p className="text-gray-400 text-base md:text-lg line-clamp-3">
-              {stripHtml(post.excerpt.rendered)}
+            
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+              {activePost.title.rendered}
+            </h1>
+            
+            <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg">
+              {stripHtml(activePost.excerpt.rendered)}
             </p>
-            <div className="pt-2">
-              <Button
-                asChild
-                size="lg"
-                className="w-full md:w-auto bg-white text-black hover:bg-gray-200 rounded-full px-8 h-12"
-              >
-                <Link href={`/${post.slug}`}>Read Guide & Offers</Link>
+            
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Button asChild size="lg" className="bg-emerald-600 hover:bg-emerald-700 rounded-full px-8">
+                <Link href={`/${activePost.slug}`}>Read Full Guide</Link>
+              </Button>
+              <Button variant="outline" asChild size="lg" className="rounded-full px-8">
+                <Link href="/blogs">View All Stories</Link>
               </Button>
             </div>
+            
+            <div className="flex items-center gap-6 text-sm text-gray-500 pt-2">
+              <span>{new Date(activePost.date).toLocaleDateString("en-IN")}</span>
+              <span>•</span>
+              <span>7 min read</span>
+            </div>
           </div>
 
-          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-white/10 shadow-2xl">
-            {post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
-              <img
-                src={post._embedded["wp:featuredmedia"][0].source_url}
-                alt={post.title.rendered}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            ) : (
-              <div className="w-full h-full bg-gray-800" />
-            )}
+          {/* Hero image */}
+          <div className="relative">
+            <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-white/50 backdrop-blur-sm border border-white/30">
+              {activePost._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
+                <img
+                  src={activePost._embedded["wp:featuredmedia"][0].source_url}
+                  alt={activePost.title.rendered}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                  <span className="text-gray-500 text-sm">Featured image</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </Container>
     </Section>
   );
-};
+}
 
-/* ----------------------------- TRENDING ----------------------------- */
-const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
-  if (posts.length < 3) return null;
-
+/* ----------------------------- MAIN CONTENT GRID ----------------------------- */
+function MainContent({ posts, categories }: { posts: WordPressPost[]; categories: Category[] }) {
   return (
-    <Section className="bg-white py-12 md:py-20">
+    <Section className="py-16 md:py-24">
       <Container>
-        <div className="flex items-center justify-between mb-6 md:mb-8 border-b border-gray-100 pb-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-emerald-500" />
-            Trending Now
-          </h2>
-          <Link
-            href="/blogs?filter=trending"
-            className="text-emerald-600 text-sm font-semibold hover:underline whitespace-nowrap"
-          >
-            View All
-          </Link>
-        </div>
-
-        <div className="flex overflow-x-auto pb-6 md:pb-0 md:grid md:grid-cols-3 gap-6 snap-x no-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
-          {posts.slice(0, 3).map((post) => (
-            <div key={post.id} className="snap-start min-w-[280px] md:min-w-0 h-full">
-              <BlogCard post={post} />
+        <div className="grid grid-cols-1 xl:grid-cols-3 xl:gap-12">
+          {/* Left: Main feed */}
+          <div className="xl:col-span-2 space-y-12">
+            {/* Featured magazine style */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {posts.slice(0, 6).map((post, idx) => (
+                <BlogCard key={post.id} post={post} />
+              ))}
             </div>
-          ))}
-        </div>
-      </Container>
-    </Section>
-  );
-};
 
-/* ----------------------------- BENTO CATEGORIES ----------------------------- */
-const BentoCategories = ({ categories }: { categories: Category[] }) => {
-  if (!categories.length) return null;
-  const featuredCats = categories.slice(0, 4);
-
-  return (
-    <Section className="bg-gray-50 py-12 md:py-20">
-      <Container>
-        <div className="flex flex-row justify-between items-end mb-6 md:mb-10">
-          <div>
-            <span className="text-emerald-600 font-bold uppercase text-xs tracking-wider">
-              Interests
-            </span>
-            <h2 className="text-2xl md:text-4xl font-bold text-gray-900">
-              Collections
-            </h2>
-          </div>
-          <Link
-            href="/categories"
-            className="text-sm font-semibold text-gray-600 hover:text-black flex items-center gap-1"
-          >
-            View All <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-auto md:h-[450px]">
-          <Link
-            href={`/blogs?category=${featuredCats[0]?.slug}`}
-            className="md:col-span-2 md:row-span-2 relative group rounded-2xl overflow-hidden h-[250px] md:h-auto"
-          >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
-            <img
-              src={getCategoryImage(featuredCats[0].slug, 0)}
-              alt={featuredCats[0].name}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              loading="lazy"
-            />
-            <div className="absolute bottom-5 left-5 z-20 text-white">
-              <span className="text-[10px] font-bold bg-white/20 backdrop-blur-sm px-2 py-1 rounded mb-2 inline-block">
-                MOST POPULAR
-              </span>
-              <h3 className="text-2xl font-bold">{featuredCats[0].name}</h3>
-              <p className="text-sm opacity-90">
-                {featuredCats[0].count} Articles
-              </p>
-            </div>
-          </Link>
-
-          {featuredCats.slice(1).map((cat, idx) => (
-            <Link
-              key={cat.id}
-              href={`/blogs?category=${cat.slug}`}
-              className={`relative group rounded-2xl overflow-hidden h-[180px] md:h-auto ${
-                idx === 2 ? "md:col-span-2" : ""
-              }`}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
-              <img
-                src={getCategoryImage(cat.slug, idx + 1)}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                alt={cat.name}
-                loading="lazy"
-              />
-              <div className="absolute bottom-4 left-4 z-20 text-white">
-                <h3 className="text-lg font-bold">{cat.name}</h3>
-                <span className="text-xs opacity-80">
-                  {cat.count} Articles
-                </span>
+            {/* Categories */}
+            <div className="pt-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                <TrendingUp className="w-7 h-7 text-emerald-600" />
+                Explore by Category
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {categories.slice(0, 8).map((cat, idx) => (
+                  <Link
+                    key={cat.id}
+                    href={`/blogs?category=${cat.slug}`}
+                    className="group relative rounded-2xl overflow-hidden h-32 md:h-40 bg-gradient-to-br from-gray-50 to-gray-100 hover:shadow-lg transition-all duration-300"
+                  >
+                    <img
+                      src={getCategoryImage(cat.slug, idx)}
+                      alt={cat.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute bottom-3 left-3 right-3 text-white">
+                      <div className="font-bold text-sm md:text-base leading-tight">
+                        {cat.name}
+                      </div>
+                      <div className="text-xs opacity-90">{cat.count} posts</div>
+                    </div>
+                  </Link>
+                ))}
               </div>
-            </Link>
-          ))}
+            </div>
+          </div>
+
+          {/* Right: Sponsored sidebar */}
+          <div className="xl:col-span-1 mt-12 xl:mt-0 xl:sticky xl:top-24 space-y-6">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-4">
+              Featured Partners
+            </h3>
+            
+            <div className="space-y-4">
+              <AdBanner
+                href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=right1"
+                imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
+                alt="Sephora India beauty offers"
+              />
+              <AdBanner
+                href="https://fiverr.com/"
+                imgSrc="https://media.licdn.com/dms/image/v2/D5612AQHbkZGFEYKE8Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680706756544?e=2147483647&v=beta&t=_lgS0dv9rhaIBXVE7kq1-lBKu5E0EtS_fmeCXA9zdWY"
+                alt="Fiverr freelance services"
+              />
+              <AdBanner
+                href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=right2"
+                imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
+                alt="Exclusive travel deals"
+              />
+            </div>
+          </div>
         </div>
       </Container>
     </Section>
   );
-};
+}
 
 /* ----------------------------- MAIN PAGE ----------------------------- */
 export default function HomePage() {
@@ -518,19 +240,20 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [featuredRes, postsRes, categoriesRes] = await Promise.all([
-          fetch(`${WP_API_URL}/posts?_embed&per_page=6&orderby=date`),
+        const [postsRes, categoriesRes] = await Promise.all([
           fetch(`${WP_API_URL}/posts?_embed&per_page=12&orderby=date`),
-          fetch(
-            `${WP_API_URL}/categories?per_page=12&orderby=count&order=desc`
-          ),
+          fetch(`${WP_API_URL}/categories?per_page=20&orderby=count&order=desc`),
         ]);
 
-        if (featuredRes.ok) setFeaturedPosts(await featuredRes.json());
-        if (postsRes.ok) setAllPosts(await postsRes.json());
+        if (postsRes.ok) {
+          const posts = await postsRes.json();
+          setFeaturedPosts(posts);
+          setAllPosts(posts);
+        }
+        
         if (categoriesRes.ok) {
           const cats: Category[] = await categoriesRes.json();
-          setCategories(cats);
+          setCategories(cats.filter(c => c.count > 0 && c.slug !== "uncategorized"));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -541,68 +264,46 @@ export default function HomePage() {
     fetchData();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-500">Loading fresh content...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white">
-      {/* Section 1: Hero slider (recent posts) */}
-      <HeroPostSlider posts={featuredPosts} />
+      {/* Hero */}
+      <HeroSection posts={featuredPosts} />
+      
+      {/* Main content grid */}
+      <MainContent posts={featuredPosts} categories={categories} />
 
-      {/* Section 2: Categories strip */}
-      <CategoryCarousel categories={categories} />
-
-      {/* Section 3: Main content + sticky sidebar ads on desktop [web:35][web:38] */}
-      <Section className="bg-white py-10 md:py-14">
+      {/* Newsletter / CTA footer */}
+      <Section className="bg-emerald-600 text-white py-16">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* left content */}
-            <div className="lg:col-span-8 space-y-10">
-              <MagazineFeatured post={featuredPosts[0] || null} />
-              <TrendingGrid posts={featuredPosts.slice(1, 4)} />
-              <BentoCategories categories={categories} />
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Get exclusive deals delivered
+            </h2>
+            <p className="text-xl mb-8 opacity-90">
+              Join 10K+ subscribers getting the best offers straight to their inbox.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 rounded-full text-gray-900 border-none focus:ring-2 focus:ring-white focus:outline-none"
+              />
+              <Button size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 rounded-full px-8 font-semibold">
+                Subscribe Free
+              </Button>
             </div>
-
-            {/* right sidebar with sticky sponsored blocks (desktop only) */}
-            <aside className="hidden lg:block lg:col-span-4">
-              <div className="sticky top-24 space-y-4">
-                <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400 mb-1">
-                  Sponsored placements
-                </h3>
-                <AdBanner
-                  href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=right1"
-                  imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-                  alt="Sephora India beauty offers banner"
-                  heightClass="h-[180px]"
-                />
-                <AdBanner
-                  href="https://fiverr.com/"
-                  imgSrc="https://media.licdn.com/dms/image/v2/D5612AQHbkZGFEYKE8Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680706756544?e=2147483647&v=beta&t=_lgS0dv9rhaIBXVE7kq1-lBKu5E0EtS_fmeCXA9zdWY"
-                  alt="Fiverr freelance services promotion"
-                  heightClass="h-[180px]"
-                />
-              </div>
-            </aside>
           </div>
-        </Container>
-      </Section>
-
-      {/* Mid-page featured partner */}
-      <VisualFeatures />
-
-      {/* Latest Posts + bottom banner */}
-      <Section className="bg-gray-50 py-16 md:py-20">
-        <Container>
-          <LatestPostsGrid
-            posts={allPosts}
-            isLoading={isLoading}
-            title="Latest Stories"
-            showViewAll={true}
-            viewAllLink="/blogs"
-          />
-
-          <AdBanner
-            href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=pld"
-            imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-            alt="Sephora India beauty offers banner"
-          />
         </Container>
       </Section>
     </div>
