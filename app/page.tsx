@@ -7,25 +7,9 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { BlogCard } from "@/components/BlogCard";
 import { LatestPostsGrid } from "@/components/LatestPostsGrid";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 const WP_API_URL = "https://cms.clubmytrip.com/wp-json/wp/v2";
-
-const getCategoryImage = (slug: string, index: number) => {
-  const images = [
-    "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&q=80",
-    "https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=800&q=80",
-    "https://images.unsplash.com/photo-1535914254981-b5012eebbd15?w=800&q=80",
-    "https://images.unsplash.com/photo-1526566762798-8fac9c07aa98?w=800&q=80",
-    "https://images.unsplash.com/photo-1572048572872-2394404cf1f3?w=800&q=80",
-    "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80",
-    "https://images.unsplash.com/photo-1579208570378-8c970854bc23?w=800&q=80",
-    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
-    "https://images.unsplash.com/photo-1688561808434-886a6dd97b8c?w=800&q=80",
-    "https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?w=800&q=80",
-  ];
-  return images[index % images.length];
-};
 
 interface WordPressPost {
   id: number;
@@ -33,9 +17,8 @@ interface WordPressPost {
   title: { rendered: string };
   excerpt: { rendered: string };
   slug: string;
-  categories: number[];
   _embedded?: {
-    "wp:featuredmedia"?: Array<{ source_url: string; alt_text: string }>;
+    "wp:featuredmedia"?: Array<{ source_url: string }>;
   };
 }
 
@@ -59,26 +42,20 @@ function AdBanner({
   alt: string;
 }) {
   return (
-    <div className="w-full mb-6">
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+    <div className="w-full my-8">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
           Sponsored
         </span>
-        <span className="text-[10px] text-gray-300">Advertisement</span>
+        <span className="text-xs text-gray-400">Advertisement</span>
       </div>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block group"
-      >
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden h-[120px] md:h-[160px]">
-          <div className="absolute inset-0 bg-gray-50" />
+      <a href={href} target="_blank" rel="noopener noreferrer" className="block">
+        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden h-[140px] md:h-[180px]">
           <img
             src={imgSrc}
             alt={alt}
             loading="lazy"
-            className="w-full h-full p-2 md:p-3 object-contain group-hover:scale-[1.02] transition-transform duration-300"
+            className="w-full h-full object-contain p-4"
           />
         </div>
       </a>
@@ -88,224 +65,202 @@ function AdBanner({
 
 /* ----------------------------- HERO SECTION ----------------------------- */
 function HeroSection({ posts }: { posts: WordPressPost[] }) {
-  if (!posts.length) return null;
+  if (!posts?.[0]) return null;
 
-  const activePost = posts[0];
+  const post = posts[0];
 
   return (
-    <Section className="bg-gradient-to-br from-emerald-50 via-white to-gray-50 pt-12 pb-16 md:pt-20 md:pb-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-200/20 to-transparent" />
-      <Container className="relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-          {/* Hero content */}
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-3 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full border border-white/50">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-              <span className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                Live: Latest Stories
-              </span>
-            </div>
-            
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-              {activePost.title.rendered}
-            </h1>
-            
-            <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg">
-              {stripHtml(activePost.excerpt.rendered)}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button asChild size="lg" className="bg-emerald-600 hover:bg-emerald-700 rounded-full px-8">
-                <Link href={`/${activePost.slug}`}>Read Full Guide</Link>
-              </Button>
-              <Button variant="outline" asChild size="lg" className="rounded-full px-8">
-                <Link href="/blogs">View All Stories</Link>
-              </Button>
-            </div>
-            
-            <div className="flex items-center gap-6 text-sm text-gray-500 pt-2">
-              <span>{new Date(activePost.date).toLocaleDateString("en-IN")}</span>
-              <span>•</span>
-              <span>7 min read</span>
-            </div>
-          </div>
-
-          {/* Hero image */}
-          <div className="relative">
-            <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-white/50 backdrop-blur-sm border border-white/30">
-              {activePost._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
-                <img
-                  src={activePost._embedded["wp:featuredmedia"][0].source_url}
-                  alt={activePost.title.rendered}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                  loading="lazy"
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">Featured image</span>
-                </div>
-              )}
-            </div>
-          </div>
+    <Section className="bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-white py-20 md:py-32 relative overflow-hidden">
+      <div className="absolute inset-0 bg-black/20" />
+      <Container className="relative z-10 text-center">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight drop-shadow-lg">
+            {post.title.rendered}
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 opacity-95 max-w-3xl mx-auto leading-relaxed">
+            {stripHtml(post.excerpt.rendered)}
+          </p>
+          <Button asChild size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 text-lg px-10 py-6 rounded-full font-semibold shadow-2xl">
+            <Link href={`/${post.slug}`}>Read Complete Guide</Link>
+          </Button>
         </div>
       </Container>
     </Section>
   );
 }
 
-/* ----------------------------- MAIN CONTENT GRID ----------------------------- */
-function MainContent({ posts, categories }: { posts: WordPressPost[]; categories: Category[] }) {
+/* ----------------------------- CATEGORIES ----------------------------- */
+function CategoriesSection({ categories }: { categories: Category[] }) {
+  const featuredCats = categories.slice(0, 8);
+
+  if (!featuredCats.length) return null;
+
   return (
-    <Section className="py-16 md:py-24">
+    <Section className="py-20 bg-gray-50">
       <Container>
-        <div className="grid grid-cols-1 xl:grid-cols-3 xl:gap-12">
-          {/* Left: Main feed */}
-          <div className="xl:col-span-2 space-y-12">
-            {/* Featured magazine style */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {posts.slice(0, 6).map((post, idx) => (
-                <BlogCard key={post.id} post={post} />
-              ))}
-            </div>
+        <div className="text-center mb-16">
+          <span className="inline-block bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wide mb-4">
+            Browse Categories
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            Explore Travel Guides
+          </h2>
+          <p className="text-xl text-gray-600 mt-4 max-w-2xl mx-auto">
+            Discover expert recommendations, deals and insider tips across 50+ destinations
+          </p>
+        </div>
 
-            {/* Categories */}
-            <div className="pt-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-                <TrendingUp className="w-7 h-7 text-emerald-600" />
-                Explore by Category
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {categories.slice(0, 8).map((cat, idx) => (
-                  <Link
-                    key={cat.id}
-                    href={`/blogs?category=${cat.slug}`}
-                    className="group relative rounded-2xl overflow-hidden h-32 md:h-40 bg-gradient-to-br from-gray-50 to-gray-100 hover:shadow-lg transition-all duration-300"
-                  >
-                    <img
-                      src={getCategoryImage(cat.slug, idx)}
-                      alt={cat.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-3 left-3 right-3 text-white">
-                      <div className="font-bold text-sm md:text-base leading-tight">
-                        {cat.name}
-                      </div>
-                      <div className="text-xs opacity-90">{cat.count} posts</div>
-                    </div>
-                  </Link>
-                ))}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {featuredCats.map((cat, idx) => (
+            <Link
+              key={cat.id}
+              href={`/blogs?category=${cat.slug}`}
+              className="group relative rounded-3xl overflow-hidden h-48 md:h-56 bg-white shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-gray-100"
+            >
+              <div 
+                className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent group-hover:from-black/60 transition-all duration-500"
+              />
+              <img
+                src={`https://images.unsplash.com/photo-${(1000 + idx) % 1000}?w=400&q=80&ixlib=rb-4.0.3`}
+                alt={cat.name}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <h3 className="text-lg md:text-xl font-bold mb-1">{cat.name}</h3>
+                <p className="text-sm opacity-90">{cat.count} Guides</p>
               </div>
-            </div>
-          </div>
-
-          {/* Right: Sponsored sidebar */}
-          <div className="xl:col-span-1 mt-12 xl:mt-0 xl:sticky xl:top-24 space-y-6">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-4">
-              Featured Partners
-            </h3>
-            
-            <div className="space-y-4">
-              <AdBanner
-                href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=right1"
-                imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-                alt="Sephora India beauty offers"
-              />
-              <AdBanner
-                href="https://fiverr.com/"
-                imgSrc="https://media.licdn.com/dms/image/v2/D5612AQHbkZGFEYKE8Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680706756544?e=2147483647&v=beta&t=_lgS0dv9rhaIBXVE7kq1-lBKu5E0EtS_fmeCXA9zdWY"
-                alt="Fiverr freelance services"
-              />
-              <AdBanner
-                href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=right2"
-                imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-                alt="Exclusive travel deals"
-              />
-            </div>
-          </div>
+            </Link>
+          ))}
         </div>
       </Container>
     </Section>
   );
 }
 
-/* ----------------------------- MAIN PAGE ----------------------------- */
+/* ----------------------------- MAIN CONTENT ----------------------------- */
+function MainContent({ posts }: { posts: WordPressPost[] }) {
+  return (
+    <Section className="py-24 bg-white">
+      <Container>
+        <div className="text-center mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Trending Now
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Handpicked stories and expert recommendations
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.slice(1, 10).map((post) => (
+            <BlogCard key={post.id} post={post} />
+          ))}
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
 export default function HomePage() {
-  const [featuredPosts, setFeaturedPosts] = useState<WordPressPost[]>([]);
-  const [allPosts, setAllPosts] = useState<WordPressPost[]>([]);
+  const [posts, setPosts] = useState<WordPressPost[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       try {
+        setLoading(true);
         const [postsRes, categoriesRes] = await Promise.all([
-          fetch(`${WP_API_URL}/posts?_embed&per_page=12&orderby=date`),
-          fetch(`${WP_API_URL}/categories?per_page=20&orderby=count&order=desc`),
+          fetch(`${WP_API_URL}/posts?_embed&per_page=15`),
+          fetch(`${WP_API_URL}/categories?per_page=20`),
         ]);
 
         if (postsRes.ok) {
-          const posts = await postsRes.json();
-          setFeaturedPosts(posts);
-          setAllPosts(posts);
+          const fetchedPosts = await postsRes.json();
+          setPosts(fetchedPosts);
         }
-        
+
         if (categoriesRes.ok) {
-          const cats: Category[] = await categoriesRes.json();
-          setCategories(cats.filter(c => c.count > 0 && c.slug !== "uncategorized"));
+          const fetchedCats: Category[] = await categoriesRes.json();
+          setCategories(fetchedCats.filter(c => c.count > 0));
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      } catch (err) {
+        console.error(err);
+        setError(true);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     }
+
     fetchData();
   }, []);
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-500">Loading fresh content...</p>
+        <div className="animate-pulse space-y-4 text-center">
+          <div className="w-16 h-16 bg-emerald-200 rounded-full mx-auto mb-4" />
+          <div className="h-6 bg-gray-200 rounded w-48 mx-auto mb-2" />
+          <div className="h-4 bg-gray-100 rounded w-32 mx-auto" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !posts.length) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Loading content...</h2>
+          <p className="text-gray-600 mb-6">Please refresh the page</p>
+          <Button onClick={() => window.location.reload()}>Retry</Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white">
+    <div>
       {/* Hero */}
-      <HeroSection posts={featuredPosts} />
+      <HeroSection posts={posts} />
       
-      {/* Main content grid */}
-      <MainContent posts={featuredPosts} categories={categories} />
+      {/* Sponsored banner */}
+      <Container className="py-8">
+        <AdBanner
+          href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=top"
+          imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
+          alt="Featured travel partner"
+        />
+      </Container>
 
-      {/* Newsletter / CTA footer */}
-      <Section className="bg-emerald-600 text-white py-16">
-        <Container>
-          <div className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Get exclusive deals delivered
-            </h2>
-            <p className="text-xl mb-8 opacity-90">
-              Join 10K+ subscribers getting the best offers straight to their inbox.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-full text-gray-900 border-none focus:ring-2 focus:ring-white focus:outline-none"
-              />
-              <Button size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 rounded-full px-8 font-semibold">
-                Subscribe Free
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </Section>
+      {/* Categories */}
+      <CategoriesSection categories={categories} />
+      
+      {/* Main content */}
+      <MainContent posts={posts} />
+
+      {/* Final sponsored + CTA */}
+      <Container className="py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to explore?</h2>
+          <p className="text-xl text-gray-600">Browse all our latest guides and deals</p>
+        </div>
+        
+        <AdBanner
+          href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=bottom"
+          imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
+          alt="Exclusive offers"
+        />
+        
+        <LatestPostsGrid
+          posts={posts}
+          isLoading={false}
+          title="More Stories"
+          showViewAll={true}
+          viewAllLink="/blogs"
+        />
+      </Container>
     </div>
   );
 }
