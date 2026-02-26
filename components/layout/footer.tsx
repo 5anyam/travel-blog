@@ -58,54 +58,12 @@ export function Footer() {
                 Destinations
               </h3>
               <ul className="space-y-3">
-                <li>
-                  <Link 
-                    href="/blogs?category=asia" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Asia
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=europe" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Europe
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=americas" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Americas
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=africa" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Africa
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=oceania" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Oceania
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=middle-east" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Middle East
-                  </Link>
-                </li>
+                <li><Link href="/blogs?category=asia" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Asia</Link></li>
+                <li><Link href="/blogs?category=europe" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Europe</Link></li>
+                <li><Link href="/blogs?category=americas" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Americas</Link></li>
+                <li><Link href="/blogs?category=africa" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Africa</Link></li>
+                <li><Link href="/blogs?category=oceania" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Oceania</Link></li>
+                <li><Link href="/blogs?category=middle-east" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Middle East</Link></li>
               </ul>
             </div>
 
@@ -115,54 +73,12 @@ export function Footer() {
                 Travel Styles
               </h3>
               <ul className="space-y-3">
-                <li>
-                  <Link 
-                    href="/blogs?category=adventure" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Adventure Travel
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=luxury" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Luxury Travel
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=budget" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Budget Travel
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=solo" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Solo Travel
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=family" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Family Travel
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=backpacking" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Backpacking
-                  </Link>
-                </li>
+                <li><Link href="/blogs?category=adventure" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Adventure Travel</Link></li>
+                <li><Link href="/blogs?category=luxury" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Luxury Travel</Link></li>
+                <li><Link href="/blogs?category=budget" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Budget Travel</Link></li>
+                <li><Link href="/blogs?category=solo" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Solo Travel</Link></li>
+                <li><Link href="/blogs?category=family" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Family Travel</Link></li>
+                <li><Link href="/blogs?category=backpacking" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Backpacking</Link></li>
               </ul>
             </div>
 
@@ -172,54 +88,12 @@ export function Footer() {
                 Resources
               </h3>
               <ul className="space-y-3">
-                <li>
-                  <Link 
-                    href="/blogs?category=guides" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Travel Guides
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=tips" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Travel Tips
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=packing" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Packing Lists
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=visa" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Visa Information
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=safety" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Safety Tips
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs?category=itineraries" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Itineraries
-                  </Link>
-                </li>
+                <li><Link href="/blogs?category=guides" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Travel Guides</Link></li>
+                <li><Link href="/blogs?category=tips" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Travel Tips</Link></li>
+                <li><Link href="/blogs?category=packing" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Packing Lists</Link></li>
+                <li><Link href="/blogs?category=visa" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Visa Information</Link></li>
+                <li><Link href="/blogs?category=safety" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Safety Tips</Link></li>
+                <li><Link href="/blogs?category=itineraries" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Itineraries</Link></li>
               </ul>
             </div>
 
@@ -229,38 +103,10 @@ export function Footer() {
                 Company
               </h3>
               <ul className="space-y-3">
-                <li>
-                  <Link 
-                    href="https://www.clubmytrip.com" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/about" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/blogs" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    All Articles
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/contact" 
-                    className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    Contact Us
-                  </Link>
-                </li>
+                <li><Link href="https://www.clubmytrip.com" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Home</Link></li>
+                <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">About Us</Link></li>
+                <li><Link href="/blogs" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">All Articles</Link></li>
+                <li><Link href="/contact" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Contact Us</Link></li>
               </ul>
             </div>
           </div>
@@ -274,34 +120,30 @@ export function Footer() {
                 © {currentYear} ClubMyTrip. All rights reserved.
               </p>
             </div>
-            
+
             <div className="flex flex-wrap justify-center md:justify-end gap-6">
-              <Link 
-                href="/privacy-policy" 
-                className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <Link 
-                href="/terms-of-service" 
-                className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
-              >
-                Terms of Service
-              </Link>
-              <Link 
-                href="/disclaimer" 
-                className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
-              >
-                Disclaimer
-              </Link>
-              <Link 
-                href="/cookie-policy" 
-                className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
-              >
-                Cookie Policy
-              </Link>
+              <Link href="/privacy-policy" className="text-gray-400 hover:text-white text-sm font-medium transition-colors">Privacy Policy</Link>
+              <Link href="/terms-of-service" className="text-gray-400 hover:text-white text-sm font-medium transition-colors">Terms of Service</Link>
+              <Link href="/disclaimer" className="text-gray-400 hover:text-white text-sm font-medium transition-colors">Disclaimer</Link>
+              <Link href="/cookie-policy" className="text-gray-400 hover:text-white text-sm font-medium transition-colors">Cookie Policy</Link>
             </div>
           </div>
+
+          {/* ✅ Powered by Proshala - Added here */}
+          <div className="mt-4 text-center border-t border-gray-800 pt-4">
+            <p className="text-gray-500 text-xs">
+              Powered by{" "}
+              <Link
+                href="https://www.proshala.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors font-medium"
+              >
+                Proshala
+              </Link>
+            </p>
+          </div>
+
         </div>
       </Container>
     </footer>
