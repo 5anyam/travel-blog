@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   keywords: 'contact travel blog, travel inquiries, destination help, travel questions, ClubMyTrip contact',
 };
 
-// Updated Contact Info (Only Email & Location)
 const contactInfo = [
   {
     icon: Mail,
@@ -241,7 +240,7 @@ export default function ContactPage() {
             {/* Sidebar - 1 column */}
             <div className="space-y-6">
               
-              {/* Quick Actions (Email Only) */}
+              {/* Quick Actions */}
               <div className="bg-black text-white rounded-xl p-6 shadow-lg">
                 <h3 className="text-lg font-bold mb-3">Quick Support</h3>
                 <p className="text-sm text-gray-400 mb-6">
@@ -382,8 +381,25 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
+
+          {/* ✅ Powered by Proshala - Added here */}
+          <div className="mt-8 text-center">
+            <p className="text-xs text-gray-400">
+              Powered by{" "}
+              <a
+                href="https://www.proshala.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-gray-800 font-medium transition-colors"
+              >
+                Proshala
+              </a>
+            </p>
+          </div>
+
         </Container>
       </Section>
     </>
   );
 }
+
