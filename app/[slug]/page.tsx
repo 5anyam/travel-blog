@@ -381,7 +381,7 @@ const NewsletterCTA = () => (
         <div>
           <h2 className="text-2xl font-bold mb-2">Stay in the Loop</h2>
           <p className="text-gray-400">
-            Join 50,000+ readers getting weekly guides, reviews & deals.
+            Join 500,000+ readers getting weekly guides, reviews & deals.
           </p>
         </div>
         <form className="flex flex-col sm:flex-row gap-3">
@@ -466,22 +466,33 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                   Back to Articles
                 </Link>
 
-                <article
-                  className="
-                    wp-content prose prose-lg max-w-none text-gray-700
-                    [&>h2]:text-2xl [&>h2]:md:text-3xl [&>h2]:font-bold [&>h2]:text-gray-900 [&>h2]:mt-12 [&>h2]:mb-6
-                    [&>h3]:text-xl [&>h3]:md:text-2xl [&>h3]:font-bold [&>h3]:text-gray-900 [&>h3]:mt-10 [&>h3]:mb-4
-                    [&>p]:leading-8 [&>p]:mb-6
-                    [&>p>a]:text-blue-600 [&>p>a]:underline [&>p>a]:decoration-blue-200 hover:[&>p>a]:decoration-blue-600 [&>p>a]:underline-offset-2
-                    [&_figure]:mx-auto [&_figure]:block [&_figure]:max-w-full [&_figure]:my-10
-                    [&_img]:mx-auto [&_img]:block [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_img]:shadow-sm
-                    [&_figcaption]:text-center [&_figcaption]:text-sm [&_figcaption]:text-gray-500 [&_figcaption]:mt-3 [&_figcaption]:italic
-                    [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ul]:space-y-2
-                    [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 [&>ol]:space-y-2
-                    [&>blockquote]:border-l-4 [&>blockquote]:border-black [&>blockquote]:bg-gray-50 [&>blockquote]:py-6 [&>blockquote]:px-8 [&>blockquote]:my-10 [&>blockquote]:rounded-r-lg [&>blockquote]:italic [&>blockquote]:text-gray-800 [&>blockquote]:font-medium
-                  "
-                  dangerouslySetInnerHTML={{ __html: post.content.rendered }}
-                />
+                <article className="wp-content prose prose-lg max-w-none text-gray-700
+    
+    [&>h2]:text-2xl [&>h2]:md:text-3xl [&>h2]:font-bold [&>h2]:text-gray-900 [&>h2]:mt-12 [&>h2]:mb-6
+    [&>h3]:text-xl [&>h3]:md:text-2xl [&>h3]:font-bold [&>h3]:text-gray-900 [&>h3]:mt-10 [&>h3]:mb-4
+    [&>p]:leading-8 [&>p]:mb-6
+    [&>p>a]:text-blue-600 [&>p>a]:underline [&>p>a]:decoration-blue-200 hover:[&>p>a]:decoration-blue-600 [&>p>a]:underline-offset-2
+    [&_figure]:mx-auto [&_figure]:block [&_figure]:max-w-full [&_figure]:my-10
+    [&_img]:mx-auto [&_img]:block [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_img]:shadow-sm
+    [&_figcaption]:text-center [&_figcaption]:text-sm [&_figcaption]:text-gray-500 [&_figcaption]:mt-3 [&_figcaption]:italic
+    [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ul]:space-y-2
+    [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 [&>ol]:space-y-2
+    [&>blockquote]:border-l-4 [&>blockquote]:border-black [&>blockquote]:bg-gray-50 [&>blockquote]:py-6 [&>blockquote]:px-8 [&>blockquote]:my-10 [&>blockquote]:rounded-r-lg [&>blockquote]:italic [&>blockquote]:text-gray-800 [&>blockquote]:font-medium
+
+    [&_.wp-block-button]:my-6 [&_.wp-block-button]:flex [&_.wp-block-button]:justify-center
+    [&_.wp-block-button__link]:inline-flex [&_.wp-block-button__link]:items-center [&_.wp-block-button__link]:justify-center
+    [&_.wp-block-button__link]:bg-black [&_.wp-block-button__link]:text-white
+    [&_.wp-block-button__link]:no-underline [&_.wp-block-button__link]:font-bold
+    [&_.wp-block-button__link]:px-8 [&_.wp-block-button__link]:py-3
+    [&_.wp-block-button__link]:rounded-full [&_.wp-block-button__link]:text-sm
+    [&_.wp-block-button__link]:tracking-wide
+    [&_.wp-block-button__link]:transition-all [&_.wp-block-button__link]:duration-200
+    hover:[&_.wp-block-button__link]:bg-gray-800 hover:[&_.wp-block-button__link]:scale-[1.02]
+    hover:[&_.wp-block-button__link]:shadow-lg
+  "
+  dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+/>
+
 
                 {/* Mobile square banner — inside article flow on mobile */}
                 <div className="block lg:hidden mt-10">
