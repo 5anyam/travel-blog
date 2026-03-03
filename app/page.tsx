@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from "react";
 
 const WP_API_URL = "https://cms.clubmytrip.com/wp-json/wp/v2";
 
+// ✅ Replace these with your own 800x500 images
 const getCategoryImage = (slug: string, index: number) => {
   const images = [
     "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&q=80",
@@ -107,7 +108,10 @@ function CategoryCarouselSkeleton() {
         </div>
         <div className="flex gap-4 overflow-hidden">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="shrink-0 w-[82%] sm:w-[52%] md:w-[34%] lg:w-[26%]">
+            <div
+              key={i}
+              className="shrink-0 w-[82%] sm:w-[52%] md:w-[34%] lg:w-[26%]"
+            >
               <SkeletonBox className="h-36 md:h-40 w-full rounded-t-2xl rounded-b-none" />
               <div className="bg-gray-100 rounded-b-2xl p-3 animate-pulse">
                 <SkeletonBox className="h-3.5 w-28 mb-1.5 bg-gray-200" />
@@ -126,9 +130,7 @@ function MainContentSkeleton() {
     <Section className="bg-white py-4">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left */}
           <div className="lg:col-span-8 space-y-10">
-            {/* Magazine skeleton */}
             <div className="bg-gray-900 rounded-2xl p-8 md:p-12">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4 order-2 md:order-1">
@@ -142,8 +144,6 @@ function MainContentSkeleton() {
                 <SkeletonBox className="h-52 md:h-64 w-full rounded-xl bg-gray-700 order-1 md:order-2" />
               </div>
             </div>
-
-            {/* Trending skeleton */}
             <div>
               <div className="flex justify-between border-b border-gray-100 pb-4 mb-6">
                 <SkeletonBox className="h-6 w-36" />
@@ -161,8 +161,6 @@ function MainContentSkeleton() {
               </div>
             </div>
           </div>
-
-          {/* Sidebar skeleton */}
           <aside className="hidden lg:block lg:col-span-4">
             <div className="sticky top-24 space-y-3">
               <SkeletonBox className="h-3 w-32" />
@@ -246,10 +244,10 @@ function HeroPostSlider({ posts }: { posts: WordPressPost[] }) {
         <div className="flex items-center justify-between gap-4 mb-4">
           <div>
             <span className="text-emerald-600 font-bold uppercase text-xs tracking-[0.18em]">
-              Latest Stories
+              Latest Articles
             </span>
             <h1 className="mt-1 text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-              Discover fresh guides & deals
+              Fresh guides, reviews & deals
             </h1>
           </div>
           <div className="hidden md:flex items-center gap-2 text-xs text-gray-400 shrink-0">
@@ -265,8 +263,13 @@ function HeroPostSlider({ posts }: { posts: WordPressPost[] }) {
                 <div className="relative h-[200px] sm:h-[260px] md:h-[300px] overflow-hidden">
                   {active._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
                     <img
-                      src={active._embedded["wp:featuredmedia"][0].source_url}
-                      alt={active._embedded["wp:featuredmedia"][0].alt_text || active.title.rendered}
+                      src={
+                        active._embedded["wp:featuredmedia"][0].source_url
+                      }
+                      alt={
+                        active._embedded["wp:featuredmedia"][0].alt_text ||
+                        active.title.rendered
+                      }
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       loading="eager"
                     />
@@ -374,7 +377,7 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
               Explore by Category
             </h2>
             <p className="text-gray-500 text-sm mt-1">
-              Swipe and pick what you want to read.
+              Pick a topic and dive in.
             </p>
           </div>
           <Link
@@ -392,6 +395,7 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
               href={`/blogs?category=${cat.slug}`}
               className="snap-start shrink-0 w-[82%] sm:w-[52%] md:w-[34%] lg:w-[26%] rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 hover:bg-white hover:shadow-md transition"
             >
+              {/* ✅ All category images: 800x500px recommended */}
               <div className="relative h-36 md:h-40">
                 <img
                   src={getCategoryImage(cat.slug, idx)}
@@ -409,9 +413,9 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
               </div>
               <div className="p-3">
                 <div className="text-sm font-semibold text-gray-900">
-                  Read {cat.name} guides
+                  Explore {cat.name}
                 </div>
-                <div className="text-xs text-gray-500 mt-0.5">Tap to explore →</div>
+                <div className="text-xs text-gray-500 mt-0.5">Tap to read →</div>
               </div>
             </Link>
           ))}
@@ -432,7 +436,7 @@ const VisualFeatures = () => (
       <AdBanner
         href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm"
         imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-        alt="Sephora India beauty offers banner"
+        alt="Featured partner banner"
       />
     </Container>
   </Section>
@@ -451,10 +455,10 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-3 text-emerald-400 font-bold uppercase text-xs tracking-widest">
                 <span className="w-8 h-[2px] bg-emerald-400" />
-                Editors Choice
+                Editor's Pick
               </div>
               <p className="text-[11px] uppercase tracking-[0.18em] text-gray-500">
-                Expert‑curated guides, offers & product recommendations
+                Curated guides, reviews & top recommendations
               </p>
             </div>
             <h2 className="text-xl md:text-3xl font-serif font-bold leading-tight">
@@ -469,7 +473,7 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
                 size="lg"
                 className="w-full md:w-auto bg-white text-black hover:bg-gray-200 rounded-full px-8 h-11"
               >
-                <Link href={`/${post.slug}`}>Read Guide & Offers</Link>
+                <Link href={`/${post.slug}`}>Read Full Article</Link>
               </Button>
             </div>
           </div>
@@ -477,7 +481,10 @@ const MagazineFeatured = ({ post }: { post: WordPressPost | null }) => {
             {post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
               <img
                 src={post._embedded["wp:featuredmedia"][0].source_url}
-                alt={post._embedded["wp:featuredmedia"][0].alt_text || post.title.rendered}
+                alt={
+                  post._embedded["wp:featuredmedia"][0].alt_text ||
+                  post.title.rendered
+                }
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
@@ -512,7 +519,10 @@ const TrendingGrid = ({ posts }: { posts: WordPressPost[] }) => {
         </div>
         <div className="flex overflow-x-auto pb-6 md:pb-0 md:grid md:grid-cols-3 gap-6 snap-x no-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
           {posts.slice(0, 3).map((post) => (
-            <div key={post.id} className="snap-start min-w-[280px] md:min-w-0 h-full">
+            <div
+              key={post.id}
+              className="snap-start min-w-[280px] md:min-w-0 h-full"
+            >
               <BlogCard post={post} />
             </div>
           ))}
@@ -533,7 +543,7 @@ const BentoCategories = ({ categories }: { categories: Category[] }) => {
         <div className="flex flex-row justify-between items-end mb-6 md:mb-10">
           <div>
             <span className="text-emerald-600 font-bold uppercase text-xs tracking-wider">
-              Interests
+              Topics
             </span>
             <h2 className="text-2xl md:text-4xl font-bold text-gray-900">
               Collections
@@ -547,6 +557,7 @@ const BentoCategories = ({ categories }: { categories: Category[] }) => {
           </Link>
         </div>
 
+        {/* ✅ Bento images: 800x500px recommended */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-auto md:h-[400px]">
           <Link
             href={`/blogs?category=${featuredCats[0]?.slug}`}
@@ -564,7 +575,9 @@ const BentoCategories = ({ categories }: { categories: Category[] }) => {
                 MOST POPULAR
               </span>
               <h3 className="text-xl font-bold">{featuredCats[0].name}</h3>
-              <p className="text-sm opacity-90">{featuredCats[0].count} Articles</p>
+              <p className="text-sm opacity-90">
+                {featuredCats[0].count} Articles
+              </p>
             </div>
           </Link>
 
@@ -595,9 +608,16 @@ const BentoCategories = ({ categories }: { categories: Category[] }) => {
   );
 };
 
-/* ============================= SIDEBAR BANNER (compact) ============================= */
-// ✅ FIX: Compact sidebar banner — less height, tight spacing
-function SidebarBanner({ href, imgSrc, alt }: { href: string; imgSrc: string; alt: string }) {
+/* ============================= SIDEBAR BANNER ============================= */
+function SidebarBanner({
+  href,
+  imgSrc,
+  alt,
+}: {
+  href: string;
+  imgSrc: string;
+  alt: string;
+}) {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-1">
@@ -606,7 +626,12 @@ function SidebarBanner({ href, imgSrc, alt }: { href: string; imgSrc: string; al
         </span>
         <span className="text-[9px] text-gray-300">Ad</span>
       </div>
-      <a href={href} target="_blank" rel="noopener noreferrer" className="block group">
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block group"
+      >
         <div className="relative w-full h-[110px] bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
           <div className="absolute inset-0 bg-gray-50" />
           <img
@@ -634,7 +659,9 @@ export default function HomePage() {
         const [featuredRes, postsRes, categoriesRes] = await Promise.all([
           fetch(`${WP_API_URL}/posts?_embed&per_page=6&orderby=date`),
           fetch(`${WP_API_URL}/posts?_embed&per_page=12&orderby=date`),
-          fetch(`${WP_API_URL}/categories?per_page=12&orderby=count&order=desc`),
+          fetch(
+            `${WP_API_URL}/categories?per_page=12&orderby=count&order=desc`
+          ),
         ]);
 
         if (featuredRes.ok) {
@@ -658,7 +685,6 @@ export default function HomePage() {
     fetchData();
   }, []);
 
-  // ✅ Skeleton shown while loading — no blank white screen
   if (isLoading) {
     return (
       <div className="bg-white">
@@ -671,24 +697,18 @@ export default function HomePage() {
 
   return (
     <div className="bg-white">
-      {/* Hero slider */}
       <HeroPostSlider posts={featuredPosts} />
-
-      {/* Categories strip */}
       <CategoryCarousel categories={categories} />
 
-      {/* Main content + compact sticky sidebar */}
       <Section className="bg-white py-4 md:py-6">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Left */}
             <div className="lg:col-span-8 space-y-0">
               <MagazineFeatured post={featuredPosts[0] ?? null} />
               <TrendingGrid posts={featuredPosts.slice(1, 4)} />
               <BentoCategories categories={categories} />
             </div>
 
-            {/* ✅ Compact sidebar — desktop only */}
             <aside className="hidden lg:block lg:col-span-4">
               <div className="sticky top-24 space-y-3 pt-12">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-400">
@@ -697,12 +717,12 @@ export default function HomePage() {
                 <SidebarBanner
                   href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=right1"
                   imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
-                  alt="Sephora India beauty offers"
+                  alt="Sponsored banner"
                 />
                 <SidebarBanner
                   href="https://fiverr.com/"
                   imgSrc="https://media.licdn.com/dms/image/v2/D5612AQHbkZGFEYKE8Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680706756544?e=2147483647&v=beta&t=_lgS0dv9rhaIBXVE7kq1-lBKu5E0EtS_fmeCXA9zdWY"
-                  alt="Fiverr freelance services"
+                  alt="Sponsored banner"
                 />
               </div>
             </aside>
@@ -710,13 +730,12 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* Latest Posts + bottom banner */}
       <Section className="bg-gray-50 py-6">
         <Container>
           <LatestPostsGrid
             posts={allPosts}
             isLoading={false}
-            title="Latest Stories"
+            title="Latest Articles"
             showViewAll={true}
             viewAllLink="/blogs"
           />
