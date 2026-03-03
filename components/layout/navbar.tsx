@@ -3,59 +3,59 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, Clock } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
-  { 
-    name: 'Destinations', 
-    href: '/blogs',
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  {
+    name: "Categories",
+    href: "/blogs",
     hasDropdown: true,
     dropdownItems: [
       {
-        category: "Popular Destinations",
+        category: "Travel",
         items: [
-          { name: "Southeast Asia", href: "/blogs?category=southeast-asia" },
-          { name: "Europe", href: "/blogs?category=europe" },
-          { name: "Middle East", href: "/blogs?category=middle-east" },
-          { name: "Americas", href: "/blogs?category=americas" }
-        ]
+          { name: "Destination Guides", href: "/blogs?category=destination-guides" },
+          { name: "Travel Tips & Hacks", href: "/blogs?category=travel-tips" },
+          { name: "Packing Lists", href: "/blogs?category=packing" },
+          { name: "Visa Information", href: "/blogs?category=visa" },
+        ],
       },
       {
-        category: "Travel Style",
+        category: "Tech & Gadgets",
         items: [
-          { name: "Adventure Travel", href: "/blogs?category=adventure" },
-          { name: "Luxury Travel", href: "/blogs?category=luxury" },
-          { name: "Budget Travel", href: "/blogs?category=budget" },
-          { name: "Solo Travel", href: "/blogs?category=solo" }
-        ]
+          { name: "Phone Reviews", href: "/blogs?category=phones" },
+          { name: "Laptop & PC", href: "/blogs?category=laptops" },
+          { name: "Accessories", href: "/blogs?category=accessories" },
+          { name: "Tech Buying Guides", href: "/blogs?category=tech-guides" },
+        ],
       },
       {
-        category: "Travel Tips",
+        category: "Finance & Shopping",
         items: [
-          { name: "Travel Guides", href: "/blogs?category=guides" },
-          { name: "Packing Tips", href: "/blogs?category=packing" },
-          { name: "Travel Hacks", href: "/blogs?category=hacks" },
-          { name: "Safety & Health", href: "/blogs?category=safety" }
-        ]
+          { name: "Credit Cards", href: "/blogs?category=credit-cards" },
+          { name: "Saving & Budgeting", href: "/blogs?category=finance" },
+          { name: "Best Deals", href: "/blogs?category=deals" },
+          { name: "Product Reviews", href: "/blogs?category=reviews" },
+        ],
       },
       {
-        category: "Experiences",
+        category: "Lifestyle",
         items: [
-          { name: "Food & Cuisine", href: "/blogs?category=food" },
-          { name: "Culture & Heritage", href: "/blogs?category=culture" },
-          { name: "Nature & Wildlife", href: "/blogs?category=nature" },
-          { name: "Beach & Islands", href: "/blogs?category=beach" }
-        ]
-      }
-    ]
+          { name: "Food & Recipes", href: "/blogs?category=food" },
+          { name: "Health & Wellness", href: "/blogs?category=health" },
+          { name: "How-To Guides", href: "/blogs?category=how-to" },
+          { name: "Best Picks", href: "/blogs?category=best-picks" },
+        ],
+      },
+    ],
   },
-  { name: 'Travel Guides', href: '/blogs?filter=guides' },
-  { name: 'Contact', href: '/contact' },
+  { name: "Buying Guides", href: "/blogs?filter=buying-guides" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -67,19 +67,12 @@ export function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleMouseEnter = (name: string) => {
-    setActiveDropdown(name);
-  };
-
-  const handleMouseLeave = () => {
-    setActiveDropdown(null);
-  };
-
+  const handleMouseEnter = (name: string) => setActiveDropdown(name);
+  const handleMouseLeave = () => setActiveDropdown(null);
   const handleLinkClick = () => {
     setActiveDropdown(null);
     setIsOpen(false);
@@ -87,11 +80,14 @@ export function Navbar() {
 
   return (
     <>
-      {/* Main Navbar - Black Background */}
-      <nav className={cn(
-        "sticky top-0 z-50 bg-black transition-all duration-300",
-        isScrolled ? "shadow-2xl border-b-2 border-gray-800" : "border-b border-gray-800"
-      )}>
+      <nav
+        className={cn(
+          "sticky top-0 z-50 bg-black transition-all duration-300",
+          isScrolled
+            ? "shadow-2xl border-b-2 border-gray-800"
+            : "border-b border-gray-800"
+        )}
+      >
         <Container>
           <div className="flex justify-between items-center py-5">
             {/* Logo */}
@@ -111,10 +107,12 @@ export function Navbar() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
               {navigation.map((item) => (
-                <div 
-                  key={item.name} 
+                <div
+                  key={item.name}
                   className="relative"
-                  onMouseEnter={() => item.hasDropdown && handleMouseEnter(item.name)}
+                  onMouseEnter={() =>
+                    item.hasDropdown && handleMouseEnter(item.name)
+                  }
                   onMouseLeave={() => item.hasDropdown && handleMouseLeave()}
                 >
                   <Link
@@ -128,14 +126,16 @@ export function Navbar() {
                   >
                     {item.name}
                     {item.hasDropdown && (
-                      <ChevronDown className={cn(
-                        "h-4 w-4 ml-1 transition-transform duration-200",
-                        activeDropdown === item.name ? "rotate-180" : ""
-                      )} />
+                      <ChevronDown
+                        className={cn(
+                          "h-4 w-4 ml-1 transition-transform duration-200",
+                          activeDropdown === item.name ? "rotate-180" : ""
+                        )}
+                      />
                     )}
                   </Link>
 
-                  {/* Minimal Dropdown Menu - White Background */}
+                  {/* Desktop Dropdown */}
                   {item.hasDropdown && activeDropdown === item.name && (
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-screen max-w-4xl bg-white shadow-2xl border-2 border-gray-200 z-50">
                       <div className="p-8">
@@ -161,15 +161,15 @@ export function Navbar() {
                             </div>
                           ))}
                         </div>
-                        
-                        {/* Simple CTA */}
+
+                        {/* Dropdown CTA */}
                         <div className="mt-8 pt-6 border-t-2 border-gray-200 text-center">
                           <p className="text-lg font-bold text-gray-900 mb-3">
-                            Explore All Destinations
+                            Browse All Content
                           </p>
-                          <Button 
-                            size="sm" 
-                            asChild 
+                          <Button
+                            size="sm"
+                            asChild
                             className="bg-black text-white hover:bg-gray-800 font-semibold"
                           >
                             <Link href="/blogs" onClick={handleLinkClick}>
@@ -186,15 +186,14 @@ export function Navbar() {
 
             {/* CTA & Mobile Menu Button */}
             <div className="flex items-center space-x-3">
-              <Button 
-                asChild 
+              <Button
+                asChild
                 className="hidden lg:inline-flex bg-white text-black hover:bg-gray-200 font-semibold border-2 border-white"
                 size="sm"
               >
-                <Link href="/blogs">Browse Stories</Link>
+                <Link href="/blogs">Browse Articles</Link>
               </Button>
-              
-              {/* Mobile Menu Button */}
+
               <Button
                 variant="ghost"
                 size="sm"
@@ -210,7 +209,7 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Navigation - Black Background */}
+          {/* Mobile Navigation */}
           {isOpen && (
             <div className="lg:hidden pb-4 border-t-2 border-gray-800 bg-black">
               <div className="pt-4 space-y-1 max-h-[70vh] overflow-y-auto">
@@ -228,17 +227,21 @@ export function Navbar() {
                       <>
                         <button
                           className="flex items-center justify-between w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-900 transition-colors font-semibold"
-                          onClick={() => setActiveDropdown(
-                            activeDropdown === item.name ? null : item.name
-                          )}
+                          onClick={() =>
+                            setActiveDropdown(
+                              activeDropdown === item.name ? null : item.name
+                            )
+                          }
                         >
                           {item.name}
-                          <ChevronDown className={cn(
-                            "h-4 w-4 transition-transform",
-                            activeDropdown === item.name ? "rotate-180" : ""
-                          )} />
+                          <ChevronDown
+                            className={cn(
+                              "h-4 w-4 transition-transform",
+                              activeDropdown === item.name ? "rotate-180" : ""
+                            )}
+                          />
                         </button>
-                        
+
                         {/* Mobile Dropdown */}
                         {activeDropdown === item.name && (
                           <div className="bg-gray-900 border-l-2 border-white ml-4 mt-1 mb-2">
@@ -265,14 +268,14 @@ export function Navbar() {
                     )}
                   </div>
                 ))}
-                
+
                 <div className="px-4 pt-4 border-t-2 border-gray-800">
-                  <Button 
-                    asChild 
+                  <Button
+                    asChild
                     className="w-full bg-white text-black hover:bg-gray-200 font-semibold"
                   >
                     <Link href="/blogs" onClick={() => setIsOpen(false)}>
-                      Browse All Stories
+                      Browse All Articles
                     </Link>
                   </Button>
                 </div>
