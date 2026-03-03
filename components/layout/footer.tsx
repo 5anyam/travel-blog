@@ -163,6 +163,20 @@ export function Footer() {
               <Link href="/cookie-policy" className="text-gray-400 hover:text-white text-sm font-medium transition-colors">Cookie Policy</Link>
             </div>
           </div>
+           {/* Powered by Proshala */}
+          <div className="mt-4 text-center border-t border-gray-800 pt-4">
+            <p className="text-gray-500 text-xs">
+              Powered by{" "}
+              <Link
+                href="https://www.proshala.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors font-medium"
+              >
+                Proshala
+              </Link>
+            </p>
+          </div>
         </div>
       </Container>
     </footer>
