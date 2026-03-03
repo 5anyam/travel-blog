@@ -98,3 +98,48 @@ html {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+/* globals.css */
+
+/* WordPress Gutenberg Button Block */
+.wp-content .wp-block-button__link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-weight: 700 !important;
+  font-size: 0.875rem !important;
+  padding: 0.75rem 2rem !important;
+  border-radius: 9999px !important;
+  letter-spacing: 0.05em !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.wp-content .wp-block-button__link:hover {
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+  transform: scale(1.02) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  text-decoration: none !important;
+}
+
+.wp-content .wp-block-button {
+  display: flex !important;
+  justify-content: center !important;
+  margin: 1.5rem 0 !important;
+}
+
+/* Agar WordPress outline button style use kiya ho */
+.wp-content .wp-block-button.is-style-outline .wp-block-button__link {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+.wp-content .wp-block-button.is-style-outline .wp-block-button__link:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
