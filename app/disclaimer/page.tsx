@@ -5,9 +5,11 @@ import { Container } from "@/components/ui/container";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: 'Disclaimer - Terms & Conditions',
-  description: 'Read the disclaimer and terms of use for ClubMyTrip. Understand our liability limitations, affiliate disclosure, and terms of service for travel information.',
-  keywords: 'disclaimer, terms of use, affiliate disclosure, travel blog disclaimer, liability terms',
+  title: 'Disclaimer - Terms & Conditions | ClubMyTrip',
+  description:
+    'Read the disclaimer and terms of use for ClubMyTrip. Understand our liability limitations, affiliate disclosure, and terms of service for our content platform.',
+  keywords:
+    'disclaimer, terms of use, affiliate disclosure, content blog disclaimer, liability terms',
   robots: 'index, follow',
 };
 
@@ -58,9 +60,10 @@ export default function DisclaimerPage() {
                     Important Legal Notice
                   </h2>
                   <p className="text-gray-700 leading-relaxed">
-                    By accessing and using ClubMyTrip, you accept and agree to be bound by the 
-                    terms and provisions of this disclaimer. If you do not agree to these terms, 
-                    please discontinue use of this website immediately.
+                    By accessing and using ClubMyTrip, you accept and agree to be
+                    bound by the terms and provisions of this disclaimer. If you do
+                    not agree to these terms, please discontinue use of this website
+                    immediately.
                   </p>
                 </div>
               </div>
@@ -75,15 +78,20 @@ export default function DisclaimerPage() {
                 </h3>
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    The information provided on ClubMyTrip is for general informational and educational 
-                    purposes only. While we strive to provide accurate and up-to-date travel information, 
-                    we make no representations or warranties of any kind, express or implied, about the 
-                    completeness, accuracy, reliability, suitability, or availability of the information, 
-                    products, services, or related graphics contained on the website.
+                    The information provided on ClubMyTrip is for general
+                    informational and educational purposes only. Our content spans
+                    multiple topics including travel, technology, lifestyle, finance,
+                    shopping, and more. While we strive to provide accurate and
+                    up-to-date information, we make no representations or warranties
+                    of any kind — express or implied — about the completeness,
+                    accuracy, reliability, suitability, or availability of the
+                    information, products, services, or related graphics contained
+                    on this website.
                   </p>
                   <p>
-                    Travel conditions, prices, regulations, and circumstances can change rapidly. Any 
-                    reliance you place on such information is therefore strictly at your own risk.
+                    Market conditions, product specifications, prices, regulations,
+                    and circumstances can change rapidly. Any reliance you place on
+                    such information is therefore strictly at your own risk.
                   </p>
                 </div>
               </div>
@@ -95,20 +103,30 @@ export default function DisclaimerPage() {
                 </h3>
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    ClubMyTrip participates in various affiliate marketing programs, which means we may 
-                    earn commissions on purchases made through our links to retailer sites. This includes, 
-                    but is not limited to, hotel bookings, flight reservations, tour packages, travel 
-                    insurance, and travel gear.
+                    ClubMyTrip participates in various affiliate marketing programs.
+                    This means we may earn a commission when you click on certain
+                    links and make a purchase — at no additional cost to you. Our
+                    affiliate partnerships may include, but are not limited to:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 pl-4">
+                    <li>Amazon Associates and other e-commerce affiliate programs</li>
+                    <li>Travel bookings (hotels, flights, tours, insurance)</li>
+                    <li>Tech product retailers and software services</li>
+                    <li>Finance and credit card referral programs</li>
+                    <li>Lifestyle, health, and consumer product brands</li>
+                  </ul>
+                  <p>
+                    We only recommend products and services we genuinely believe
+                    will add value to our readers. Our affiliate relationships do
+                    not influence our editorial content or recommendations. All
+                    opinions expressed on this website are our own honest
+                    assessments.
                   </p>
                   <p>
-                    We only recommend products and services that we believe will add value to our readers. 
-                    Our affiliate relationships do not influence our editorial content or recommendations. 
-                    All opinions expressed on this website are our own honest assessments.
-                  </p>
-                  <p>
-                    This website may display advertisements from third-party ad networks. We do not 
-                    control the content of these advertisements and are not responsible for the products 
-                    or services advertised.
+                    This website may also display advertisements from third-party
+                    ad networks (e.g., Google AdSense). We do not control the
+                    content of these advertisements and are not responsible for the
+                    products or services advertised.
                   </p>
                 </div>
               </div>
@@ -116,20 +134,22 @@ export default function DisclaimerPage() {
               {/* Section 3 */}
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4 pb-3 border-b-2 border-gray-200">
-                  3. Travel Advice & Recommendations
+                  3. Content Accuracy & Recommendations
                 </h3>
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    All travel recommendations, tips, and advice provided on ClubMyTrip are based on 
-                    personal experiences and research. They should not be considered as professional 
-                    travel advice. We strongly recommend that you:
+                    All reviews, guides, tips, and recommendations published on
+                    ClubMyTrip are based on personal research, experience, and
+                    publicly available information. They should not be considered
+                    professional advice in any field. We strongly recommend that
+                    you:
                   </p>
                   <ul className="list-disc list-inside space-y-2 pl-4">
-                    <li>Verify all information independently before making travel decisions</li>
-                    <li>Check official government travel advisories for your destination</li>
-                    <li>Consult with travel professionals when necessary</li>
-                    <li>Purchase appropriate travel insurance for your trip</li>
-                    <li>Stay informed about local laws, customs, and safety conditions</li>
+                    <li>Verify all product details, pricing, and availability independently</li>
+                    <li>Consult a qualified professional (financial advisor, doctor, etc.) before making important decisions</li>
+                    <li>Check official sources for regulatory, legal, or policy information</li>
+                    <li>Read the full terms and conditions of any third-party service before purchase</li>
+                    <li>Stay informed about changes in product specifications or service terms</li>
                   </ul>
                 </div>
               </div>
@@ -141,13 +161,12 @@ export default function DisclaimerPage() {
                 </h3>
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    ClubMyTrip contains links to external websites and third-party resources that are 
-                    not provided or maintained by us. We have no control over the nature, content, and 
-                    availability of those sites.
-                  </p>
-                  <p>
-                    The inclusion of any links does not necessarily imply a recommendation or endorse 
-                    the views expressed within them. We are not responsible for:
+                    ClubMyTrip contains links to external websites and third-party
+                    resources that are not provided or maintained by us. We have no
+                    control over the nature, content, and availability of those
+                    sites. The inclusion of any links does not imply a
+                    recommendation or endorsement of the views expressed within
+                    them. We are not responsible for:
                   </p>
                   <ul className="list-disc list-inside space-y-2 pl-4">
                     <li>The content, accuracy, or opinions expressed on external websites</li>
@@ -165,19 +184,17 @@ export default function DisclaimerPage() {
                 </h3>
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    All content on ClubMyTrip, including text, images, graphics, logos, and multimedia 
-                    elements, is protected by copyright and intellectual property laws. The content is 
-                    owned by ClubMyTrip or licensed to us.
-                  </p>
-                  <p>
-                    You may view, download, and print pages from the website for personal, non-commercial 
-                    use only. You may not:
+                    All content on ClubMyTrip — including text, images, graphics,
+                    logos, and multimedia elements — is protected by copyright and
+                    intellectual property laws. The content is owned by ClubMyTrip
+                    or licensed to us. You may view, download, and print pages from
+                    the website for personal, non-commercial use only. You may not:
                   </p>
                   <ul className="list-disc list-inside space-y-2 pl-4">
                     <li>Republish material from this website without written permission</li>
                     <li>Sell, rent, or sub-license material from the website</li>
                     <li>Reproduce, duplicate, or copy material for commercial purposes</li>
-                    <li>Redistribute content from ClubMyTrip without attribution</li>
+                    <li>Redistribute content from ClubMyTrip without proper attribution</li>
                   </ul>
                 </div>
               </div>
@@ -189,21 +206,22 @@ export default function DisclaimerPage() {
                 </h3>
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    In no event shall ClubMyTrip, its owners, authors, or contributors be liable for any 
-                    direct, indirect, incidental, consequential, or punitive damages arising out of your 
-                    access to or use of the website, including but not limited to:
+                    In no event shall ClubMyTrip, its owners, authors, or
+                    contributors be liable for any direct, indirect, incidental,
+                    consequential, or punitive damages arising out of your access to
+                    or use of the website. This includes but is not limited to:
                   </p>
                   <ul className="list-disc list-inside space-y-2 pl-4">
-                    <li>Travel mishaps, accidents, or injuries</li>
-                    <li>Financial losses related to bookings or purchases</li>
-                    <li>Missed flights, cancellations, or travel disruptions</li>
-                    <li>Lost or stolen property during travel</li>
-                    <li>Health issues or medical emergencies while traveling</li>
-                    <li>Changes in visa requirements or travel restrictions</li>
+                    <li>Financial losses related to purchases made via affiliate links</li>
+                    <li>Decisions made based on product reviews or buying guides</li>
+                    <li>Losses arising from acting on financial or investment content</li>
+                    <li>Travel mishaps, accidents, or disruptions based on travel content</li>
+                    <li>Health issues arising from lifestyle or wellness content</li>
+                    <li>Technical issues such as data loss caused by malware or viruses</li>
                   </ul>
                   <p className="mt-4">
-                    You acknowledge that travel involves inherent risks and you assume full responsibility 
-                    for your safety and well-being while traveling.
+                    You acknowledge that all decisions made based on content from
+                    this website are your own responsibility.
                   </p>
                 </div>
               </div>
@@ -215,14 +233,17 @@ export default function DisclaimerPage() {
                 </h3>
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    ClubMyTrip reserves the right to modify, suspend, or discontinue any aspect of the 
-                    website at any time without prior notice. We may also update, change, or remove 
-                    content without notification.
+                    ClubMyTrip reserves the right to modify, suspend, or
+                    discontinue any aspect of the website at any time without prior
+                    notice. We may also update, change, or remove content without
+                    notification. Product prices, availability, and specifications
+                    are subject to change by third-party sellers and we cannot
+                    guarantee that all information remains current.
                   </p>
                   <p>
-                    We are not obligated to update information and cannot guarantee that all information 
-                    remains current. Travel information can change frequently, and it is your responsibility 
-                    to verify details before making travel arrangements.
+                    It is your responsibility to verify details directly with the
+                    relevant brand, retailer, or service provider before making any
+                    purchase or decision.
                   </p>
                 </div>
               </div>
@@ -234,13 +255,14 @@ export default function DisclaimerPage() {
                 </h3>
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    Comments, reviews, and other content submitted by users represent the opinions of 
-                    those individuals and do not reflect the views of ClubMyTrip. We do not endorse or 
-                    guarantee the accuracy of user-generated content.
+                    Comments, reviews, and other content submitted by users
+                    represent the opinions of those individuals and do not reflect
+                    the views of ClubMyTrip. We do not endorse or guarantee the
+                    accuracy of user-generated content.
                   </p>
                   <p>
-                    We reserve the right to remove any user content that violates our terms or is deemed 
-                    inappropriate, offensive, or harmful.
+                    We reserve the right to remove any user content that violates
+                    our terms or is deemed inappropriate, offensive, or harmful.
                   </p>
                 </div>
               </div>
@@ -248,19 +270,21 @@ export default function DisclaimerPage() {
               {/* Section 9 */}
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4 pb-3 border-b-2 border-gray-200">
-                  9. Medical & Health Disclaimer
+                  9. Financial & Professional Advice Disclaimer
                 </h3>
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    Any health or medical information provided on ClubMyTrip is for informational purposes 
-                    only and should not be considered as professional medical advice. Always consult with 
-                    a qualified healthcare provider before traveling, especially regarding:
+                    Any financial, investment, legal, medical, or other
+                    professional information published on ClubMyTrip is strictly
+                    for informational purposes only and does not constitute
+                    professional advice. Always consult a qualified professional
+                    before making decisions related to:
                   </p>
                   <ul className="list-disc list-inside space-y-2 pl-4">
-                    <li>Required vaccinations and immunizations</li>
-                    <li>Health precautions for specific destinations</li>
-                    <li>Pre-existing medical conditions</li>
-                    <li>Travel-related health risks</li>
+                    <li>Investments, loans, credit cards, or financial planning</li>
+                    <li>Health, medical treatments, or wellness routines</li>
+                    <li>Legal matters, contracts, or regulatory compliance</li>
+                    <li>Business decisions based on market or product information</li>
                   </ul>
                 </div>
               </div>
@@ -272,11 +296,20 @@ export default function DisclaimerPage() {
                 </h3>
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    If you have any questions or concerns about this disclaimer, please contact us:
+                    If you have any questions or concerns about this disclaimer,
+                    please reach out to us:
                   </p>
                   <div className="border-l-4 border-black pl-6 my-6">
                     <p className="font-semibold text-gray-900">ClubMyTrip</p>
-                    <p>Email: support@clubmytrip.com</p>
+                    <p>
+                      Email:{' '}
+                      <a
+                        href="mailto:support@clubmytrip.com"
+                        className="text-black underline hover:no-underline"
+                      >
+                        support@clubmytrip.com
+                      </a>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -288,22 +321,30 @@ export default function DisclaimerPage() {
                 <FileText className="w-6 h-6 flex-shrink-0 mt-1" />
                 <div>
                   <p className="text-sm text-gray-700 mb-3">
-                    <strong>Last Updated:</strong> November 27, 2025
+                    <strong>Last Updated:</strong> March 2026
                   </p>
                   <p className="text-sm text-gray-600 leading-relaxed">
-                    This disclaimer is subject to change without notice. We recommend reviewing this page 
-                    periodically to stay informed of any updates. Your continued use of ClubMyTrip after 
-                    any changes constitutes acceptance of those changes.
+                    This disclaimer is subject to change without notice. We
+                    recommend reviewing this page periodically to stay informed of
+                    any updates. Your continued use of ClubMyTrip after any changes
+                    constitutes acceptance of those changes.
                   </p>
                   <p className="text-sm text-gray-600 mt-4">
                     For more information, please review our{' '}
-                    <Link href="/privacy-policy" className="text-black font-semibold underline hover:no-underline">
+                    <Link
+                      href="/privacy-policy"
+                      className="text-black font-semibold underline hover:no-underline"
+                    >
                       Privacy Policy
-                    </Link>
-                    {' '}and{' '}
-                    <Link href="/terms-of-service" className="text-black font-semibold underline hover:no-underline">
+                    </Link>{' '}
+                    and{' '}
+                    <Link
+                      href="/terms-of-service"
+                      className="text-black font-semibold underline hover:no-underline"
+                    >
                       Terms of Service
-                    </Link>.
+                    </Link>
+                    .
                   </p>
                 </div>
               </div>
