@@ -411,7 +411,7 @@ const FeaturedPartner = () => (
       <div className="grid grid-cols-3 gap-3">
         <InlineAdBanner
           href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm1"
-          imgSrc="https://www.lookfantastic.at/images?url=https://static.thcdn.com/widgets/95-fr/17/original-LookFantastic_TopBanner_dt_1900x600_GENERIC_S22-104617.png&format=webp&auto=avif&width=1920&fit=cover"
+          imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
           alt="Featured partner 1"
         />
         <InlineAdBanner
@@ -421,7 +421,7 @@ const FeaturedPartner = () => (
         />
         <InlineAdBanner
           href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm3"
-          imgSrc="https://www.lookfantastic.at/images?url=https://static.thcdn.com/widgets/95-fr/17/original-LookFantastic_TopBanner_dt_1900x600_GENERIC_S22-104617.png&format=webp&auto=avif&width=1920&fit=cover"
+          imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
           alt="Featured partner 3"
         />
       </div>
