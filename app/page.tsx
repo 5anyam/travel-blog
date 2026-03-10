@@ -403,19 +403,32 @@ const FeaturedPartner = () => (
   <div className="border-b border-gray-100 py-2 bg-white">
     <Container>
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs font-semibold text-gray-600">Featured Partner</span>
+        <span className="text-xs font-semibold text-gray-600">Featured Partners</span>
         <span className="bg-gray-100 text-gray-400 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm">
           Sponsored
         </span>
       </div>
-      <InlineAdBanner
-        href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm"
-        imgSrc="https://www.lookfantastic.at/images?url=https://static.thcdn.com/widgets/95-fr/17/original-LookFantastic_TopBanner_dt_1900x600_GENERIC_S22-104617.png&format=webp&auto=avif&width=1920&fit=cover"
-        alt="Featured partner banner"
-      />
+      <div className="grid grid-cols-3 gap-3">
+        <InlineAdBanner
+          href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm1"
+          imgSrc="https://www.lookfantastic.at/images?url=https://static.thcdn.com/widgets/95-fr/17/original-LookFantastic_TopBanner_dt_1900x600_GENERIC_S22-104617.png&format=webp&auto=avif&width=1920&fit=cover"
+          alt="Featured partner 1"
+        />
+        <InlineAdBanner
+          href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm2"
+          imgSrc="https://www.lookfantastic.at/images?url=https://static.thcdn.com/widgets/95-fr/17/original-LookFantastic_TopBanner_dt_1900x600_GENERIC_S22-104617.png&format=webp&auto=avif&width=1920&fit=cover"
+          alt="Featured partner 2"
+        />
+        <InlineAdBanner
+          href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=plm3"
+          imgSrc="https://www.lookfantastic.at/images?url=https://static.thcdn.com/widgets/95-fr/17/original-LookFantastic_TopBanner_dt_1900x600_GENERIC_S22-104617.png&format=webp&auto=avif&width=1920&fit=cover"
+          alt="Featured partner 3"
+        />
+      </div>
     </Container>
   </div>
 );
+
 
 /* ═══════════════════════ MAGAZINE FEATURED (Dark) ═══════════════════════ */
 
