@@ -590,7 +590,7 @@ function PremiumSidebar() {
         {/* Square Ad 2 */}
         <SidebarSquareAd
           href="https://fiverr.com/"
-          imgSrc="https://media.licdn.com/dms/image/v2/D5612AQHbkZGFEYKE8Q/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680706756544?e=2147483647&v=beta&t=_lgS0dv9rhaIBXVE7kq1-lBKu5E0EtS_fmeCXA9zdWY"
+          imgSrc="https://fiverr.ck-cdn.com/tn/serve/?cid=45097613"
           alt="Advertisement"
         />
 
