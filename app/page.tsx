@@ -594,7 +594,7 @@ function PremiumSidebar() {
         {/* Square Ad 1 */}
         <SidebarSquareAd
           href="https://converti.se/click/4bdd0a13-ff3c999cd6-ccbc7b35/?sid=right1"
-          imgSrc="https://cdn.shopify.com/s/files/1/0639/2741/9138/files/IMG-20191125-WA0007.jpg?v=1666673698"
+          imgSrc="https://marketstreetlynnfield.com/wp-content/uploads/sites/20/2019/04/sephora-featured.jpg"
           alt="Advertisement"
         />
 
