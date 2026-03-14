@@ -22,7 +22,7 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Based In",
-    details: ["Flat No. 82, Pocket 2, Sector 23, Rohini, New Delhi, India"],
+    details: ["New Delhi, India"],
     description: "Serving travelers worldwide",
     action: null
   }
