@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     other: {
       'verify-admitad': 'ff3fcff36d',
       'convertiser-verification': '4a2836a5da7012c891e09927e427664d7b22686d',
-      'impact-site-verification' : '820d8d0d-f02e-4ef9-9c77-302ee0695bb9' />
+      'impact-site-verification' : '820d8d0d-f02e-4ef9-9c77-302ee0695bb9',
        },
   },
   category: 'travel',
