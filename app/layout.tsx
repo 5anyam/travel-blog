@@ -126,6 +126,36 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+
+        {/* ✅ Ad Network Script - Loads in <head> */}
+        <Script
+          src="https://pl29011054.profitablecpmratenetwork.com/66/4a/64/664a641fd3a05daaf6a6d143aa1009f9.js"
+          strategy="beforeInteractive"
+        />
+            {/* ✅ Body Ad - Inline Options Script */}
+        <Script
+          id="at-options"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              atOptions = {
+                'key' : '560e0a00630b68831dce0ad09bc054ed',
+                'format' : 'iframe',
+                'height' : 60,
+                'width' : 468,
+                'params' : {}
+              };
+            `,
+          }}
+        />
+
+        {/* ✅ Body Ad - Invoke Script */}
+        <Script
+          src="https://www.highperformanceformat.com/560e0a00630b68831dce0ad09bc054ed/invoke.js"
+          strategy="afterInteractive"
+        />
+
+        
         {/* JSON-LD Structured Data */}
         <Script
           id="organization-schema"
