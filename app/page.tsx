@@ -171,41 +171,6 @@ function SidebarSquareAd({
   );
 }
 
-/* ══════════════════════════ INLINE AD BANNER ══════════════════════════ */
-
-function InlineAdBanner({
-  href,
-  imgSrc,
-  alt,
-}: {
-  href: string;
-  imgSrc: string;
-  alt: string;
-}) {
-  return (
-    <div className="w-full">
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-[9px] font-semibold uppercase tracking-[0.13em] text-gray-400">
-          Sponsored
-        </span>
-        <span className="bg-gray-100 text-gray-400 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm">
-          Ad
-        </span>
-      </div>
-      <a href={href} target="_blank" rel="noopener noreferrer" className="block group">
-        <div className="relative w-full h-[90px] md:h-[110px] rounded-xl overflow-hidden border border-gray-200 bg-gradient-to-r from-gray-50 to-white shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 transition-all duration-300">
-          <img
-            src={imgSrc}
-            alt={alt}
-            loading="lazy"
-            className="w-full h-full py-2 px-6 object-contain group-hover:scale-[1.01] transition-transform duration-500"
-          />
-        </div>
-      </a>
-    </div>
-  );
-}
-
 /* ═══════════════════════════════ HERO SLIDER ═══════════════════════════════ */
 
 function HeroPostSlider({ posts }: { posts: WordPressPost[] }) {
@@ -396,27 +361,6 @@ function CategoryCarousel({ categories }: { categories: Category[] }) {
     </div>
   );
 }
-
-/* ═══════════════════════ FEATURED PARTNER BANNER ═══════════════════════ */
-
-const FeaturedPartner = () => (
-  <div className="border-b border-gray-100 py-2 bg-white">
-    <Container>
-      <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs font-semibold text-gray-600">Featured Partners</span>
-        <span className="bg-gray-100 text-gray-400 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm">
-          Sponsored
-        </span>
-      </div>
-      <div className="grid grid-cols-3 gap-3">
-        <InlineAdBanner href="https://uk-go.kelkoogroup.net/permanentLinkGo?country=uk&id=a6b7e7ce-7214-4d99-a180-47a56aa39021&merchantUrl=https%3A%2F%2Fwww.wayfair.co.uk&originReferer=clubmytrip.com&publisherSubId=ukm" imgSrc="/ad-banner-2.jpeg" alt="Wayfair" />
-        <InlineAdBanner href="https://es-go.kelkoogroup.net/permanentLinkGo?country=es&id=a6b7e7ce-7214-4d99-a180-47a56aa39021&merchantUrl=https%3A%2F%2Fwww.druni.es&originReferer=clubmytrip.com&publisherSubId=esm" imgSrc="/ad-banner-5.jpeg" alt="Druni" />
-        <InlineAdBanner href="https://de-go.kelkoogroup.net/permanentLinkGo?country=de&id=a6b7e7ce-7214-4d99-a180-47a56aa39021&merchantUrl=https%3A%2F%2Fwww.geekom.de&originReferer=clubmytrip.com&publisherSubId=dem" imgSrc="/ad-banner-8.jpeg" alt="GeekBook" />
-      </div>
-    </Container>
-  </div>
-);
-
 
 /* ═══════════════════════ MAGAZINE FEATURED (Dark) ═══════════════════════ */
 
@@ -657,9 +601,6 @@ export default function HomePage() {
 
       {/* Category Scroll */}
       <CategoryCarousel categories={categories} />
-
-      {/* Featured Partner Banner */}
-      <FeaturedPartner />
 
       {/* Main Grid: Content + Sidebar */}
       <div className="bg-white py-4">
